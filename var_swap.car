@@ -1,0 +1,7 @@
+void main():
+	
+	int aa = 5;
+	int b = 10;
+
+	aa, b = b, aa;
+end

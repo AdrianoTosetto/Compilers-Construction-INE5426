@@ -1,0 +1,14 @@
+
+inline double calc_media(double n1, double n2):
+
+	
+	return (n1+n2)/2;
+
+end
+
+void main():
+	double nota1 = 5.3;
+	double nota2 = 6.3;
+
+	auto media = calc_media(nota1, nota2);
+end
