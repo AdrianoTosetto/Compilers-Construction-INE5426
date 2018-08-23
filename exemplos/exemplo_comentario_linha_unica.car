@@ -1,0 +1,6 @@
+void main():
+
+	// chamada de funcao
+
+	test();
+end

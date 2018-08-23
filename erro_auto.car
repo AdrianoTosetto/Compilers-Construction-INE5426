@@ -1,6 +1,4 @@
 void main():
 	
-
-	//exemplo de comentario*
-	auto x = 5;
+	auto x; // erro, quando utiliza auto, é necessário inicializar
 end

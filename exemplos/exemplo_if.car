@@ -1,5 +1,12 @@
+inline void power2(int num):
+	return num * num;
+end
+
 void main():
 
-	/* srsrsrs */
 	auto x = 5;
+
+	if (x == 5) then
+		auto res = power2(x);
+	end
 end
