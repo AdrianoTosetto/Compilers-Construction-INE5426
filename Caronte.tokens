@@ -59,7 +59,8 @@ Numero=58
 String=59
 Nome=60
 WS=61
-LINE_COMMENT=62
+COMMENT=62
+LINE_COMMENT=63
 'define'=1
 '='=2
 ';'=3
