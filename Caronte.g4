@@ -60,3 +60,7 @@ grammar Caronte;
 	opunaria: '-' | 'not' | '#' | '++' | '--';
 
 	WS : [ \t\r\n]+ -> skip ;
+
+	LINE_COMMENT
+	    : '//' ~[\r\n]* -> skip
+	;
