@@ -1,0 +1,10 @@
+void main():
+	// este é um comentário de uma linha
+	for (int i = 0;i<10 or false;++i) do
+		print(i);
+	end
+	/*
+		este é um comentário
+		de múltiplas linhas
+	*/
+end
