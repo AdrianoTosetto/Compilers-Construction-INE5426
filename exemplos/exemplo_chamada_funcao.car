@@ -1,0 +1,12 @@
+void funcao(int x, int y, string s):
+	
+	print(s);
+	auto res = x+y;
+	print(res);
+end
+
+void main():
+	
+	funcao(3,3, "O valor eh: ");
+
+end
