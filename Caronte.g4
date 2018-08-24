@@ -16,8 +16,8 @@ grammar Caronte;
 		 'repeat' trecho 'until' exp ';' | 
 		 'if' exp 'then' trecho ('elseif' exp 'then' trecho)* ('else' trecho)? 'end' | 
 		 'for' '(' ((tipovar | 'auto') Nome '=' exp)? ';' (exp)? ';' (exp)? ')' 'do' trecho 'end' | 
-		 'for' '(' listadenomes 'in' listaexp ')' 'do' trecho 'end';
-	ultimocomando: 'return' (listaexp)? ';' | 'break' ';' | 'goto' Nome ';' | Nome ':' (comando)*;
+		 'for' '(' listadenomes 'in' listaexp ')' 'do' trecho 'end' |  'goto' Nome ';' | Nome ':' comando;
+	ultimocomando: 'return' (listaexp)? ';' | 'break' ';';
 
 	nomedafuncao: ('inline')? tiporet Nome;
 
