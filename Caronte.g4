@@ -8,7 +8,7 @@ grammar Caronte;
 			(comando)* ultimocomando;
 
 	comando:  (listavar '=')? listaexp ';' | 
-		'array' tipovar var '[' Inteiro ']' ('=' exp)? ';' |
+		'array' tipovar var ( '[' Inteiro ']' )* ('=' exp)? ';' |
 		 tipovar var ('=' exp)? ';' |
 		 'auto' var '=' exp ';' |
 		 chamadadefuncao ';' | 
@@ -16,9 +16,12 @@ grammar Caronte;
 		 'while' exp 'do' trecho 'end' | 
 		 'repeat' trecho 'until' exp ';' | 
 		 'if' exp 'then' trecho ('elseif' exp 'then' trecho)* ('else' trecho)? 'end' | 
-		 'for' '(' ((tipovar | 'auto') Nome '=' exp)? ';' (exp)? ';' (exp)? ')' 'do' trecho 'end' | 
-		 'for' '(' listadenomes 'in' listaexp ')' 'do' trecho 'end' |  'goto' Nome ';' | Nome ':' comando;
+		 'for' ((tipovar | 'auto') Nome '=' exp)? ';' (exp)? ';' (exp)? 'do' trecho 'end' | 
+		 'for'  listadenomes 'in' listaexp 'do' trecho 'end' |  'goto' Nome ';' | Nome ':' comando;
+
 	ultimocomando: 'return' (listaexp)? ';' | 'break' ';';
+
+	Inteiro: [0-9]+;
 
 	nomedafuncao: ('inline')? tiporet Nome;
 
@@ -28,7 +31,7 @@ grammar Caronte;
 
 	listavar: var (',' var)*;
 
-	var:  Nome ('[' Inteiro ']')?;
+	var:  Nome ('.' Nome)* ('[' Inteiro ']' ('.' Nome)* )* | '{' listavar '}';
 
 	listadenomes: Nome (',' Nome)*;
 
