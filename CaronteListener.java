@@ -57,6 +57,16 @@ public interface CaronteListener extends ParseTreeListener {
 	 */
 	void exitUltimocomando(CaronteParser.UltimocomandoContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CaronteParser#listaatri}.
+	 * @param ctx the parse tree
+	 */
+	void enterListaatri(CaronteParser.ListaatriContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CaronteParser#listaatri}.
+	 * @param ctx the parse tree
+	 */
+	void exitListaatri(CaronteParser.ListaatriContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CaronteParser#nomedafuncao}.
 	 * @param ctx the parse tree
 	 */
@@ -206,4 +216,14 @@ public interface CaronteListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitOpunaria(CaronteParser.OpunariaContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CaronteParser#opcomando}.
+	 * @param ctx the parse tree
+	 */
+	void enterOpcomando(CaronteParser.OpcomandoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CaronteParser#opcomando}.
+	 * @param ctx the parse tree
+	 */
+	void exitOpcomando(CaronteParser.OpcomandoContext ctx);
 }

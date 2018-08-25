@@ -75,6 +75,18 @@ public class CaronteBaseListener implements CaronteListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterListaatri(CaronteParser.ListaatriContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitListaatri(CaronteParser.ListaatriContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterNomedafuncao(CaronteParser.NomedafuncaoContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -250,6 +262,18 @@ public class CaronteBaseListener implements CaronteListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitOpunaria(CaronteParser.OpunariaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOpcomando(CaronteParser.OpcomandoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOpcomando(CaronteParser.OpcomandoContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

@@ -53,8 +53,6 @@ grammar Caronte;
 
 	Numero: [0-9]+('.'[0-9]+)?;
 
-	Inteiro: [0-9]+;
-
 	String: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"';
 
 	Nome: [a-zA-Z_][a-zA-Z_0-9]*;
