@@ -46,7 +46,7 @@ grammar Caronte;
 
 	listaexp: (exp ',')* exp;
 
-	exp:    valores | expprefixo | '{' listaexp '}' |
+	exp:    valores | expprefixo | '{' (listaexp)? '}' |
 		exp opbin exp | opunaria exp | '(' exp ')';
 
 	valores: 'null' | 'false' | 'true' | Decimal | String | Inteiro;
