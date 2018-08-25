@@ -49,9 +49,9 @@ grammar Caronte;
 	exp:    valores | expprefixo | '{' listaexp '}' |
 		exp opbin exp | opunaria exp | '(' exp ')';
 
-	valores: 'null' | 'false' | 'true' | Numero | String | Inteiro;
+	valores: 'null' | 'false' | 'true' | Decimal | String | Inteiro;
 
-	Numero: ('-')? [0-9]+('.'[0-9]+)?;
+	Decimal: ('-')? [0-9]+ '.' [0-9]+;
 
 	String: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"';
 
