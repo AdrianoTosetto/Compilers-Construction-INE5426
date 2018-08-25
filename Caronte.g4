@@ -40,11 +40,11 @@ grammar Caronte;
 
 	listavar: var (',' var)*;
 
-	var:  Nome ('.' Nome)* ('[' Inteiro ']' ('.' Nome)* )* | '{' listavar '}';
+	var:  Nome ('.' Nome)* ('[' Inteiro ']' ('.' Nome)* )*;
 
 	listadenomes: Nome (',' Nome)*;
 
-	listaexp: (exp ',')* exp;
+	listaexp: (exp ',')* exp | '{' listaexp '}';
 
 	exp:  valores | expprefixo |
 			 exp opbin exp | opunaria exp | '(' exp ')';
