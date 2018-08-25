@@ -6,7 +6,7 @@ grammar Caronte;
 		'array' tipovar var ( '[' Inteiro ']' )+ ('=' exp)? ';' |
 		tipovar var ('=' exp)? ';' |
 		'auto' var '=' exp ';' | 
-		'struct' Nome '{' tipovar Nome ( ',' tipovar Nome )* '}' ';' |
+		'struct' Nome '{' ( ( tipovar Nome ( ',' tipovar Nome )* ) | ( 'array' tipovar Nome ('[' Inteiro ']')+ ) )* '}' ';' |
 		nomedafuncao corpodafuncao | 
 		'define' Nome valores;
 
