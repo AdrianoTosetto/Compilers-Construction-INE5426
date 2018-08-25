@@ -5,8 +5,8 @@ grammar Caronte;
 	bloco:  var listaatri exp ';' | 
 		'array' tipovar var ( '[' Inteiro ']' )+ ('=' exp)? ';' |
 		tipovar var ('=' exp)? ';' |
-		'auto' var '=' exp ';' | 
-		'struct' Nome '{' ( ( tipovar Nome ( ',' tipovar Nome )* ) | ( 'array' tipovar Nome ('[' Inteiro ']')+ ) )* '}' ';' |
+		'auto' var '=' exp ';' |
+		'struct' Nome '{' ( tipovar Nome | 'array' tipovar Nome ('[' Inteiro ']')+ ) ( ',' ( tipovar Nome | 'array' tipovar Nome ('[' Inteiro ']')+ ) )* '}' ';' |
 		nomedafuncao corpodafuncao | 
 		'define' Nome valores;
 
