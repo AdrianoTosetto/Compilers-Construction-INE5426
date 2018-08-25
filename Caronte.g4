@@ -44,10 +44,10 @@ grammar Caronte;
 
 	listadenomes: Nome (',' Nome)*;
 
-	listaexp: (exp ',')* exp | '{' listaexp '}';
+	listaexp: (exp ',')* exp;
 
-	exp:  valores | expprefixo |
-			 exp opbin exp | opunaria exp | '(' exp ')';
+	exp:    valores | expprefixo | '{' listaexp '}' |
+		exp opbin exp | opunaria exp | '(' exp ')';
 
 	valores: 'null' | 'false' | 'true' | Numero | String;
 
