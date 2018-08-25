@@ -1,0 +1,10 @@
+struct Pessoa { 
+	string nome,
+	int idade,
+	double peso,
+	array Pessoa amigos[2];
+};
+
+void main():
+	Pessoa pedro
+end

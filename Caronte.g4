@@ -3,7 +3,7 @@ grammar Caronte;
 	inicio: (bloco)+;
 
 	bloco:  var listaatri exp ';' | 
-		'array' tipovar var ( '[' Inteiro ']' )* ('=' exp)? ';' |
+		'array' tipovar var ( '[' Inteiro ']' )+ ('=' exp)? ';' |
 		tipovar var ('=' exp)? ';' |
 		'auto' var '=' exp ';' | 
 		'struct' Nome '{' tipovar Nome ( ',' tipovar Nome )* '}' ';' |

@@ -1,0 +1,4 @@
+
+void main():
+	array int pares[5] = {0,2,4,8,10};
+end

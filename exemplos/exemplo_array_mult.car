@@ -1,0 +1,4 @@
+
+void main():
+	array double reais[2][2] = {{0.0,2.2},{4.8,10.2}};
+end

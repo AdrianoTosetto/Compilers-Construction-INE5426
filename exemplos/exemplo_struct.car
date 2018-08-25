@@ -7,5 +7,4 @@ struct Pessoa {
 void main():
 
 	Pessoa pedro = {"Pedro", 25, 90.2};
-
 end
