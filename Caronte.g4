@@ -23,7 +23,7 @@ grammar Caronte;
 		 'while' exp 'do' trecho 'end' | 
 		 'repeat' trecho 'until' exp ';' | 
 		 'if' exp 'then' trecho ('elseif' exp 'then' trecho)* ('else' trecho)? 'end' | 
-		 'for' ((tipovar | 'auto') Nome '=' exp)? ';' (exp)? ';' (exp)? 'do' trecho 'end' | 
+		 'for' ((tipovar | 'auto') Nome '=' exp)? ';' (exp)? ';' (comando)? 'do' trecho 'end' | 
 		 'for'  listadenomes 'in' listaexp 'do' trecho 'end' |  'goto' Nome ';' | Nome ':' comando;
 
 	ultimocomando: 'return' (listaexp)? ';' | 'break' ';';
