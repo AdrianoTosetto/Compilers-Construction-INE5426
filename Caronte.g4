@@ -2,29 +2,32 @@ grammar Caronte;
 
 	inicio: (bloco)+;
 
-	bloco:  var listaatri exp ';' | 
-		'array' tipovar var ( '[' Inteiro ']' )+ ('=' exp)? ';' |
-		tipovar var ('=' exp)? ';' |
-		'auto' var '=' exp ';' |
+	bloco: 	comandoexpressao
 		'struct' Nome '{' ( tipovar Nome | 'array' tipovar Nome ('[' Inteiro ']')+ ) ( ',' ( tipovar Nome | 'array' tipovar Nome ('[' Inteiro ']')+ ) )* '}' ';' |
 		nomedafuncao corpodafuncao | 
 		'define' Nome valores;
 
 	trecho: (comando)+ (ultimocomando)? |
-			(comando)* ultimocomando;
+		(comando)* ultimocomando;
+	
+	comando: comandobloco | comandoexpressao;
 
-	comando: var listaatri exp ';' | 
-		 'array' tipovar Nome ( '[' Inteiro ']' )+ ('=' exp)? ';' |
-		 tipovar Nome ('=' exp)? ';' |
-		 'auto' Nome '=' exp ';' |
-		 opcomando var ';' | var opcomando ';' |
-		 chamadadefuncao ';' | 
-		 'do' trecho 'end' | 
-		 'while' exp 'do' trecho 'end' | 
-		 'repeat' trecho 'until' exp ';' | 
-		 'if' exp 'then' trecho ('elseif' exp 'then' trecho)* ('else' trecho)? 'end' | 
-		 'for' ((tipovar | 'auto') Nome '=' exp)? ';' (exp)? ';' (comando)? 'do' trecho 'end' | 
-		 'for'  listadenomes 'in' listaexp 'do' trecho 'end' |  'goto' Nome ';' | Nome ':' comando;
+	comandobloco: 'do' trecho 'end' |
+		      'while' exp 'do' trecho 'end' | 
+		      'repeat' trecho 'until' exp ';' | 
+		      'if' exp 'then' trecho ('elseif' exp 'then' trecho)* ('else' trecho)? 'end' |
+		      'for' ((tipovar | 'auto') Nome '=' exp)? ';' (exp)? ';' (comandounico)? 'do' trecho 'end' | 
+		      'for'  listadenomes 'in' listaexp 'do' trecho 'end' |  'goto' Nome ';' | Nome ':' comando;
+	
+	comandoexpressao:   var listaatri exp ';' | 
+			    'array' tipovar var ( '[' Inteiro ']' )+ ('=' exp)? ';' |
+			    tipovar var ('=' exp)? ';' |
+			    'auto' var '=' exp ';';
+	
+	comandounico: comandoexpressao |
+		      opcomando var ';' | 
+		      var opcomando ';' |
+		      chamadadefuncao ';';
 
 	ultimocomando: 'return' (listaexp)? ';' | 'break' ';';
 	
