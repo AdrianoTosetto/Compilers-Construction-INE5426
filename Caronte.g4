@@ -2,7 +2,7 @@ grammar Caronte;
 
 	inicio: (bloco)+;
 
-	bloco: 	comandoexpressao
+	bloco: 	comandoexpressao |
 		'struct' Nome '{' ( tipovar Nome | 'array' tipovar Nome ('[' Inteiro ']')+ ) ( ',' ( tipovar Nome | 'array' tipovar Nome ('[' Inteiro ']')+ ) )* '}' ';' |
 		nomedafuncao corpodafuncao | 
 		'define' Nome valores;
