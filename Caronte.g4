@@ -8,6 +8,7 @@ grammar Caronte;
 			(comando)* ultimocomando;
 
 	comando:  (listavar '=')? listaexp ';' | 
+		'array' tipovar var '[' Inteiro ']' ('=' exp)? ';' |
 		 tipovar var ('=' exp)? ';' |
 		 'auto' var '=' exp ';' |
 		 chamadadefuncao ';' | 
@@ -21,24 +22,26 @@ grammar Caronte;
 
 	nomedafuncao: ('inline')? tiporet Nome;
 
-	tipovar: 'boolean' | 'int' | 'double' | 'float' | 'string';
-
+	tipovar: 'boolean' | 'int' | 'double' | 'float' | 'string' | Nome;
+	
 	tiporet: tipovar | 'void';
 
 	listavar: var (',' var)*;
 
-	var:  Nome;
+	var:  Nome ('[' Inteiro ']')?;
 
 	listadenomes: Nome (',' Nome)*;
 
 	listaexp: (exp ',')* exp;
 
-	exp:  valores | '...' | expprefixo |
+	exp:  valores | expprefixo |
 			 exp opbin exp | opunaria exp | '(' exp ')';
 
 	valores: 'null' | 'false' | 'true' | Numero | String;
 
 	Numero: [0-9]+('.'[0-9]+)?;
+
+	Inteiro: [0-9]+;
 
 	String: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"';
 
