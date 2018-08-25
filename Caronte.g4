@@ -2,15 +2,22 @@ grammar Caronte;
 
 	inicio: (bloco)+;
 
-	bloco: trecho | nomedafuncao corpodafuncao | 'define' Nome valores;
+	bloco:  var listaatri exp ';' | 
+		'array' tipovar var ( '[' Inteiro ']' )* ('=' exp)? ';' |
+		tipovar var ('=' exp)? ';' |
+		'auto' var '=' exp ';' | 
+		'struct' Nome '{' tipovar Nome ( ',' tipovar Nome )* '}' ';'
+		nomedafuncao corpodafuncao | 
+		'define' Nome valores;
 
 	trecho: (comando)+ (ultimocomando)? |
 			(comando)* ultimocomando;
 
-	comando:  (listavar '=')? listaexp ';' | 
-		'array' tipovar var ( '[' Inteiro ']' )* ('=' exp)? ';' |
-		 tipovar var ('=' exp)? ';' |
-		 'auto' var '=' exp ';' |
+	comando: var listaatri exp ';' | 
+		 'array' tipovar Nome ( '[' Inteiro ']' )+ ('=' exp)? ';' |
+		 tipovar Nome ('=' exp)? ';' |
+		 'auto' Nome '=' exp ';' |
+		 opcomando var ';' | var opcomando ';' |
 		 chamadadefuncao ';' | 
 		 'do' trecho 'end' | 
 		 'while' exp 'do' trecho 'end' | 
@@ -20,6 +27,8 @@ grammar Caronte;
 		 'for'  listadenomes 'in' listaexp 'do' trecho 'end' |  'goto' Nome ';' | Nome ':' comando;
 
 	ultimocomando: 'return' (listaexp)? ';' | 'break' ';';
+	
+	listaatri: ',' var listaatri exp ',' | '=';
 
 	Inteiro: [0-9]+;
 
@@ -62,7 +71,9 @@ grammar Caronte;
 		 '<' | '<=' | '>' | '>=' | '==' | '!=' | 
 		 'and' | 'or' | '+=' | '-=' | '*=' | '/=' | '^=' | '%=';
 
-	opunaria: '-' | 'not' | '#' | '++' | '--';
+	opunaria: '-' | 'not' | '#';
+	
+	opcomando: '++' | '--';
 
 	WS : [ \t\r\n]+ -> skip ;
 
