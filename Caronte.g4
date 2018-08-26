@@ -10,7 +10,7 @@ grammar Caronte;
 	trecho: (comando)+ (ultimocomando)? |
 		(comando)* ultimocomando;
 	
-	comando: comandobloco | comandoexpressao;
+	comando: comandobloco | comandounico ';';
 
 	comandobloco: 'do' trecho 'end' |
 		      'while' exp 'do' trecho 'end' | 
@@ -19,15 +19,15 @@ grammar Caronte;
 		      'for' ((tipovar | 'auto') Nome '=' exp)? ':' (exp)? ':' (comandounico)? 'do' trecho 'end' | 
 		      'for'  listadenomes 'in' listaexp 'do' trecho 'end' |  'goto' Nome ';' | Nome ':' comando;
 	
-	comandoexpressao:   var listaatri exp ';' | 
-			    'array' tipovar var ( '[' Inteiro ']' )+ ('=' exp)? ';' |
-			    tipovar var ('=' exp)? ';' |
-			    'auto' var '=' exp ';';
+	comandoexpressao:   var listaatri exp | 
+			    'array' tipovar var ( '[' Inteiro ']' )+ ('=' exp)? |
+			    tipovar var ('=' exp)? |
+			    'auto' var '=' exp;
 	
 	comandounico: comandoexpressao |
-		      opcomando var ';' | 
-		      var opcomando ';' |
-		      chamadadefuncao ';';
+		      opcomando var | 
+		      var opcomando |
+		      chamadadefuncao;
 
 	ultimocomando: 'return' (listaexp)? ';' | 'break' ';';
 	
