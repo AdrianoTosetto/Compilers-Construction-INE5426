@@ -47,6 +47,36 @@ public interface CaronteListener extends ParseTreeListener {
 	 */
 	void exitComando(CaronteParser.ComandoContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void enterComandobloco(CaronteParser.ComandoblocoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void exitComandobloco(CaronteParser.ComandoblocoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CaronteParser#comandoexpressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterComandoexpressao(CaronteParser.ComandoexpressaoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CaronteParser#comandoexpressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitComandoexpressao(CaronteParser.ComandoexpressaoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CaronteParser#comandounico}.
+	 * @param ctx the parse tree
+	 */
+	void enterComandounico(CaronteParser.ComandounicoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CaronteParser#comandounico}.
+	 * @param ctx the parse tree
+	 */
+	void exitComandounico(CaronteParser.ComandounicoContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CaronteParser#ultimocomando}.
 	 * @param ctx the parse tree
 	 */

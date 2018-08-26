@@ -16,7 +16,7 @@ grammar Caronte;
 		      'while' exp 'do' trecho 'end' | 
 		      'repeat' trecho 'until' exp ';' | 
 		      'if' exp 'then' trecho ('elseif' exp 'then' trecho)* ('else' trecho)? 'end' |
-		      'for' ((tipovar | 'auto') Nome '=' exp)? ';' (exp)? ';' (comandounico)? 'do' trecho 'end' | 
+		      'for' ((tipovar | 'auto') Nome '=' exp)? ':' (exp)? ':' (comandounico)? 'do' trecho 'end' | 
 		      'for'  listadenomes 'in' listaexp 'do' trecho 'end' |  'goto' Nome ';' | Nome ':' comando;
 	
 	comandoexpressao:   var listaatri exp ';' | 

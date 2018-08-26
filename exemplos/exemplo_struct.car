@@ -6,8 +6,8 @@ struct Pessoa {
 };
 
 void main():
-	Pessa amigo1 = {"Amigo 1", 23, 32.2};
-	Pessa amigo2 = {"Amigo 1", 23, 32.2};
+	Pessa amigo1 = {"Amigo 1", 23, 32.2,{}};
+	Pessa amigo2 = {"Amigo 1", 23, 32.2,{}};
 
 	Pessoa pedro = {"Pedro", 25, 90.2, {amigo1, amigo2}};
 end

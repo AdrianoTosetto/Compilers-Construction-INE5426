@@ -1,4 +1,0 @@
-void main():
-	
-	auto x; // erro, quando utiliza auto, é necessário inicializar
-end

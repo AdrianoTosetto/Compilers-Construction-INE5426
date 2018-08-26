@@ -5,7 +5,7 @@ end
 void main():
 
 	auto x = 5;
-	auto bool = true
+	auto bool = true;
 	if (x == 5) then
 		auto res = power2(x);
 	end

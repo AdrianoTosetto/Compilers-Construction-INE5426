@@ -1,6 +1,6 @@
 void main():
 	// este é um comentário de uma linha
-	for (int i = 0;i<10 or false;++i) do
+	for int i = 0: i < 10: ++i do
 		print(i);
 	end
 	/*

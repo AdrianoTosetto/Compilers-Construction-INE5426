@@ -2,9 +2,11 @@ struct Pessoa {
 	string nome,
 	int idade,
 	double peso,
-	array Pessoa amigos[2];
+	array Pessoa amigos[2]
 };
 
 void main():
-	Pessoa pedro
+	Pessoa amigo1 = {"Adriano", 23, 2.1, {}};
+	Pessoa amigo2 = {"Giulio", 23, 2.1, {}};
+	Pessoa pedro = {"Pedro", 24, 3.2, {amigo1, amigo2}};
 end
