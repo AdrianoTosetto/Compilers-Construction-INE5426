@@ -246,14 +246,4 @@ public interface CaronteListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitOpunaria(CaronteParser.OpunariaContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link CaronteParser#opcomando}.
-	 * @param ctx the parse tree
-	 */
-	void enterOpcomando(CaronteParser.OpcomandoContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link CaronteParser#opcomando}.
-	 * @param ctx the parse tree
-	 */
-	void exitOpcomando(CaronteParser.OpcomandoContext ctx);
 }

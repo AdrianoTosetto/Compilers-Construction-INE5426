@@ -298,18 +298,6 @@ public class CaronteBaseListener implements CaronteListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitOpunaria(CaronteParser.OpunariaContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterOpcomando(CaronteParser.OpcomandoContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitOpcomando(CaronteParser.OpcomandoContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
