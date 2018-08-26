@@ -24,10 +24,7 @@ grammar Caronte;
 			    tipovar var ('=' exp)? |
 			    'auto' var '=' exp;
 	
-	comandounico: comandoexpressao |
-		      opcomando var | 
-		      var opcomando |
-		      chamadadefuncao;
+	comandounico: comandoexpressao | listaexp;
 
 	ultimocomando: 'return' (listaexp)? ';' | 'break' ';';
 	
@@ -72,9 +69,7 @@ grammar Caronte;
 		 '<' | '<=' | '>' | '>=' | '==' | '!=' | 
 		 'and' | 'or' | '+=' | '-=' | '*=' | '/=' | '^=' | '%=';
 
-	opunaria: '-' | 'not' | '#';
-	
-	opcomando: '++' | '--';
+	opunaria: '-' | 'not' | '#' | '++' | '--';
 
 	WS : [ \t\r\n]+ -> skip ;
 
