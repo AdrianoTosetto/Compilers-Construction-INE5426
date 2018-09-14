@@ -1,0 +1,13 @@
+int soma_array(array int numeros[5]):
+	auto total = 0;
+	for e in numeros do
+		total = total + e;
+	end
+
+	return total;
+end
+void main():
+
+	auto soma = soma_array({3,3,2,1,2});
+	print(soma);
+end

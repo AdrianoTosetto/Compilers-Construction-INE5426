@@ -1,0 +1,4 @@
+void main():
+	auto x = 4;
+	int y = (x+3) * 4); // Falta um "(" no começo da expressão
+end

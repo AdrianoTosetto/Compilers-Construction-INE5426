@@ -6,5 +6,5 @@ end
 
 void main():
 
-	auto x;
+	auto x = funcao(3,3,"test");
 end

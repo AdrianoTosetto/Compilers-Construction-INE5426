@@ -1,0 +1,4 @@
+fastcall int calc(int a, int b):
+	auto result = a + b;
+	return result;
+end

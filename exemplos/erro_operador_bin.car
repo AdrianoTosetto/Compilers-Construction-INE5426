@@ -1,0 +1,3 @@
+void main():
+	auto y = (3+2) + ;
+end
