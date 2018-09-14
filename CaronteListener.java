@@ -67,6 +67,16 @@ public interface CaronteListener extends ParseTreeListener {
 	 */
 	void exitComandoexpressao(CaronteParser.ComandoexpressaoContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CaronteParser#erro_var_declaracao}.
+	 * @param ctx the parse tree
+	 */
+	void enterErro_var_declaracao(CaronteParser.Erro_var_declaracaoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CaronteParser#erro_var_declaracao}.
+	 * @param ctx the parse tree
+	 */
+	void exitErro_var_declaracao(CaronteParser.Erro_var_declaracaoContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CaronteParser#comandounico}.
 	 * @param ctx the parse tree
 	 */

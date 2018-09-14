@@ -87,6 +87,18 @@ public class CaronteBaseListener implements CaronteListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterErro_var_declaracao(CaronteParser.Erro_var_declaracaoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitErro_var_declaracao(CaronteParser.Erro_var_declaracaoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterComandounico(CaronteParser.ComandounicoContext ctx) { }
 	/**
 	 * {@inheritDoc}

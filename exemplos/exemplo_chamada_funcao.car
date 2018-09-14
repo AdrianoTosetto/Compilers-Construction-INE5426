@@ -6,5 +6,5 @@ end
 
 void main():
 
-	funcao(3,3, "O valor eh: ");
+	auto x;
 end

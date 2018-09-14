@@ -10,7 +10,10 @@ grammar Caronte;
 	trecho: (comando)+ (ultimocomando)? |
 		(comando)* ultimocomando;
 	
-	comando: comandobloco | comandounico ';';
+	comando: comandobloco | comandounico ';' |
+		comandounico
+			{notifyErrorListeners("';' é necessário");}
+		;
 
 	comandobloco: 'do' trecho 'end' |
 		      'while' exp 'do' trecho 'end' | 
@@ -22,7 +25,12 @@ grammar Caronte;
 	comandoexpressao:   var listaatri exp | 
 			    'array' tipovar var ( '[' Inteiro ']' )+ ('=' exp)? |
 			    tipovar var ('=' exp)? |
-			    'auto' var '=' exp;
+			    'auto' var '=' exp | erro_var_declaracao;
+
+	erro_var_declaracao: 'auto' var 
+	{notifyErrorListeners(" variável  "+ $var.text + " é do tipo auto e precisa ser declarada com algum valor!");}
+
+	;
 	
 	comandounico: comandoexpressao | listaexp;
 
@@ -32,7 +40,10 @@ grammar Caronte;
 
 	Inteiro: ('-')?[0-9]+;
 
-	nomedafuncao: ('inline')? tiporet Nome;
+	nomedafuncao: ('inline' | 'fastcall')? tiporet Nome |
+		'inline' 'fastcall' tiporet Nome 
+		{notifyErrorListeners("fastcall e inline não podem ser usados para uma mesma função");}
+		;
 
 	tipovar: 'boolean' | 'int' | 'double' | 'float' | 'string' | Nome;
 	
@@ -47,7 +58,13 @@ grammar Caronte;
 	listaexp: (exp ',')* exp;
 
 	exp:    valores | expprefixo | '{' (listaexp)? '}' |
-		exp opbin exp | opunaria exp | '(' exp ')';
+		exp opbin exp | opunaria exp | '(' exp ')' |
+		'(' exp {notifyErrorListeners(" existem parênteses não fechados! ");} |
+		exp ')' {notifyErrorListeners(" existem parênteses fechados a mais! ");} |
+		exp opbin {notifyErrorListeners("um operando era esperado no lado direito de " + $opbin.text);} |
+		opbin exp {notifyErrorListeners("um operando era esperado no lado esquerdo de " + $opbin.text);} |
+		opunaria {notifyErrorListeners("Era esperado um operando para " + $opunaria.text);}
+	;
 
 	valores: 'null' | 'false' | 'true' | Decimal | String | Inteiro;
 
@@ -59,11 +76,11 @@ grammar Caronte;
 
 	expprefixo: var | chamadadefuncao;
 
-	chamadadefuncao:  Nome '(' (listaexp)? ')';
+	chamadadefuncao:  Nome '(' (listaexp)? ')' ;
 
 	corpodafuncao: '(' (listapar)? ')' ':' trecho 'end';
 
-	listapar: (tipovar Nome ',')* tipovar Nome;
+	listapar: ((tipovar Nome | 'array' tipovar Nome ('[' Inteiro ']')+) ',')* (tipovar Nome | 'array' tipovar Nome ('[' Inteiro ']')+);
 
 	opbin: '+' | '-' | '*' | '/' | '^' | '%' | '..' | 
 		 '<' | '<=' | '>' | '>=' | '==' | '!=' | 
