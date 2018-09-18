@@ -47,6 +47,16 @@ public interface CaronteListener extends ParseTreeListener {
 	 */
 	void exitComando(CaronteParser.ComandoContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CaronteParser#erro_ponto_virgula}.
+	 * @param ctx the parse tree
+	 */
+	void enterErro_ponto_virgula(CaronteParser.Erro_ponto_virgulaContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CaronteParser#erro_ponto_virgula}.
+	 * @param ctx the parse tree
+	 */
+	void exitErro_ponto_virgula(CaronteParser.Erro_ponto_virgulaContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CaronteParser#comandobloco}.
 	 * @param ctx the parse tree
 	 */
@@ -116,6 +126,16 @@ public interface CaronteListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNomedafuncao(CaronteParser.NomedafuncaoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CaronteParser#erro_inline_fastcall}.
+	 * @param ctx the parse tree
+	 */
+	void enterErro_inline_fastcall(CaronteParser.Erro_inline_fastcallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CaronteParser#erro_inline_fastcall}.
+	 * @param ctx the parse tree
+	 */
+	void exitErro_inline_fastcall(CaronteParser.Erro_inline_fastcallContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CaronteParser#tipovar}.
 	 * @param ctx the parse tree

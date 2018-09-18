@@ -10,10 +10,9 @@ grammar Caronte;
 	trecho: (comando)+ (ultimocomando)? |
 		(comando)* ultimocomando;
 	
-	comando: comandobloco | comandounico ';' |
-		comandounico
-			{notifyErrorListeners("';' é necessário");}
-		;
+	comando: comandobloco | comandounico ';' | erro_ponto_virgula ;
+
+	erro_ponto_virgula: comandounico {notifyErrorListeners("';' é necessário");};
 
 	comandobloco: 'do' trecho 'end' |
 		      'while' exp 'do' trecho 'end' | 
@@ -41,9 +40,10 @@ grammar Caronte;
 	Inteiro: ('-')?[0-9]+;
 
 	nomedafuncao: ('inline' | 'fastcall')? tiporet Nome |
-		'inline' 'fastcall' tiporet Nome 
-		{notifyErrorListeners("fastcall e inline não podem ser usados para uma mesma função");}
-		;
+		erro_inline_fastcall;
+
+	erro_inline_fastcall: 'inline' 'fastcall' tiporet Nome 
+		{notifyErrorListeners("fastcall e inline não podem ser usados para uma mesma função");};
 
 	tipovar: 'boolean' | 'int' | 'double' | 'float' | 'string' | Nome;
 	

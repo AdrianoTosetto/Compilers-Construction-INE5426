@@ -63,6 +63,18 @@ public class CaronteBaseListener implements CaronteListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterErro_ponto_virgula(CaronteParser.Erro_ponto_virgulaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitErro_ponto_virgula(CaronteParser.Erro_ponto_virgulaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterComandobloco(CaronteParser.ComandoblocoContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -142,6 +154,18 @@ public class CaronteBaseListener implements CaronteListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitNomedafuncao(CaronteParser.NomedafuncaoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterErro_inline_fastcall(CaronteParser.Erro_inline_fastcallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitErro_inline_fastcall(CaronteParser.Erro_inline_fastcallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
