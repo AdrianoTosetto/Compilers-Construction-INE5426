@@ -59,6 +59,7 @@ grammar Caronte;
 
 	exp:    valores | expprefixo | '{' (listaexp)? '}' |
 		exp opbin exp | opunaria exp | '(' exp ')' |
+
 		'(' exp {notifyErrorListeners(" existem parênteses não fechados! ");} |
 		exp ')' {notifyErrorListeners(" existem parênteses fechados a mais! ");} |
 		exp opbin {notifyErrorListeners("um operando era esperado no lado direito de " + $opbin.text);} |

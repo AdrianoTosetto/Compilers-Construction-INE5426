@@ -1,0 +1,81 @@
+bloco -> 'define' Nome valores    																	Nome.value = valores.value
+
+
+
+
+comdandobloco -> 'for' (tipovar Nome '=' exp) ':' (exp)? ':' (comandounico)? 'do' trecho 'end'		Nome.type = tipovar.type
+comandobloco  -> 'for' ('auto' Nome '=' exp)  ':' (exp)? ':' (comandounico)? 'do' trecho 'end'		Nome.type = exp.type
+comandobloco -> 'goto' Nome ';'    																	Nome.type = 'label'
+
+comandoexpressao -> 'array' tipovar var ( '[' Inteiro ']' )+ ('=' exp)?								var.length = Inteiro.value
+comandoexpressao -> 'array' tipovar var ( '[' Inteiro ']' )+ ('=' exp)?								var.type = tipovar.type
+
+
+comandoexpressao -> tipovar var ('=' exp)?															var.type = tipovar.type
+comandoexpressao -> 'auto' var '=' exp																var.type = exp.type
+
+
+nomedafuncao -> ('inline' | 'fastcall')? tiporet Nome 												Nome.type = tiporet.type
+
+
+tipovar -> 'boolean'																				tipovar.type = boolean
+tipovar -> 'int'																					tipovar.type = integer 
+tipovar -> 'double'																					tipovar.type = double
+tipovar -> 'float'																					tipovar.type = float
+tipovar -> 'string'																					tipovar.type = string
+tipovar -> Nome;  | structType																		tipovar.type = structType.type 
+(perguntar)
+
+tiporet -> tipovar																					tiporet.type = tipovar.type
+tiporet -> 'void'																					tiporet.type = void
+
+exp -> valores																						exp.value = valores.value
+exp -> expprefixo																					exp.value = valores.value
+exp -> '{' (listaexp)? '}'																			perguntar
+perguntar														
+exp -> exp opbin exp 																			exp.value = exp1.value + exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value - exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value * exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value / exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value ^ exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value .. exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value < exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value <= exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value > exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value >= exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value == exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value != exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value and exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value or exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value += exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value -= exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value *= exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value /= exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value ^= exp2.value
+exp -> exp opbin exp 																			exp.value = exp1.value %= exp2.value
+
+exp -> exp opunaria																				- exp1.value
+exp -> exp opunaria																				not exp1.value
+exp -> exp opunaria																				# exp1.value
+exp -> exp opunaria																				-- exp1.value
+exp -> exp opunaria																				++ exp1.value
+
+
+exp -> opunaria exp
+exp -> '(' exp ')' 																				exp.value = exp1.value
+
+valores -> 'null'                                                                               valores.value = null
+valores -> 'false'																				valores.value = false
+valores -> 'true'																				valores.value = true
+valores -> Decimal																				valores.value = Decimal.value
+valores -> String 																				valores.value = String.value
+valores -> Inteiro																				valores.value = Inteiro.value
+
+
+
+Restricoes
+
+Variaveis
+	uma variável é declarada antes de usada no escopo
+
+	assert IDENTIFIER in symbolTable

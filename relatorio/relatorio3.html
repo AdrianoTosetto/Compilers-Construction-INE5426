@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      body { font-family:arial; font-size:14px;}
+      table { border-spacing: 2px; width: 100%; }
+      table th { padding:5px 7px;	background-color: #9cdbf0; height:30px; }
+      table td { padding:5px 7px; background-color: #e3f4fa; text-align:center; }
+
+      table thead th:nth-child(1) { background:none; }
+      table thead th:nth-child(2) { border-radius:10px 0 0 0; }
+      table thead th:nth-last-child(1) { border-radius:0 10px 0 0; }
+
+      table tbody tr th:nth-child(1) { background: #dddddd right center no-repeat; padding:0 23px 0 7px; height:40px; text-align:left; border-radius:5px 0 0 5px; min-width:100px; }
+      table tbody tr:nth-child(n+3) td { background-color: #d9f2fa; }
+      table tbody tr:nth-child(n+5) td { background-color: #cdedf7; }
+      table tbody tr:nth-child(n+7) td { background-color: #c4e9f5; }
+      table tbody tr:nth-child(1) th {width:5%;}
+      .empty {
+      	background: #FFF !important;
+      }
+
+	pre{
+	  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+	  margin-bottom: 10px;
+	  overflow: auto;
+	  width: auto;
+	  padding: 5px;
+	  background-color: #EEE;
+	  width: 650px!ie7;
+	  padding-bottom: 20px!ie7;
+	  max-height: 600px;
+	  text-align: left;
+	  text-align: justify;
+	  white-space: pre-line;
+	}
+    </style>
+    <script type="text/javascript">
+    	window.onload = function() {
+    		let table = document.getElementById('rules-table');
+    		let tableBody = table.getElementsByTagName('tbody')[0];
+    		let ths = tableBody.getElementsByTagName('th');
+
+    		let i = 0;
+    		for (let th of ths){
+    			i+=1;
+    			th.innerHTML = "#" + i;
+    		}
+
+    	}
+    </script>
+  </head>
+  <body>
+
+    <table id="rules-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Produção</th>
+          <th colspan="2">Regra Semântica</th>
+        </tr>
+      </thead>
+      <tbody id="teste">
+        <tr><th>#1</th><td>bloco -> 'define' Nome valores</td><td>Nome.value = valores.value</td></tr>
+        <tr><th></th><td>trecho -> (comando)+ </td> <td>trecho.type = void</td>
+        <tr><th></th><td>trecho -> (comando)* ultimocomando </td><td>trecho.type = ultimocomando.type</td></tr>
+        <tr><th>#2</th><td>comdandobloco -> 'for' (tipovar Nome '=' exp) ':' (exp)? ':' (comandounico)? 'do' trecho 'end'</td><td>Nome.type = tipovar.type</td></tr>
+        <tr><th>#3</th><td>comandobloco  -> 'for' ('auto' Nome '=' exp)  ':' (exp)? ':' (comandounico)? 'do' trecho 'end'</td><td>Nome.type = exp.type</td></tr>
+		<tr><th>#4</th><td>comandobloco -> 'goto' Nome ';'</td>   <td> Nome.type = 'label'</td></tr>
+
+		<tr><th>#5</th><td>comandoexpressao -> 'array' tipovar var ( '[' Inteiro ']' )+ ('=' exp)?</td><td>var.length = Inteiro.value</td>
+		<tr><th>#6</th><td>comandoexpressao -> 'array' tipovar var ( '[' Inteiro ']' )+ ('=' exp)?</td><td>var.type = tipovar.type</td>
+
+
+		<tr><th>#7</th><td>comandoexpressao -> tipovar var ('=' exp)?</td><td>var.type = tipovar.type</td>
+		<tr><th>#8</th><td>comandoexpressao -> 'auto' var '=' exp</td><td>var.type = exp.type</td>
+		<tr><th>ds</th><td>ultimocomando -> 'return' exp ';'</td><td>ultimocomando.type = exp.type</td>
+		<tr><th>dssd</th><td>ultimocomando -> 'return' ';'</td><td>ultimocomando.type = void</td>
+
+		<tr><th>#sd</th><td>corpodafuncao -> '(' (listapar)? ')' ':' trecho 'end'; </td><td>corpodafuncao.type = trecho.type</td></tr>
+
+		<tr><th>#9</th><td>nomedafuncao -> ('inline' | 'fastcall')? tiporet Nome</td><td>Nome.type = tiporet.type</td></tr>
+   		<tr><th>#9</th><td>nomedafuncao -> ('inline' | 'fastcall')? tiporet Nome</td><td>Nome.isFunction = True</td></tr>
+		<tr><th></th><td>nomedafuncao -> ('inline' | 'fastcall')? tiporet Nome</td><td>nomedafuncao.type = tiporet.type</td>
+
+
+		<tr><th></th> <td>chamadadefuncao -> Nome '(' listapar')'</td> <td>Nome.parameterListSize = listapar.size</td></tr>
+
+		<tr><th>#10</th><td>tipovar -> 'boolean'</td><td>tipovar.type = boolean</td></tr>
+		<tr><th>#11</th><td>tipovar -> 'int'</td><td>tipovar.type = integer</td> </tr>
+		<tr><th>#12</th><td>tipovar -> 'double'</td>	<td>tipovar.type = double</td></tr>
+		<tr><th>#13</th><td>tipovar -> 'float'</td><td>tipovar.type = float</td></tr>
+		<tr><th>#14</th><td>tipovar -> 'string'</td><td>tipovar.type = string</td></tr>
+		<tr><th>#15</th><td>tipovar -> Nome;  | structType</td><td>tipovar.type = structType.type </td></tr>
+		(perguntar)
+
+		<tr><th>#16</th><td>tiporet -> tipovar</td><td>tiporet.type = tipovar.type</td></tr>
+		<tr><th>#17</th><td>tiporet -> 'void'</td><td>tiporet.type = void</td></tr>
+
+		<tr><th>#18</th><td>exp -> valores</td><td>exp.value = valores.value</td></tr>
+		<tr><th>#19</th><td>exp -> expprefixo</td><td>exp.value = valores.value</td></tr>
+		<tr><th>#20</th><td>exp -> '{' (listaexp)? '}'</td><td>perguntar</td></tr>
+		perguntar
+		<tr><th>#21</th><td>exp -> exp + exp</td><td>exp.value = exp1.value + exp2.value</td></tr>
+		<tr><th>#22</th><td>exp -> exp - exp</td><td>exp.value = exp1.value - exp2.value</td></tr>
+		<tr><th>#23</th><td>exp -> exp * exp</td><td>exp.value = exp1.value * exp2.value</td></tr>
+		<tr><th>#24</th><td>exp -> exp / exp</td><td>exp.value = exp1.value / exp2.value</td></tr>
+		<tr><th>#25</th><td>exp -> exp ^ exp</td><td>exp.value = exp1.value ^ exp2.value</td></tr>
+		<tr><th>#26</th><td>exp -> exp .. exp</td><td>exp.value = exp1.value .. exp2.value</td></tr>
+		<tr><th>#27</th><td>exp -> exp < exp</td><td>exp.value = exp1.value < exp2.value</td></tr>
+		<tr><th>#28</th><td>exp -> exp <= exp</td><td>exp.value = exp1.value <= exp2.value</td></tr>
+		<tr><th>#29</th><td>exp -> exp > exp</td><td>exp.value = exp1.value > exp2.value</td></tr>
+		<tr><th>#30</th><td>exp -> exp >= exp</td><td>exp.value = exp1.value >= exp2.value</td></tr>
+		<tr><th>#31</th><td>exp -> exp == exp</td><td>exp.value = exp1.value == exp2.value</td></tr>
+		<tr><th>#32</th><td>exp -> exp != exp</td><td>exp.value = exp1.value != exp2.value</td></tr>
+		<tr><th>#33</th><td>exp -> exp and exp</td><td>exp.value = exp1.value and exp2.value</td></tr>
+		<tr><th>#34</th><td>exp -> exp or exp</td><td>exp.value = exp1.value or exp2.value</td></tr>
+		<tr><th>#35</th><td>exp -> exp += exp</td><td>exp.value = exp1.value += exp2.value</td></tr>
+		<tr><th>#36</th><td>exp -> exp -= exp</td><td>exp.value = exp1.value -= exp2.value</td></tr>
+		<tr><th>#37</th><td>exp -> exp *= exp</td><td>exp.value = exp1.value *= exp2.value</td></tr>
+		<tr><th>#38</th><td>exp -> exp /= exp</td><td>exp.value = exp1.value /= exp2.value</td></tr>
+		<tr><th>#39</th><td>exp -> exp ^= exp</td><td>exp.value = exp1.value ^= exp2.value</td></tr>
+		<tr><th>#40</th><td>exp -> exp %= exp</td><td>exp.value = exp1.value %= exp2.value</td></tr>
+
+    <tr><th>#21</th><td>exp -> exp + exp</td><td>opbin.type = exp1.type</td></tr>
+		<tr><th>#22</th><td>exp -> exp - exp</td><td>opbin.type = exp1.type</td></tr>
+		<tr><th>#23</th><td>exp -> exp * exp</td><td>opbin.type = exp1.type</td></tr>
+		<tr><th>#24</th><td>exp -> exp / exp</td><td>opbin.type = exp1.type</td></tr>
+		<tr><th>#25</th><td>exp -> exp ^ exp</td><td>opbin.type = exp1.type</td></tr>
+		<tr><th>#26</th><td>exp -> exp .. exp</td><td>opbin.type = string</td></tr>
+		<tr><th>#27</th><td>exp -> exp < exp</td><td>opbin.type = boolean</td></tr>
+		<tr><th>#28</th><td>exp -> exp <= exp</td><td>opbin.type = boolean</td></tr>
+		<tr><th>#29</th><td>exp -> exp > exp</td><td>opbin.type = boolean</td></tr>
+		<tr><th>#30</th><td>exp -> exp >= exp</td><td>opbin.type = boolean</td></tr>
+		<tr><th>#31</th><td>exp -> exp == exp</td><td>opbin.type = boolean</td></tr>
+		<tr><th>#32</th><td>exp -> exp != exp</td><td>opbin.type = boolean</td></tr>
+		<tr><th>#33</th><td>exp -> exp and exp</td><td>opbin.type = boolean</td></tr>
+		<tr><th>#34</th><td>exp -> exp or exp</td><td>opbin.type = boolean</td></tr>
+		<tr><th>#35</th><td>exp -> exp += exp</td><td>opbin.type = exp2.type</td></tr>
+		<tr><th>#36</th><td>exp -> exp -= exp</td><td>opbin.type = exp2.type</td></tr>
+		<tr><th>#37</th><td>exp -> exp *= exp</td><td>opbin.type = exp2.type</td></tr>
+		<tr><th>#38</th><td>exp -> exp /= exp</td><td>opbin.type = exp2.type</td></tr>
+		<tr><th>#39</th><td>exp -> exp ^= exp</td><td>opbin.type = exp2.type</td></tr>
+		<tr><th>#40</th><td>exp -> exp %= exp</td><td>opbin.type = int</td></tr>
+
+		<tr><th>#41</th><td>exp -> exp -</td><td>- exp.value</td></tr>
+		<tr><th>#42</th><td>exp -> exp not</td><td>not exp.value</td></tr>
+		<tr><th>#43</th><td>exp -> exp #</td><td># exp.value</td></tr>
+		<tr><th>#44</th><td>exp -> exp --</td><td>--exp.value</td></tr>
+		<tr><th>#45</th><td>exp -> exp ++</td><td>++ exp.value</td></tr>
+
+    <tr><th>#41</th><td>exp -> exp -</td><td>opunaria.type = exp1.type</td></tr>
+    <tr><th>#42</th><td>exp -> exp not</td><td>boolean</td></tr>
+    <tr><th>#43</th><td>exp -> exp #</td><td>integer</td></tr>
+    <tr><th>#44</th><td>exp -> exp --</td><td>opunaria.type = exp.type</td></tr>
+    <tr><th>#45</th><td>exp -> exp ++</td><td>opunaria.type = exp.type</td></tr>
+
+
+		<tr><th>#46</th><td>exp -> opunaria exp</td>
+		<tr><th>#47</th><td>exp -> '(' exp ')'</td><td>exp.value = exp1.value</td></tr>
+
+		<tr><th>#48</th><td>valores -> 'null'</td><td>valores.value = null</td></tr>
+		<tr><th>#49</th><td>valores -> 'false'</td><td>valores.value = false</td></tr>
+		<tr><th>#50</th><td>valores -> 'true'</td><td>valores.value = true</td></tr>
+		<tr><th>#51</th><td>valores -> Decimal</td><td>valores.value = Decimal.value</td></tr>
+		<tr><th>#52</th><td>valores -> String </td><td>valores.value = String.value</td></tr>
+		<tr><th>#53</th><td>valores -> Inteiro</td><td>valores.value = Inteiro.value</td></tr>
+
+      </tbody>
+    </table>
+
+
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Descrição</th>
+          <th>Restrição</th> 
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th>Variavéis</th><td>Uma variável deve ser declarada no escopo antes de ser usada</td><td>
+			<pre>
+			  <code>
+					var ->  Nome ('.' Nome)* ('[' Inteiro ']' ('.' Nome)* )*;
+				    symbolTable[Nome] !=? Null
+			  </code>
+			</pre>
+        </td></tr>
+
+        <tr><th class="empty"></th><td>Uma variável deve ser declarada em um escopo apenas uma vez:</td><td>
+			<pre>
+			  <code>
+			    comandoexpressao -> tipovar Nome ('=' exp)?
+			    symbolTable[Nome] =? Null
+			  </code>
+			</pre>
+        </td></tr>
+
+
+
+        <tr><th>Funções</th><td> Uma função deve ser declarada antes de ser chamada:</td><td>
+			<pre>
+			  <code>
+			    chamadadefuncao ->  Nome '(' (listaexp)? ')' ;
+			    symbolTable[Nome] !=? Null
+			  </code>
+			</pre>
+        </td></tr>
+
+        <tr><th class="empty"></th><td>  Uma função chamada deve ter o mesmo número de parâmetros que sua assinatura:
+</td><td>
+			<pre>
+			  <code>
+			    chamadadefuncao ->  Nome '(' (listaexp)? ')' ;
+			    Nome.parametersSize =? listaexp.size
+
+			  </code>
+			</pre>
+        </td></tr>
+
+        <tr><th class="empty"></th><td>Um Nome só pode ser chamado se for uma função:</td><td>
+			<pre>
+			  <code>
+			    chamadadefuncao:  Nome '(' (listaexp)? ')' ;
+			    Nome.isFunction?
+			  </code>
+			</pre>
+        </td></tr>
+
+        <tr><th class="empty"></th><td>Uma função deve retornar algo do mesmo tipo de que foi declarada:</td><td>
+			<pre>
+			  <code>
+				    bloco -> nomedafuncao corpodafuncao
+				    nomedafuncao.type =? corpodafuncao.type
+			  </code>
+			</pre>
+        </td></tr>
+
+
+
+        <tr><th>Operadores</th><td>Operandos devem ser de tipos condizentes:</td><td>
+			<pre>
+			  <code>
+				    exp -> exp1 opbin exp2
+				    exp1.type =? opbin.type
+				    exp2.type =? opbin.type
+			  </code>
+			</pre>
+        </td></tr>
+
+
+        <tr><th>Atribuições</th><td>Tipos devem ser compatíveis:</td><td>
+			<pre>
+			  <code>
+			  	listaatri -> ',' var listaatri exp ','
+   				var.type =? exp.type
+			  </code>
+			</pre>
+        </td></tr>
+
+        <tr><th class="empty"></th><td> Structs e arrays devem receber uma estrutura, e não um valor isolado:
+</td><td>
+			<pre>
+			  <code>
+				listaatri -> ',' var listaatri exp ','
+    			var.isStructure =? exp.isStructure
+			  </code>
+			</pre>
+        </td></tr>
+
+
+        <tr><th>Arrays</th><td>Acessos devem estar dentro dos limites:
+</td><td>
+			<pre>
+			  <code>
+				    var ->  Nome1 ('.' Nome2)* ('[' Inteiro ']')?
+				    Nome2.length =? Inteiro.value
+			  </code>
+			</pre>
+        </td></tr>
+      </tbody>
+
+    </table>
+
+
+  </body>
+</html>
