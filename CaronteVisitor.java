@@ -46,11 +46,40 @@ public interface CaronteVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitComandobloco(CaronteParser.ComandoblocoContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CaronteParser#comandoexpressao}.
+	 * Visit a parse tree produced by the {@code atrib}
+	 * labeled alternative in {@link CaronteParser#comandoexpressao}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitComandoexpressao(CaronteParser.ComandoexpressaoContext ctx);
+	T visitAtrib(CaronteParser.AtribContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code arrayDeclaration}
+	 * labeled alternative in {@link CaronteParser#comandoexpressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayDeclaration(CaronteParser.ArrayDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code typedDeclaration}
+	 * labeled alternative in {@link CaronteParser#comandoexpressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTypedDeclaration(CaronteParser.TypedDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code autoDeclaration}
+	 * labeled alternative in {@link CaronteParser#comandoexpressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAutoDeclaration(CaronteParser.AutoDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code errorDeclaration}
+	 * labeled alternative in {@link CaronteParser#comandoexpressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitErrorDeclaration(CaronteParser.ErrorDeclarationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CaronteParser#erro_var_declaracao}.
 	 * @param ctx the parse tree

@@ -67,15 +67,65 @@ public interface CaronteListener extends ParseTreeListener {
 	 */
 	void exitComandobloco(CaronteParser.ComandoblocoContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CaronteParser#comandoexpressao}.
+	 * Enter a parse tree produced by the {@code atrib}
+	 * labeled alternative in {@link CaronteParser#comandoexpressao}.
 	 * @param ctx the parse tree
 	 */
-	void enterComandoexpressao(CaronteParser.ComandoexpressaoContext ctx);
+	void enterAtrib(CaronteParser.AtribContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link CaronteParser#comandoexpressao}.
+	 * Exit a parse tree produced by the {@code atrib}
+	 * labeled alternative in {@link CaronteParser#comandoexpressao}.
 	 * @param ctx the parse tree
 	 */
-	void exitComandoexpressao(CaronteParser.ComandoexpressaoContext ctx);
+	void exitAtrib(CaronteParser.AtribContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code arrayDeclaration}
+	 * labeled alternative in {@link CaronteParser#comandoexpressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayDeclaration(CaronteParser.ArrayDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code arrayDeclaration}
+	 * labeled alternative in {@link CaronteParser#comandoexpressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayDeclaration(CaronteParser.ArrayDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code typedDeclaration}
+	 * labeled alternative in {@link CaronteParser#comandoexpressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterTypedDeclaration(CaronteParser.TypedDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code typedDeclaration}
+	 * labeled alternative in {@link CaronteParser#comandoexpressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitTypedDeclaration(CaronteParser.TypedDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code autoDeclaration}
+	 * labeled alternative in {@link CaronteParser#comandoexpressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterAutoDeclaration(CaronteParser.AutoDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code autoDeclaration}
+	 * labeled alternative in {@link CaronteParser#comandoexpressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitAutoDeclaration(CaronteParser.AutoDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code errorDeclaration}
+	 * labeled alternative in {@link CaronteParser#comandoexpressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterErrorDeclaration(CaronteParser.ErrorDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code errorDeclaration}
+	 * labeled alternative in {@link CaronteParser#comandoexpressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitErrorDeclaration(CaronteParser.ErrorDeclarationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CaronteParser#erro_var_declaracao}.
 	 * @param ctx the parse tree

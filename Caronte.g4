@@ -21,10 +21,11 @@ grammar Caronte;
 		      'for' ((tipovar | 'auto') Nome '=' exp)? ':' (exp)? ':' (comandounico)? 'do' trecho 'end' | 
 		      'for'  listadenomes 'in' listaexp 'do' trecho 'end' |  'goto' Nome ';' | Nome ':' comando;
 	
-	comandoexpressao:   var listaatri exp | 
-			    'array' tipovar var ( '[' Inteiro ']' )+ ('=' exp)? |
-			    tipovar var ('=' exp)? |
-			    'auto' var '=' exp | erro_var_declaracao;
+	comandoexpressao:   var listaatri exp #atrib | 
+			    'array' tipovar var ( '[' Inteiro ']' )+ ('=' exp)? #arrayDeclaration |
+			    tipovar var ('=' exp)? #typedDeclaration |
+			    'auto' var '=' exp #autoDeclaration | 
+			    erro_var_declaracao #errorDeclaration;
 
 	erro_var_declaracao: 'auto' var 
 	{notifyErrorListeners(" variável  "+ $var.text + " é do tipo auto e precisa ser declarada com algum valor!");}

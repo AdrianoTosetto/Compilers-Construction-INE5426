@@ -1,5 +1,4 @@
 // Generated from Caronte.g4 by ANTLR 4.7.1
-//package CaronteMilGrau;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -879,6 +878,36 @@ public class CaronteParser extends Parser {
 	}
 
 	public static class ComandoexpressaoContext extends ParserRuleContext {
+		public ComandoexpressaoContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_comandoexpressao; }
+	 
+		public ComandoexpressaoContext() { }
+		public void copyFrom(ComandoexpressaoContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class ErrorDeclarationContext extends ComandoexpressaoContext {
+		public Erro_var_declaracaoContext erro_var_declaracao() {
+			return getRuleContext(Erro_var_declaracaoContext.class,0);
+		}
+		public ErrorDeclarationContext(ComandoexpressaoContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).enterErrorDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitErrorDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitErrorDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AtribContext extends ComandoexpressaoContext {
 		public VarContext var() {
 			return getRuleContext(VarContext.class,0);
 		}
@@ -888,31 +917,94 @@ public class CaronteParser extends Parser {
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
+		public AtribContext(ComandoexpressaoContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).enterAtrib(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitAtrib(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitAtrib(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ArrayDeclarationContext extends ComandoexpressaoContext {
 		public TipovarContext tipovar() {
 			return getRuleContext(TipovarContext.class,0);
+		}
+		public VarContext var() {
+			return getRuleContext(VarContext.class,0);
 		}
 		public List<TerminalNode> Inteiro() { return getTokens(CaronteParser.Inteiro); }
 		public TerminalNode Inteiro(int i) {
 			return getToken(CaronteParser.Inteiro, i);
 		}
-		public Erro_var_declaracaoContext erro_var_declaracao() {
-			return getRuleContext(Erro_var_declaracaoContext.class,0);
+		public ExpContext exp() {
+			return getRuleContext(ExpContext.class,0);
 		}
-		public ComandoexpressaoContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_comandoexpressao; }
+		public ArrayDeclarationContext(ComandoexpressaoContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).enterComandoexpressao(this);
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).enterArrayDeclaration(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitComandoexpressao(this);
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitArrayDeclaration(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitComandoexpressao(this);
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitArrayDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AutoDeclarationContext extends ComandoexpressaoContext {
+		public VarContext var() {
+			return getRuleContext(VarContext.class,0);
+		}
+		public ExpContext exp() {
+			return getRuleContext(ExpContext.class,0);
+		}
+		public AutoDeclarationContext(ComandoexpressaoContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).enterAutoDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitAutoDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitAutoDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class TypedDeclarationContext extends ComandoexpressaoContext {
+		public TipovarContext tipovar() {
+			return getRuleContext(TipovarContext.class,0);
+		}
+		public VarContext var() {
+			return getRuleContext(VarContext.class,0);
+		}
+		public ExpContext exp() {
+			return getRuleContext(ExpContext.class,0);
+		}
+		public TypedDeclarationContext(ComandoexpressaoContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).enterTypedDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitTypedDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitTypedDeclaration(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -926,6 +1018,7 @@ public class CaronteParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
 			case 1:
+				_localctx = new AtribContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(211);
@@ -937,6 +1030,7 @@ public class CaronteParser extends Parser {
 				}
 				break;
 			case 2:
+				_localctx = new ArrayDeclarationContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(215);
@@ -978,6 +1072,7 @@ public class CaronteParser extends Parser {
 				}
 				break;
 			case 3:
+				_localctx = new TypedDeclarationContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(229);
@@ -999,6 +1094,7 @@ public class CaronteParser extends Parser {
 				}
 				break;
 			case 4:
+				_localctx = new AutoDeclarationContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(235);
@@ -1012,6 +1108,7 @@ public class CaronteParser extends Parser {
 				}
 				break;
 			case 5:
+				_localctx = new ErrorDeclarationContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(240);
