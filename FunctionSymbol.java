@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class FunctionSymbol extends Symbol{
+public class FunctionSymbol extends Symbol {
 	private ArrayList<Param> params;
 
 	public FunctionSymbol(String name, ArrayList<Param> params) {

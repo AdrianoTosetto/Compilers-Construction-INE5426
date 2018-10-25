@@ -1,9 +1,3 @@
-int add(int a, int b, array Pessoa p[3]):
-	int c = a + b;
-end
-
 void main():
-	int a = 4;
-	int b = 7;
-	add(a,b);
+	f(12, "teste", false);
 end

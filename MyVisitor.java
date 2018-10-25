@@ -16,23 +16,24 @@ public class MyVisitor extends CaronteBaseVisitor {
     ArrayList<Symbol> symbolTable = new ArrayList<Symbol>();
 
     @Override
-    public String visitChamadadefuncao(CaronteParser.ChamadadefuncaoContext ctx) {
-        //productionNames.put();
-        System.out.println("alkss");
-        return "";
+    public Object visitChamadadefuncao(CaronteParser.ChamadadefuncaoContext ctx) {
+    	
+    	String functionName = ctx.getChild(0).getText();
+    	ParseTree funcParams = ctx.getChild(2);
+    	int i = 0;
+    	while(true) {
+    		try {
+    			System.out.println(funcParams.getChild(i).getText());
+    			i+=2;
+    		}catch(Exception e) {
+    			break;
+    		}
+    	}
+    	return visitChildren(ctx);
     }
-
+    
     @Override
     public String visitTypedDeclaration(CaronteParser.TypedDeclarationContext ctx) {
-        if (ctx.getChild(0).getText().equals("int")) {
-            try {
-                String strNumber = ctx.getChild(3).getText();
-                Integer.parseInt(strNumber);
-            }catch(Exception e) {
-                String strNumber = ctx.getChild(3).getText().replaceAll("\"", "");
-                System.out.println(strNumber + " is not a number");
-            }
-        }
         String varType = ctx.getChild(0).getText();
         String varValue = ctx.getChild(3).getText();
         switch(varType) {
@@ -81,7 +82,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     }
     
     @Override
-    public String visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx) {
+    public Object visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx) {
     	
     	ParseTree params = ctx.getChild(1).getChild(1); // the subtree of params
     	
@@ -89,8 +90,6 @@ public class MyVisitor extends CaronteBaseVisitor {
     	String functionName = ctx.getChild(0).getChild(1).getText();
     	ArrayList<Param> functionParams = new ArrayList<Param>();
     	ArrayList<Integer> paramSizes = new ArrayList<Integer>();
-
-    	//System.out.println(functionName);
     	
     	int i = 0;
     	
@@ -117,11 +116,11 @@ public class MyVisitor extends CaronteBaseVisitor {
     	}
     	
     	
-    	Symbol fs = new FunctionSymbol(functionName, functionParams);
+    	FunctionSymbol fs = new FunctionSymbol(functionName, functionParams);
     	fs.t = Symbol.Types.FUNCTION;
     	symbolTable.add(fs);
     	
-    	return "";
+    	return visitChildren(ctx);
     }
     /*
      * checks if a given function is already in the symbol table
@@ -159,8 +158,9 @@ public class MyVisitor extends CaronteBaseVisitor {
         mv.visit(tree);
         
         for (Symbol s: mv.symbolTable) {
-        	if (s.t == Symbol.Types.FUNCTION)
-        		System.out.println(s);
+        	if (s.t == Symbol.Types.FUNCTION) {
+        		System.out.println((FunctionSymbol)s);
+        	}
         }
        
     }
