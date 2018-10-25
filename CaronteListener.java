@@ -17,15 +17,53 @@ public interface CaronteListener extends ParseTreeListener {
 	 */
 	void exitInicio(CaronteParser.InicioContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CaronteParser#bloco}.
+	 * Enter a parse tree produced by the {@code a}
+	 * labeled alternative in {@link CaronteParser#bloco}.
 	 * @param ctx the parse tree
 	 */
-	void enterBloco(CaronteParser.BlocoContext ctx);
+	void enterA(CaronteParser.AContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link CaronteParser#bloco}.
+	 * Exit a parse tree produced by the {@code a}
+	 * labeled alternative in {@link CaronteParser#bloco}.
 	 * @param ctx the parse tree
 	 */
-	void exitBloco(CaronteParser.BlocoContext ctx);
+	void exitA(CaronteParser.AContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code structOrArrayDeclaration}
+	 * labeled alternative in {@link CaronteParser#bloco}.
+	 * @param ctx the parse tree
+	 */
+	void enterStructOrArrayDeclaration(CaronteParser.StructOrArrayDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code structOrArrayDeclaration}
+	 * labeled alternative in {@link CaronteParser#bloco}.
+	 * @param ctx the parse tree
+	 */
+	void exitStructOrArrayDeclaration(CaronteParser.StructOrArrayDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code functionDeclaration}
+	 * labeled alternative in {@link CaronteParser#bloco}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code functionDeclaration}
+	 * labeled alternative in {@link CaronteParser#bloco}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code defineDeclaration}
+	 * labeled alternative in {@link CaronteParser#bloco}.
+	 * @param ctx the parse tree
+	 */
+	void enterDefineDeclaration(CaronteParser.DefineDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code defineDeclaration}
+	 * labeled alternative in {@link CaronteParser#bloco}.
+	 * @param ctx the parse tree
+	 */
+	void exitDefineDeclaration(CaronteParser.DefineDeclarationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CaronteParser#trecho}.
 	 * @param ctx the parse tree

@@ -1,4 +1,3 @@
 void main():
-	f();
-	int teste = "qaq";
+	Pessoa a  = {"teste", "teste"};
 end

@@ -12,7 +12,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     @Override
     public String visitChamadadefuncao(CaronteParser.ChamadadefuncaoContext ctx) {
         //productionNames.put();
-        System.out.println("ask");
+        System.out.println("alkss");
         return "";
     }
 
@@ -64,6 +64,13 @@ public class MyVisitor extends CaronteBaseVisitor {
 
         return "";
     }
+    
+    @Override
+    public String visitStructOrArrayDeclaration(CaronteParser.StructOrArrayDeclarationContext ctx) {
+    	System.out.println("dlss");
+    	return null;
+    }
+    
     @Override
     public String visitVar(CaronteParser.VarContext ctx) { 
 
@@ -72,13 +79,13 @@ public class MyVisitor extends CaronteBaseVisitor {
     }
 
     public static void main(String[] args) {
-
         ANTLRInputStream input = null;
         try {
             input = new ANTLRFileStream("erros_semanticos/int_ini_str.car");
         } catch(Exception e) {
             System.out.println("dsd");
         }
+        
         CaronteLexer lexer = new CaronteLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         CaronteParser parser = new CaronteParser(tokens);

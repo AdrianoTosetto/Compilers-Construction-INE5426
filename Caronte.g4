@@ -2,10 +2,11 @@ grammar Caronte;
 
 	inicio: (bloco)+;
 
-	bloco: 	comandoexpressao |
-		'struct' Nome '{' ( tipovar Nome | 'array' tipovar Nome ('[' Inteiro ']')+ ) ( ',' ( tipovar Nome | 'array' tipovar Nome ('[' Inteiro ']')+ ) )* '}' ';' |
-		nomedafuncao corpodafuncao | 
-		'define' Nome valores;
+	bloco: 	comandoexpressao #a |
+		'struct' Nome '{' ( tipovar Nome | 'array' tipovar Nome ('[' Inteiro ']')+ ) ( ',' ( tipovar Nome | 'array' tipovar Nome ('[' Inteiro ']')+ ) )* '}' ';'
+		#structOrArrayDeclaration |
+		nomedafuncao corpodafuncao #functionDeclaration | 
+		'define' Nome valores #defineDeclaration;
 
 	trecho: (comando)+ (ultimocomando)? |
 		(comando)* ultimocomando;

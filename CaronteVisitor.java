@@ -16,11 +16,33 @@ public interface CaronteVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInicio(CaronteParser.InicioContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CaronteParser#bloco}.
+	 * Visit a parse tree produced by the {@code a}
+	 * labeled alternative in {@link CaronteParser#bloco}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBloco(CaronteParser.BlocoContext ctx);
+	T visitA(CaronteParser.AContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code structOrArrayDeclaration}
+	 * labeled alternative in {@link CaronteParser#bloco}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStructOrArrayDeclaration(CaronteParser.StructOrArrayDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code functionDeclaration}
+	 * labeled alternative in {@link CaronteParser#bloco}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code defineDeclaration}
+	 * labeled alternative in {@link CaronteParser#bloco}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDefineDeclaration(CaronteParser.DefineDeclarationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CaronteParser#trecho}.
 	 * @param ctx the parse tree
