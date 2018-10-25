@@ -45,3 +45,10 @@
 /CaronteParser$DefineDeclarationContext.class
 /CaronteParser$FunctionDeclarationContext.class
 /CaronteParser$StructOrArrayDeclarationContext.class
+/Symbol.class
+/FunctionSymbol.class
+/StructSymbol.class
+/VariableSymbol.class
+/CaronteParser$ParamListContext.class
+/Param.class
+/Symbol$Types.class

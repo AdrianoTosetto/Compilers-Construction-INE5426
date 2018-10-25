@@ -3,11 +3,17 @@
 
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
+
+import java.util.ArrayList;
+
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.tree.*;
 
+import sun.text.normalizer.SymbolTable;
+
 public class MyVisitor extends CaronteBaseVisitor {
     public ParseTreeProperty<String> productionNames = new ParseTreeProperty<>();
+    ArrayList<Symbol> symbolTable = new ArrayList<Symbol>();
 
     @Override
     public String visitChamadadefuncao(CaronteParser.ChamadadefuncaoContext ctx) {
@@ -53,6 +59,9 @@ public class MyVisitor extends CaronteBaseVisitor {
             case "string":
 
             break;
+            
+            case "array":
+            break;
 
             // this is the case of user types variables, like structs
             default:
@@ -67,7 +76,62 @@ public class MyVisitor extends CaronteBaseVisitor {
     
     @Override
     public String visitStructOrArrayDeclaration(CaronteParser.StructOrArrayDeclarationContext ctx) {
-    	System.out.println("dlss");
+    	//System.out.println("dlss");
+    	return null;
+    }
+    
+    @Override
+    public String visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx) {
+    	
+    	ParseTree params = ctx.getChild(1).getChild(1); // the subtree of params
+    	
+    	String retType = ctx.getChild(0).getChild(0).getText();
+    	String functionName = ctx.getChild(0).getChild(1).getText();
+    	ArrayList<Param> functionParams = new ArrayList<Param>();
+    	ArrayList<Integer> paramSizes = new ArrayList<Integer>();
+
+    	//System.out.println(functionName);
+    	
+    	int i = 0;
+    	
+    	while(true) { 
+    		try {
+    			if(params.getChild(i).getText().equals("array")) {
+    				String type = params.getChild(i+1).getText();
+    				String varName = params.getChild(i+2).getText();
+    				int size = Integer.parseInt(params.getChild(i+4).getText());
+    				
+    				Param p = new Param(varName, type, size);
+    				functionParams.add(p);
+    				i+=6; // skip the comma
+    			} else {
+    				String name = params.getChild(i+1).getText();
+    				String type = params.getChild(i).getText();
+    				Param p = new Param(name, type);
+    				functionParams.add(p);
+    				i+=3; // skip the comma
+    			}
+    		} catch(Exception e) {
+    			break;
+    		}
+    	}
+    	
+    	
+    	Symbol fs = new FunctionSymbol(functionName, functionParams);
+    	fs.t = Symbol.Types.FUNCTION;
+    	symbolTable.add(fs);
+    	
+    	return "";
+    }
+    /*
+     * checks if a given function is already in the symbol table
+     * */
+    boolean functionDeclared(String functionName) {
+    	return false;
+    }
+    @Override
+    public String visitListapar(CaronteParser.ListaparContext ctx) {
+    	System.out.println("snmsn");
     	return null;
     }
     
@@ -91,6 +155,13 @@ public class MyVisitor extends CaronteBaseVisitor {
         CaronteParser parser = new CaronteParser(tokens);
         ParseTree tree = parser.inicio();
 
-        new MyVisitor().visit(tree);
+        MyVisitor mv = new MyVisitor();
+        mv.visit(tree);
+        
+        for (Symbol s: mv.symbolTable) {
+        	if (s.t == Symbol.Types.FUNCTION)
+        		System.out.println(s);
+        }
+       
     }
 }

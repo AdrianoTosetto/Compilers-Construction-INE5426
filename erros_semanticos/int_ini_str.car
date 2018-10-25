@@ -1,3 +1,9 @@
+int add(int a, int b, array Pessoa p[3]):
+	int c = a + b;
+end
+
 void main():
-	Pessoa a  = {"teste", "teste"};
+	int a = 4;
+	int b = 7;
+	add(a,b);
 end
