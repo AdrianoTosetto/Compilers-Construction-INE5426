@@ -107,9 +107,17 @@ public class MyVisitor extends CaronteBaseVisitor {
     
     @Override
     public Object visitStructOrArrayDeclaration(CaronteParser.StructOrArrayDeclarationContext ctx) {
-    	
     	String structName = ctx.getChild(1).getText();
+    	for (int i = 0; i < symbolTable.size(); i++) {
+    		if(symbolTable.get(i).t == Symbol.Types.STRUCT_DEFINITION) {
+    			if(symbolTable.get(i).name.equals(structName)) {
+    				System.out.println("struct redefinida");
+    				return visitChildren(ctx);
+    			}
+    		}
+    	}
     	int i = 3; // index of the first field
+    	ArrayList<Symbol> fields = new ArrayList<Symbol>();
     	while(true) {
     		try {
     			String fieldinfo0 = ctx.getChild(i).getText();
@@ -138,26 +146,45 @@ public class MyVisitor extends CaronteBaseVisitor {
     				switch (fieldType) {
 						case "int":
 							field = new VariableSymbol(fieldName, "int",1);
+							field.t = Symbol.Types.VARIABLE;
 						break;
 						case "string":
 							field = new VariableSymbol(fieldName,"string",1);
+							field.t = Symbol.Types.VARIABLE;
 						break;
 						default:
-							field = null;
-						break;
+							ArrayList<Symbol> innerFields = new ArrayList<Symbol>();
+					    	for (int j = 0; j < symbolTable.size(); j++) {
+					    		if(symbolTable.get(j).t == Symbol.Types.STRUCT_DEFINITION) {
+					    			if(symbolTable.get(j).name.equals(fieldinfo0)) {
+					    				
+					    				
+					    				StructDefinitionSymbol temp = (StructDefinitionSymbol) symbolTable.get(j);
+					    				System.out.println(temp.toString());
+					    				innerFields = temp.getFields();
+					    			}
+					    		}
+					    	}
+							field = new StructSymbol(fieldName,innerFields);
+							field.t = Symbol.Types.STRUCT_VARIABLE;
+							//field = null;
 					}
     				i+=3;
     			}
-    			field.t = Symbol.Types.STRUCT_DEFINITION;
-    			System.out.println(field);
-    			symbolTable.add(field);
+    			//field.t = Symbol.Types.STRUCT_DEFINITION;
+    			fields.add(field);
+    			
     		}catch(Exception e) {
     			break;
     		}
     	}
+    	StructDefinitionSymbol sds = new StructDefinitionSymbol(structName, fields);
+    	sds.t = Symbol.Types.STRUCT_DEFINITION;
+    	System.out.println(sds.toString());
+    	symbolTable.add(sds);
     	return visitChildren(ctx);
     }
-    
+
     @Override
     public Object visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx) {
     	

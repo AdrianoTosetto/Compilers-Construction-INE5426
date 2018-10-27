@@ -1,5 +1,11 @@
+struct amigo{
+	string nome,
+	int idade
+};
+
 struct pessoa {
 	string nome,
+	amigo melhorAmigo,
 	int idade,
 	array int exemplo[12],
 	array string array_str[14]
