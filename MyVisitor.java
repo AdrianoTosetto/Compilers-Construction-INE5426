@@ -23,7 +23,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	ParseTree funcParams = ctx.getChild(2);
     	ArrayList<Integer> sizes = new ArrayList<Integer>();
     	ArrayList<String> types = new ArrayList<String>();
-    	System.out.println(ctx.Nome());
+    	//System.out.println(ctx.Nome());
     	int i = 0;
     	while(true) {
     		try {
@@ -31,7 +31,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     			String paramType = Utils.getTypeValue(funcParams.getChild(i).getText());
     			
     			// its an expression
-    			System.out.println(paramType);
+    			//System.out.println(paramType);
     			if (paramType.equals("Unknown")) {
     				ArrayList<String> tokens = 
     						(ArrayList<String>) Arrays.asList(Utils.splitExpressionIntoTokens(paramName));
@@ -40,7 +40,7 @@ public class MyVisitor extends CaronteBaseVisitor {
 	    			int size = 1;
 	    			sizes.add(size);
 	    			types.add(paramType);
-	    			System.out.println(paramType);
+	    			//System.out.println(paramType);
 	    			i+=2;
     			}
     		}catch(Exception e) {
@@ -106,9 +106,56 @@ public class MyVisitor extends CaronteBaseVisitor {
     }
     
     @Override
-    public String visitStructOrArrayDeclaration(CaronteParser.StructOrArrayDeclarationContext ctx) {
-    	System.out.println();
-    	return null;
+    public Object visitStructOrArrayDeclaration(CaronteParser.StructOrArrayDeclarationContext ctx) {
+    	
+    	String structName = ctx.getChild(1).getText();
+    	int i = 3; // index of the first field
+    	while(true) {
+    		try {
+    			String fieldinfo0 = ctx.getChild(i).getText();
+    			Symbol field;
+    			if(fieldinfo0.equals("array")) {
+    				String fieldType = ctx.getChild(i+1).getText();
+    				String fieldName = ctx.getChild(i+2).getText();
+    				int size = Integer.parseInt(ctx.getChild(i+4).getText());
+    				i+=7;
+    				
+    				switch (fieldType) {
+						case "int":
+							field = new VariableSymbol(fieldName, "int",size);
+						break;
+						case "string":
+							field = new VariableSymbol(fieldName,"string",size);
+						break;
+						default:
+							field = null;
+						break;
+					}
+    				
+    			} else {
+    				String fieldType = fieldinfo0;
+    				String fieldName = ctx.getChild(i+1).getText();
+    				switch (fieldType) {
+						case "int":
+							field = new VariableSymbol(fieldName, "int",1);
+						break;
+						case "string":
+							field = new VariableSymbol(fieldName,"string",1);
+						break;
+						default:
+							field = null;
+						break;
+					}
+    				i+=3;
+    			}
+    			field.t = Symbol.Types.STRUCT_DEFINITION;
+    			System.out.println(field);
+    			symbolTable.add(field);
+    		}catch(Exception e) {
+    			break;
+    		}
+    	}
+    	return visitChildren(ctx);
     }
     
     @Override

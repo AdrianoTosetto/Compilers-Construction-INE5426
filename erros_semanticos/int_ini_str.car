@@ -1,7 +1,10 @@
-struct pessoa{
-	
+struct pessoa {
+	string nome,
+	int idade,
+	array int exemplo[12],
+	array string array_str[14]
 };
 
 void main():
-	
+	print(12);
 end
