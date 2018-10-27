@@ -54,6 +54,14 @@ class Utils{
 
 		return token.matches(pattern);
 	}
+	public static boolean isStruct(String token) {
+		
+		return false;
+	}
+	public String lastField(String structToken) {
+		
+		return "";
+	}
 	public static void main(String[] args) {
 		/*ArrayList<String> symbols = new ArrayList<String>(Arrays.asList(Utils.splitExpressionIntoTokens("3+1 + myint")));
 		for (int i = 0; i < symbols.size(); i++) {

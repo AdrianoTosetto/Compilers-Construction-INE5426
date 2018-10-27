@@ -95,8 +95,19 @@ public class MyVisitor extends CaronteBaseVisitor {
             // this is the case of user types variables, like structs
             default:
             	String structType = ctx.getChild(0).getText();
-            	if(getSymbol(structType, Symbol.Types.STRUCT_DEFINITION) == null) {
+            	/*
+            	 * tipo não foi declarado
+            	 * */
+            	Symbol temp = getSymbol(structType, Symbol.Types.STRUCT_DEFINITION);
+            	if(temp == null) {
             		System.out.println("essa struct não foi definida");
+            	} else {
+            		ParseTree initParamsStruct = ctx.getChild(3).getChild(1);
+            		ArrayList<Symbol> fields = ((StructDefinitionSymbol) temp).getFields();
+            		System.out.println(fields.get(0).t);
+            		for (int i = 0; i < initParamsStruct.getChildCount(); i++) {
+            			System.out.println(initParamsStruct.getChild(i).getText());
+            		}
             	}
             break;
 
