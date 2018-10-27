@@ -5,29 +5,47 @@ public class Param extends Symbol{
 	private int size;
 	public Param(String name, String type) {
 		super(name);
-		isArray = false;
-		size = 1;
-		this.type = type;
+		setArray(false);
+		setSize(1);
+		this.setType(type);
 	}
 	public Param(String name, String type, int size) {
 		super(name);
-		this.type = type;
+		this.setType(type);
 		if (size > 1) {
-			isArray = true;
-			this.size = size;
+			setArray(true);
+			this.setSize(size);
 		} else {
-			isArray = false;
-			this.size = 1;
+			setArray(false);
+			this.setSize(1);
 		}
 	}
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("varType = " + this.type + "\n");
+		sb.append("varType = " + this.getType() + "\n");
 		sb.append("varName = " + this.name + "\n");
-		sb.append("varSize = " + this.size + "\n");
+		sb.append("varSize = " + this.getSize() + "\n");
 		
 		return sb.toString();
+	}
+	public boolean isArray() {
+		return isArray;
+	}
+	public void setArray(boolean isArray) {
+		this.isArray = isArray;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public int getSize() {
+		return size;
+	}
+	public void setSize(int size) {
+		this.size = size;
 	}
 
 }

@@ -6,7 +6,8 @@ public class Symbol {
 	public enum Types {
 		FUNCTION,
 		VARIABLE,
-		STRUCT
+		STRUCT_DEFINITION,
+		STRUCT_VARIABLE
 	}
 	Types t;
 	

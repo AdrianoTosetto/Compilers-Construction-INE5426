@@ -10,6 +10,5 @@ public class VariableSymbol extends Symbol{
 	public VariableSymbol(String name) {
 		super(name);
 		size = 1;
-		// TODO Auto-generated constructor stub
 	}
 }

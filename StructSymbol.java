@@ -1,10 +1,13 @@
 import java.util.ArrayList;
 
-public class StructSymbol extends Symbol{
-
-	public StructSymbol(String name, ArrayList<String> fields) {
-		super(name);
-		// TODO Auto-generated constructor stub
+public class StructSymbol extends StructDefinitionSymbol {
+	boolean initialized = false;
+	public StructSymbol(String name, ArrayList<Symbol> fields) {
+		super(name, fields);
+	}
+	
+	public void setInitialized(boolean initialized) {
+		this.initialized = initialized;
 	}
 
 }

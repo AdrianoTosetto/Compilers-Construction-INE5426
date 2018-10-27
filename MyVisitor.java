@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.tree.*;
@@ -20,18 +21,45 @@ public class MyVisitor extends CaronteBaseVisitor {
     	
     	String functionName = ctx.getChild(0).getText();
     	ParseTree funcParams = ctx.getChild(2);
+    	ArrayList<Integer> sizes = new ArrayList<Integer>();
+    	ArrayList<String> types = new ArrayList<String>();
+    	System.out.println(ctx.Nome());
     	int i = 0;
     	while(true) {
     		try {
-    			System.out.println(funcParams.getChild(i).getText());
-    			i+=2;
+    			String paramName = funcParams.getChild(i).getText();
+    			String paramType = Utils.getTypeValue(funcParams.getChild(i).getText());
+    			
+    			// its an expression
+    			System.out.println(paramType);
+    			if (paramType.equals("Unknown")) {
+    				ArrayList<String> tokens = 
+    						(ArrayList<String>) Arrays.asList(Utils.splitExpressionIntoTokens(paramName));
+    				checkTokensTypes(tokens);
+    			} else {
+	    			int size = 1;
+	    			sizes.add(size);
+	    			types.add(paramType);
+	    			System.out.println(paramType);
+	    			i+=2;
+    			}
     		}catch(Exception e) {
     			break;
     		}
     	}
+    	if(!functionDeclared(functionName, types, sizes)) {
+    		System.out.println("A função com essa assinatura não foi declarada");
+    	}
     	return visitChildren(ctx);
     }
-    
+    public boolean checkTokensTypes(ArrayList<String> tokens) {
+    	
+    	
+    	return false;
+    }
+    public String getTokenType(String type) {
+    	return "";
+    }
     @Override
     public String visitTypedDeclaration(CaronteParser.TypedDeclarationContext ctx) {
         String varType = ctx.getChild(0).getText();
@@ -66,6 +94,8 @@ public class MyVisitor extends CaronteBaseVisitor {
 
             // this is the case of user types variables, like structs
             default:
+            	System.out.println();
+            	//StructDefinitionSymbol sds = new StructDefinitionSymbol(name, fields)
 
         }
 
@@ -77,7 +107,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     
     @Override
     public String visitStructOrArrayDeclaration(CaronteParser.StructOrArrayDeclarationContext ctx) {
-    	//System.out.println("dlss");
+    	System.out.println();
     	return null;
     }
     
@@ -125,13 +155,38 @@ public class MyVisitor extends CaronteBaseVisitor {
     /*
      * checks if a given function is already in the symbol table
      * */
-    boolean functionDeclared(String functionName) {
-    	return false;
+    boolean functionDeclared(String functionName, ArrayList<String> types, ArrayList<Integer> sizes) {
+    	boolean matched = false;
+    	for (int i = 0; i < symbolTable.size(); i++) {
+    		Symbol s = symbolTable.get(i);
+    		if (s.t == Symbol.Types.FUNCTION) {
+    			FunctionSymbol fs = (FunctionSymbol) s;
+    			if (fs.name.equals(functionName)) {
+    				int paramsSize = fs.getParams().size();
+    				if(types.size() != paramsSize) {
+    					System.out.println("Número diferente de params :/");
+    					continue;
+    				}
+
+    				for(int j = 0; j < paramsSize; j++) {
+    					if(!types.get(j).equals(fs.getParams().get(j).getType())) {
+    						System.out.println("Tipo dos parametros não correspondem :/");
+    						continue;
+    					}
+    					if(sizes.get(j) != fs.getParams().get(j).getSize()) {
+    						System.out.println("Arrays não correspondem em tamanho :/");
+    						continue;
+    					}
+    				}
+    				return true;
+    			}
+    		}
+    	}
+    	return matched;
     }
     @Override
-    public String visitListapar(CaronteParser.ListaparContext ctx) {
-    	System.out.println("snmsn");
-    	return null;
+    public Object visitListapar(CaronteParser.ListaparContext ctx) {
+    	return visitChildren(ctx);
     }
     
     @Override
@@ -159,7 +214,7 @@ public class MyVisitor extends CaronteBaseVisitor {
         
         for (Symbol s: mv.symbolTable) {
         	if (s.t == Symbol.Types.FUNCTION) {
-        		System.out.println((FunctionSymbol)s);
+        		//System.out.println((FunctionSymbol)s);
         	}
         }
        

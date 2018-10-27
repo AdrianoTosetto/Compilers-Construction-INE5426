@@ -16,4 +16,7 @@ public class FunctionSymbol extends Symbol {
 		}
 		return sb.toString();
 	}
+	public ArrayList<Param> getParams() {
+		return this.params;
+	}
 }
