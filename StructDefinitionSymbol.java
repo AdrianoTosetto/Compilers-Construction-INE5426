@@ -11,7 +11,10 @@ public class StructDefinitionSymbol extends Symbol{
 		StringBuilder sb = new StringBuilder();
 		sb.append(name + " {\n");
 		for (Symbol field : getFields()) {
-			sb.append("\t" + field.toString() + "\n");
+			if(field.t == Symbol.Types.STRUCT_VARIABLE || field.t == Symbol.Types.STRUCT_DEFINITION)
+				sb.append("\t\t" + field.toString());
+			else
+				sb.append("\t" + field.toString() + "\n");
 		}
 		
 		sb.append("}");

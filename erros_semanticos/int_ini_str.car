@@ -1,16 +1,10 @@
-struct amigo{
-	string nome,
-	int idade
-};
-
 struct pessoa {
 	string nome,
-	amigo melhorAmigo,
 	int idade,
-	array int exemplo[12],
-	array string array_str[14]
+	array int exemplo[3],
+	array string array_str[3]
 };
 
 void main():
-	print(12);
+	objeto joao = {"joao", 12, {1,2,3}, {"ex", "ex"}};
 end

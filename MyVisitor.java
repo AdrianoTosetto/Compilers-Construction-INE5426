@@ -94,17 +94,30 @@ public class MyVisitor extends CaronteBaseVisitor {
 
             // this is the case of user types variables, like structs
             default:
-            	System.out.println();
-            	//StructDefinitionSymbol sds = new StructDefinitionSymbol(name, fields)
+            	String structType = ctx.getChild(0).getText();
+            	if(getSymbol(structType, Symbol.Types.STRUCT_DEFINITION) == null) {
+            		System.out.println("essa struct não foi definida");
+            	}
+            break;
 
         }
-
-        //System.out.println(ctx.getChild(3).getRuleContext());
-        //System.out.println(ctx.getChild(3).getParent().getText());
 
         return "";
     }
     
+    public Symbol getSymbol(String symbolName, Symbol.Types t) {
+    	for (Symbol e: this.symbolTable) {
+    		if(e.name.equals(symbolName) && e.t == t) {
+    			return e;
+    		}
+    	}
+    	return null;
+    }
+
+    public boolean symbolExists(String symbolName) {
+    	
+    	return false;
+    }
     @Override
     public Object visitStructOrArrayDeclaration(CaronteParser.StructOrArrayDeclarationContext ctx) {
     	String structName = ctx.getChild(1).getText();
@@ -153,6 +166,7 @@ public class MyVisitor extends CaronteBaseVisitor {
 							field.t = Symbol.Types.VARIABLE;
 						break;
 						default:
+							
 							ArrayList<Symbol> innerFields = new ArrayList<Symbol>();
 					    	for (int j = 0; j < symbolTable.size(); j++) {
 					    		if(symbolTable.get(j).t == Symbol.Types.STRUCT_DEFINITION) {
