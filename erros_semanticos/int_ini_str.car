@@ -6,5 +6,5 @@ struct pessoa {
 };
 
 void main():
-	pessoa joao = {"joao", 12, {1,2,3}, {"ex", "ex"}};
+	pessoa joao = {"joao", 12, {1,2,3}};
 end

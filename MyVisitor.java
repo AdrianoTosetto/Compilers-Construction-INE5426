@@ -104,10 +104,19 @@ public class MyVisitor extends CaronteBaseVisitor {
             	} else {
             		ParseTree initParamsStruct = ctx.getChild(3).getChild(1);
             		ArrayList<Symbol> fields = ((StructDefinitionSymbol) temp).getFields();
-            		System.out.println(fields.get(0).t);
-            		for (int i = 0; i < initParamsStruct.getChildCount(); i++) {
-            			System.out.println(initParamsStruct.getChild(i).getText());
+            		int fieldsSize = fields.size();
+            		int initParamsSize = initParamsStruct.getChildCount() - 3; // eliminar a contagem das vírgulas como filhos desse nó
+            		
+            		//System.out.println(initParamsSize);
+            		if(fieldsSize != initParamsSize) {
+            			System.out.println("Número de campos não corresponde");
             		}
+            		/*for (int i = 0; i < ) {
+            			if (f.t == Symbol.Types.VARIABLE) {
+            				VariableSymbol vf = (VariableSymbol) f;
+            				if(!vf.getVarType().equals(Utils.getTypeValue(f)))
+            			}
+            		}*/
             	}
             break;
 

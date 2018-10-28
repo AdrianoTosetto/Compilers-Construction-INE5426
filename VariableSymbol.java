@@ -12,6 +12,9 @@ public class VariableSymbol extends Symbol{
 		super(name);
 		size = 1;
 	}
+	public String getVarType() {
+		return this.varType;
+	}
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(varType + " ");
