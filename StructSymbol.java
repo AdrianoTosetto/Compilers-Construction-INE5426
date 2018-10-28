@@ -18,12 +18,12 @@ public class StructSymbol extends StructDefinitionSymbol {
 		sb.append(this.structDefName + " " + name + " {\n");
 		for (Symbol field : getFields()) {
 			if(field.t == Symbol.Types.STRUCT_VARIABLE || field.t == Symbol.Types.STRUCT_DEFINITION)
-				sb.append("\t\t" + field.toString());
+				sb.append("\t\t" + field.toString() + "\n");
 			else
 				sb.append("\t" + field.toString() + "\n");
 		}
 		
-		sb.append("}");
+		sb.append("}" + "[" + size +"]");
 		
 		return sb.toString();
 	}

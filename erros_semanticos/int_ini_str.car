@@ -5,10 +5,11 @@ struct pessoa {
 
 struct adriano {
 	string nome,
-	array pessoa pais[2]
+	array pessoa pais[2],
+	string test
 };
 
 void main():
-	 pessoa joao = {"","","",""};
+	// adriano eu = {"",""};
 	int a = 0;
 end
