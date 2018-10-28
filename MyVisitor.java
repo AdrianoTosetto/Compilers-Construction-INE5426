@@ -10,7 +10,6 @@ import java.util.Arrays;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.tree.*;
 
-import Symbol.Types;
 import sun.text.normalizer.SymbolTable;
 
 public class MyVisitor extends CaronteBaseVisitor {
@@ -78,7 +77,6 @@ public class MyVisitor extends CaronteBaseVisitor {
                 	VariableSymbol vs = new VariableSymbol(varName, "int", 1);
                 	vs.t = Symbol.Types.VARIABLE;
                 	symbolTable.add(vs);
-                	
                 }
 
             break;
@@ -91,7 +89,14 @@ public class MyVisitor extends CaronteBaseVisitor {
             break;
 
             case "string":
-
+                if(!Utils.isString(varValue)) {
+               	 System.out.println("hmm not a string");
+               } else {
+               	String varName = ctx.getChild(1).getText();
+               	VariableSymbol vs = new VariableSymbol(varName, "string", 1);
+               	vs.t = Symbol.Types.VARIABLE;
+               	symbolTable.add(vs);
+               }
             break;
             
             case "array":
@@ -107,6 +112,10 @@ public class MyVisitor extends CaronteBaseVisitor {
             	if(temp == null) {
             		System.out.println("essa struct não foi definida");
             	} else {
+            		//System.out.println(temp);
+            		for (Symbol f: ((StructDefinitionSymbol) temp).getFields()) {
+            			System.out.println(((VariableSymbol)f).t);
+            		}
             		ParseTree initParamsStruct = ctx.getChild(3).getChild(1);
             		ArrayList<Symbol> fields = ((StructDefinitionSymbol) temp).getFields();
             		int fieldsSize = fields.size();
@@ -174,9 +183,11 @@ public class MyVisitor extends CaronteBaseVisitor {
     				switch (fieldType) {
 						case "int":
 							field = new VariableSymbol(fieldName, "int",size);
+							field.t = Symbol.Types.VARIABLE;
 						break;
 						case "string":
 							field = new VariableSymbol(fieldName,"string",size);
+							field.t = Symbol.Types.VARIABLE;
 						break;
 						default:
 							//System.out.println(fieldName);
@@ -205,6 +216,8 @@ public class MyVisitor extends CaronteBaseVisitor {
 						case "int":
 							field = new VariableSymbol(fieldName, "int",1);
 							field.t = Symbol.Types.VARIABLE;
+							System.out.println("um inteiro numa estrutura!");
+							System.out.println(field.name);
 						break;
 						case "string":
 							field = new VariableSymbol(fieldName,"string",1);
@@ -236,9 +249,7 @@ public class MyVisitor extends CaronteBaseVisitor {
 					}
     				i+=3;
     			}
-    			field.t = Symbol.Types.STRUCT_DEFINITION;
     			fields.add(field);
-    			//System.out.println(field);
     			
     		}catch(Exception e) {
     			break;
