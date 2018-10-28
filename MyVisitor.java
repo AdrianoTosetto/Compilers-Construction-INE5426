@@ -296,6 +296,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	String retType = ctx.getChild(0).getChild(0).getText();
     	String functionName = ctx.getChild(0).getChild(1).getText();
     	ArrayList<Param> functionParams = new ArrayList<Param>();
+    	ArrayList<String> functionParamsTypes = new ArrayList<String>();
     	ArrayList<Integer> paramSizes = new ArrayList<Integer>();
     	
     	int i = 0;
@@ -309,12 +310,16 @@ public class MyVisitor extends CaronteBaseVisitor {
     				
     				Param p = new Param(varName, type, size);
     				functionParams.add(p);
+    				functionParamsTypes.add(type);
+    				paramSizes.add(size);
     				i+=6; // skip the comma
     			} else {
     				String name = params.getChild(i+1).getText();
     				String type = params.getChild(i).getText();
     				Param p = new Param(name, type);
     				functionParams.add(p);
+    				functionParamsTypes.add(type);
+    				paramSizes.add(1);
     				i+=3; // skip the comma
     			}
     		} catch(Exception e) {
@@ -324,6 +329,9 @@ public class MyVisitor extends CaronteBaseVisitor {
     	
     	
     	FunctionSymbol fs = new FunctionSymbol(functionName, functionParams);
+    	if(functionDeclared(functionName, functionParamsTypes, paramSizes)) {
+    		System.out.println("Função já declarada!");
+    	}
     	fs.t = Symbol.Types.FUNCTION;
     	symbolTable.add(fs);
     	

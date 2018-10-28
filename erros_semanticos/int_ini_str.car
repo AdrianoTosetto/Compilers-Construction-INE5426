@@ -8,8 +8,15 @@ struct adriano {
 	int idade
 };
 
+void add():
+	int a = 2;
+end
+void add(int c):
+	int b = 2;
+end
+
 void main():
-	int nomeAd = 12;
+	string nomeAd = "ak";
 	adriano eu = {nomeAd,18};
 	int a = 0;
 end
