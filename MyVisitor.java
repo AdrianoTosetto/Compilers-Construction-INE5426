@@ -89,10 +89,12 @@ public class MyVisitor extends CaronteBaseVisitor {
             break;
 
             case "string":
+            	
                 if(!Utils.isString(varValue)) {
                	 System.out.println("hmm not a string");
                } else {
                	String varName = ctx.getChild(1).getText();
+               	System.out.println(varName);
                	VariableSymbol vs = new VariableSymbol(varName, "string", 1);
                	vs.t = Symbol.Types.VARIABLE;
                	symbolTable.add(vs);
@@ -123,17 +125,41 @@ public class MyVisitor extends CaronteBaseVisitor {
             		
             		//System.out.println(initParamsSize);
             		if(fieldsSize != initParamsSize) {
-            			System.out.println(initParamsSize);
-            			System.out.println(fieldsSize);
+            			//System.out.println(initParamsSize);
+            			//System.out.println(fieldsSize);
             			System.out.println("Número de campos não corresponde");
             		}
             		for (int i = 0, j = 0; i < fieldsSize && j < initParamsSize; i++, j+=2) {
-            			System.out.println(initParamsStruct.getChild(j).getText());
-            			//System.out.println(fields.get(i).t);
-            			/*if (f.t == Symbol.Types.VARIABLE) {
-            				VariableSymbol vf = (VariableSymbol) f;
-            				if(!vf.getVarType().equals(Utils.getTypeValue(f)))
-            			}*/
+            			switch (fields.get(i).t) {
+            			
+						case VARIABLE: {
+							if(Utils.isVar(initParamsStruct.getChild(j).getText())) {
+								Symbol s = getSymbol(initParamsStruct.getChild(j).getText(), Symbol.Types.VARIABLE);
+								if(s == null) {
+									System.out.println(initParamsStruct.getChild(j).getText());
+									System.out.println("Variável usada na inicialização da estrutura não foi declarada");
+									break;
+								} else {
+									System.out.println("====" + ((VariableSymbol) s).getVarType());
+									if(!((VariableSymbol) s).getVarType().equals(((VariableSymbol)fields.get(i)).getVarType())) {
+										System.out.println("Variabel não tem o seu tipo compativel com o campo da estrutura sendo inicializado");
+										break;
+									}
+								}
+							}
+							String errorMessage = "";
+							if(!Utils.getTypeValue(initParamsStruct.getChild(j).getText()).equals(((VariableSymbol)fields.get(i)).getVarType()))	
+								errorMessage = "Era esperado o tipo " + ((VariableSymbol)fields.get(i)).getVarType();
+								errorMessage = errorMessage+ " mas se obteve " + Utils.getTypeValue(initParamsStruct.getChild(j).getText());
+								
+								System.out.println(errorMessage);
+								System.out.println(initParamsStruct.getChild(j).getText());
+								errorMessage = "";
+							break;
+						}
+						default:
+							break;
+						}
             		}
             	}
             break;
@@ -364,7 +390,7 @@ public class MyVisitor extends CaronteBaseVisitor {
         mv.visit(tree);
         System.out.println(mv.symbolTable.size());
         for (Symbol s: mv.symbolTable) {
-        	//System.out.println(s.t +" " +s.toString());	
+        	System.out.println(s.t +" " +s.toString());	
         }
        
     }

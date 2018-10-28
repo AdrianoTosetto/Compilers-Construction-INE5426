@@ -9,6 +9,7 @@ struct adriano {
 };
 
 void main():
-	adriano eu = {"",""};
+	int nomeAd = 12;
+	adriano eu = {nomeAd,18};
 	int a = 0;
 end
