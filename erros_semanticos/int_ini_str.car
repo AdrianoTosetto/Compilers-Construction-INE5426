@@ -1,10 +1,14 @@
 struct pessoa {
 	string nome,
-	int idade,
-	array int exemplo[3],
-	array string array_str[3]
+	int idade
+};
+
+struct adriano {
+	string nome,
+	array pessoa pais[2]
 };
 
 void main():
-	pessoa joao = {"joao", 12, {1,2,3}};
+	 pessoa joao = {"","","",""};
+	int a = 0;
 end

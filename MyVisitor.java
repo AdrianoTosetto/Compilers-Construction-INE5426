@@ -70,10 +70,8 @@ public class MyVisitor extends CaronteBaseVisitor {
 
             break;
             case "int":
-                if(Utils.isInteger(varValue)) {
-                    System.out.println("hmm a correct integer");
-                } else {
-                    System.out.println("hmm not a integer");
+                if(!Utils.isInteger(varValue)) {
+                	 System.out.println("hmm not a integer");
                 }
 
             break;
@@ -105,18 +103,19 @@ public class MyVisitor extends CaronteBaseVisitor {
             		ParseTree initParamsStruct = ctx.getChild(3).getChild(1);
             		ArrayList<Symbol> fields = ((StructDefinitionSymbol) temp).getFields();
             		int fieldsSize = fields.size();
-            		int initParamsSize = initParamsStruct.getChildCount() - 3; // eliminar a contagem das vírgulas como filhos desse nó
+            		int initParamsSize = initParamsStruct.getChildCount();
             		
             		//System.out.println(initParamsSize);
-            		if(fieldsSize != initParamsSize) {
+            		if(fieldsSize != initParamsSize - 3) {
             			System.out.println("Número de campos não corresponde");
             		}
-            		/*for (int i = 0; i < ) {
-            			if (f.t == Symbol.Types.VARIABLE) {
+            		for (int i = 0, j = 0; i < fieldsSize && j < initParamsSize; i++, j+=2) {
+            			//System.out.println(fields.get(i).t);
+            			/*if (f.t == Symbol.Types.VARIABLE) {
             				VariableSymbol vf = (VariableSymbol) f;
             				if(!vf.getVarType().equals(Utils.getTypeValue(f)))
-            			}
-            		}*/
+            			}*/
+            		}
             	}
             break;
 
@@ -169,7 +168,21 @@ public class MyVisitor extends CaronteBaseVisitor {
 							field = new VariableSymbol(fieldName,"string",size);
 						break;
 						default:
-							field = null;
+							//System.out.println(fieldName);
+							ArrayList<Symbol> innerFields = new ArrayList<Symbol>();
+					    	for (int j = 0; j < symbolTable.size(); j++) {
+					    		if(symbolTable.get(j).t == Symbol.Types.STRUCT_DEFINITION) {
+					    			if(symbolTable.get(j).name.equals(fieldType)) {
+					    				StructDefinitionSymbol temp = (StructDefinitionSymbol) symbolTable.get(j);
+					    				innerFields = temp.getFields();
+					    			}
+					    		}
+					    	}
+					    	StructSymbol ss = new StructSymbol(fieldName,innerFields);
+					    	ss.setStructDefName(fieldType);
+							ss.t = Symbol.Types.STRUCT_VARIABLE;
+							field = ss;
+							
 						break;
 					}
     				
@@ -188,19 +201,25 @@ public class MyVisitor extends CaronteBaseVisitor {
 						default:
 							
 							ArrayList<Symbol> innerFields = new ArrayList<Symbol>();
+							String structDefName = "";
 					    	for (int j = 0; j < symbolTable.size(); j++) {
 					    		if(symbolTable.get(j).t == Symbol.Types.STRUCT_DEFINITION) {
 					    			if(symbolTable.get(j).name.equals(fieldinfo0)) {
 					    				
 					    				
 					    				StructDefinitionSymbol temp = (StructDefinitionSymbol) symbolTable.get(j);
-					    				System.out.println(temp.toString());
+					    				//System.out.println(temp.toString());
 					    				innerFields = temp.getFields();
+					    				structDefName = symbolTable.get(j).name;
 					    			}
 					    		}
 					    	}
-							field = new StructSymbol(fieldName,innerFields);
-							field.t = Symbol.Types.STRUCT_VARIABLE;
+					    	//System.out.println(fieldName);
+					    	StructSymbol ss = new StructSymbol(fieldName,innerFields);
+							ss.setStructDefName(structDefName);
+							ss.t = Symbol.Types.STRUCT_VARIABLE;
+							field = ss;
+							System.out.println(field);
 							//field = null;
 					}
     				i+=3;
@@ -214,7 +233,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	}
     	StructDefinitionSymbol sds = new StructDefinitionSymbol(structName, fields);
     	sds.t = Symbol.Types.STRUCT_DEFINITION;
-    	System.out.println(sds.toString());
+    	//System.out.println(sds.toString());
     	symbolTable.add(sds);
     	return visitChildren(ctx);
     }
@@ -321,9 +340,7 @@ public class MyVisitor extends CaronteBaseVisitor {
         mv.visit(tree);
         
         for (Symbol s: mv.symbolTable) {
-        	if (s.t == Symbol.Types.FUNCTION) {
-        		//System.out.println((FunctionSymbol)s);
-        	}
+        	//System.out.println(s);	
         }
        
     }
