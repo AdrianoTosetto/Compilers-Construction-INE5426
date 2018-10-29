@@ -54,6 +54,15 @@ class Utils{
 
 		return token.matches(pattern);
 	}
+	public static boolean isFunction(String token) {
+		
+		String attrListPattern = "([_a-z]\\w* [_a-z]\\w*[,])* ([_a-z]\\w* [_a-z]\\w*)";
+		String funcNamePattern = "^[_a-z]\\w*";
+		
+		String pattern = funcNamePattern+ "[(]"+attrListPattern+"[)]";
+		
+		return token.matches(pattern) || token.matches(funcNamePattern+"[(][)]");
+	}
 	public static boolean isStruct(String token) {
 		
 		return false;
@@ -68,6 +77,6 @@ class Utils{
 			String s = symbols.get(i).replaceAll(" ", "");
 			System.out.println(s + " " + Utils.getTypeValue(s));
 		}*/
-		System.out.println(Utils.isVar("289843j"));
+		System.out.println(Utils.isFunction("func(int)"));
 	}
 }
