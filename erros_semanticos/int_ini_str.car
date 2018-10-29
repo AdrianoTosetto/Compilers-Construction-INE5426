@@ -3,12 +3,12 @@ struct pessoa {
 	int idade
 };
 
-struct guto_cuzao {
+struct aluno {
 	pessoa p,
-	int nivelDeCuzisse
+	int nota
 };
 
-
 void main():
-	guto_cuzao guto = {};
+	aluno joao = {};
+	int nota = joao.p.idade;
 end
