@@ -16,7 +16,5 @@ void add(int c):
 end
 
 void main():
-	string nomeAd = "ak";
-	adriano eu = {nomeAd,18};
-	int a = 0;
+	int a = test(3, 3) + 4;
 end

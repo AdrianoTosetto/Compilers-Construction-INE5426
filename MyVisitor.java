@@ -34,7 +34,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     			//System.out.println(paramType);
     			if (paramType.equals("Unknown")) {
     				ArrayList<String> tokens = 
-    						(ArrayList<String>) Arrays.asList(Utils.splitExpressionIntoTokens(paramName));
+    						(ArrayList<String>) (Utils.splitExpressionIntoTokens(paramName));
     				checkTokensTypes(tokens);
     			} else {
 	    			int size = 1;
@@ -72,6 +72,18 @@ public class MyVisitor extends CaronteBaseVisitor {
             case "int":
                 if(!Utils.isInteger(varValue)) {
                 	 System.out.println("hmm not a integer");
+                	 ArrayList<String> tokens = Utils.splitExpressionIntoTokens(varValue);
+                	 //System.out.println(tokens);
+                	 for(String t : tokens) {
+                		 /*
+                		  * verifica se o símbolo encontrado é uma função
+                		  * */
+                		 Symbol func = getSymbol(t.split("[(]")[0], Symbol.Types.FUNCTION);
+                		 /*
+                		  * Não é uma função
+                		  * */
+                		 Symbol variable = getSymbol(t, Symbol.Types.VARIABLE);
+                	 }
                 } else {
                 	String varName = ctx.getChild(1).getText();
                 	VariableSymbol vs = new VariableSymbol(varName, "int", 1);

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
@@ -37,10 +38,12 @@ class Utils{
 		
 		return "Unknown"; // variable or struct
 	}
-	public static String[] splitExpressionIntoTokens(String expression) {
+	public static ArrayList<String> splitExpressionIntoTokens(String expression) {
 		String delimiters = "\\+|-|\\*|/|%";
 		
-		return expression.split(delimiters);
+		return (ArrayList<String>) 
+				Arrays.asList(expression.split(delimiters)).
+					stream().map(String::trim).collect(Collectors.toList());
 	}
 	public static boolean isSymbol(String symbol) { 
 		
@@ -55,13 +58,17 @@ class Utils{
 		return token.matches(pattern);
 	}
 	public static boolean isFunction(String token) {
-		
-		String attrListPattern = "([_a-z]\\w* [_a-z]\\w*[,])* ([_a-z]\\w* [_a-z]\\w*)";
+		String trimToken = token.trim();
+
+		String attrListPattern = "([\\w*][,])* (\\w*)";
 		String funcNamePattern = "^[_a-z]\\w*";
 		
 		String pattern = funcNamePattern+ "[(]"+attrListPattern+"[)]";
 		
-		return token.matches(pattern) || token.matches(funcNamePattern+"[(][)]");
+		return trimToken.matches(pattern) || token.matches(funcNamePattern+"[(][)]");
+	}
+	public static String getFunctionNameFromFunctionCall(String token) {
+		return token.split("[(]")[0];
 	}
 	public static boolean isStruct(String token) {
 		
@@ -77,6 +84,6 @@ class Utils{
 			String s = symbols.get(i).replaceAll(" ", "");
 			System.out.println(s + " " + Utils.getTypeValue(s));
 		}*/
-		System.out.println(Utils.isFunction("func(int)"));
+		System.out.println(Utils.isFunction("test(3, 3)"));
 	}
 }
