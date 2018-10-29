@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class FunctionSymbol extends Symbol {
 	private ArrayList<Param> params;
-
+	private String retType;
 	public FunctionSymbol(String name, ArrayList<Param> params) {
 		super(name);
 		this.params = params;
@@ -18,5 +18,11 @@ public class FunctionSymbol extends Symbol {
 	}
 	public ArrayList<Param> getParams() {
 		return this.params;
+	}
+	public String getRetType() {
+		return retType;
+	}
+	public void setRetType(String retType) {
+		this.retType = retType;
 	}
 }
