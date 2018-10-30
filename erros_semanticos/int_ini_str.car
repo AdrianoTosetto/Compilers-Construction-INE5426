@@ -1,29 +1,19 @@
-struct outroStruct1 {
-	int numero
-};
-
-struct outroStruct{
-	outroStruct1 s
-};
-
-struct pessoa {
+struct Pessoa {
 	string nome,
-	int idade,
-	outroStruct outra
+	string idade
 };
 
-struct aluno {
-	pessoa p,
+struct Aluno {
+	Pessoa p,
 	int nota
 };
 
-int func():
-	return 1;
+string func():
+	return "MinhaString";
 end
 
 void main():
-	aluno joao = {};
-	int i = joao.p.outra.s.numero + func();
-	
-	int a = 3+3+3+b+func();
+	Aluno Joao = {};
+	array string strArray[4] = {"a","b"};
+	int idade = Joao.p.idade + func("a") + VarNaoDeclarada;
 end

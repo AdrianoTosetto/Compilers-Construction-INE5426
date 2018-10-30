@@ -74,6 +74,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     public Object visitTypedDeclaration(CaronteParser.TypedDeclarationContext ctx) {
         String varType = ctx.getChild(0).getText();
         String varValue = ctx.getChild(3).getText();
+        System.out.println(varType);
         switch(varType) {
 
             case "boolean":
@@ -99,6 +100,17 @@ public class MyVisitor extends CaronteBaseVisitor {
                 		 /*
                 		  * verifica se é uma veriavel
                 		  * */
+                		 if(t.contains("[")) {
+                			 System.out.println("um array");
+                			 String arrayName = t.substring(0, t.length()-3);
+                			 System.out.println("Array = " +arrayName);
+                			 int arrayIndex = Integer.parseInt(t.substring(t.length()-2, t.length()-1));
+                			 System.out.println("index = " + arrayIndex);
+                			 VariableSymbol arrayVar = (VariableSymbol)getSymbol(arrayName, Symbol.Types.VARIABLE);
+                			 if(arrayIndex > arrayVar.getSize()) {
+                				 System.out.println("Index " +arrayIndex +" não existe no vetor " + arrayName);
+                			 }
+                		 }
                 		 Symbol variable = getSymbol(t.trim(), Symbol.Types.VARIABLE);
                 		 if(variable != null) {
                 			 symbolFound = true;
@@ -129,6 +141,9 @@ public class MyVisitor extends CaronteBaseVisitor {
                 		 
                 		 if(Utils.isInteger(t)) {
                 			 symbolFound = true;
+                		 }
+                		 if(Utils.isString(t)) {
+                			 System.out.println();
                 		 }
                 		 if(!symbolFound) {
                 			 System.out.println("O símbolo " + t + " não foi declarado como função ou variável");
@@ -164,6 +179,8 @@ public class MyVisitor extends CaronteBaseVisitor {
             break;
             
             case "array":
+            	System.out.println("skj");
+            	System.out.println(ctx.getChild(0).getText());
             break;
 
             // this is the case of user types variables, like structs
@@ -242,6 +259,27 @@ public class MyVisitor extends CaronteBaseVisitor {
         }
 
         return visitChildren(ctx);
+    }
+    @Override
+    public Object visitArrayDeclaration(CaronteParser.ArrayDeclarationContext ctx) {
+    	
+    	String typeArray = ctx.getChild(1).getText();
+    	String nameArray = ctx.getChild(2).getText();
+    	
+    	int arraySize = Integer.parseInt(ctx.getChild(4).getText());
+    	System.out.println(typeArray);
+    	System.out.println(nameArray);
+    	VariableSymbol varSym = new VariableSymbol(nameArray, typeArray, arraySize);
+    	varSym.t = Symbol.Types.VARIABLE;
+    	symbolTable.add(varSym);
+    	int initSize = ctx.getChild(7).getChildCount();
+    	String temp[] = ctx.getChild(7).getText().substring(1, ctx.getChild(7).getText().length()-3).split(",");
+    	System.out.println(temp.length);
+    	if(temp.length+1 != arraySize) {
+    		System.out.println("Inicialize o array com o número de elementos corretos");
+    	}
+    	
+    	return visitChildren(ctx);
     }
     /*
      * token is structVar.field1.field2...fieldN
@@ -452,6 +490,7 @@ public class MyVisitor extends CaronteBaseVisitor {
 
     				for(int j = 0; j < paramsSize; j++) {
     					if(!types.get(j).equals(fs.getParams().get(j).getType())) {
+    						System.out.println(fs.getParams().get(j).getType());
     						System.out.println("Tipo dos parametros não correspondem :/");
     						continue;
     					}

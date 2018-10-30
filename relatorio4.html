@@ -3,52 +3,591 @@
 <head>
 	<title></title>
 	<meta charset="utf-8"/>
+	<style type="text/css">
+		pre {
+		    background: #f4f4f4;
+		    border: 1px solid #ddd;
+		    border-left: 3px solid #f36d33;
+		    color: #666;
+		    page-break-inside: avoid;
+		    font-family: monospace;
+		    font-size: 15px;
+		    line-height: 1.6;
+		    margin-bottom: 1.6em;
+		    max-width: 100%;
+		    overflow: auto;
+		    padding: 1em 1.5em;
+		    display: block;
+		    word-wrap: break-word;
+		}
+		@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+		 
+		.isa_info, .isa_success, .isa_warning, .isa_error {
+		margin: 10px 0px;
+		padding:12px;
+		 
+		}
+		.isa_info {
+		    color: #00529B;
+		    background-color: #BDE5F8;
+		}
+		.isa_success {
+		    color: #4F8A10;
+		    background-color: #DFF2BF;
+		}
+		.isa_warning {
+		    color: #9F6000;
+		    background-color: #FEEFB3;
+		}
+		.isa_error {
+		    color: #D8000C;
+		    background-color: #FFD2D2;
+		}
+		.isa_info i, .isa_success i, .isa_warning i, .isa_error i {
+		    margin:10px 22px;
+		    font-size:2em;
+		    vertical-align:middle;
+		}
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .accordion:hover {
+    background-color: #ccc;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.panel {
+    padding: 0 18px;
+    background-color: white;
+    display: none;
+    overflow: hidden;
+}
+	</style>
+	<script type="text/javascript">
+		window.onload = function(){
+		var acc = document.getElementsByClassName("accordion");
+		var i;
+
+		for (i = 0; i < acc.length; i++) {
+		    acc[i].addEventListener("click", function() {
+		        /* Toggle between adding and removing the "active" class,
+		        to highlight the button that controls the panel */
+		        this.classList.toggle("active");
+
+		        /* Toggle between hiding and showing the active panel */
+		        var panel = this.nextElementSibling;
+		        if (panel.style.display === "block") {
+		            panel.style.display = "none";
+		        } else {
+		            panel.style.display = "block";
+		        }
+		    });
+		}
+	}
+	</script>
 </head>
 <body>
-	<div class="language-types">
-		<div class="type-explanation">
-			<h3>Int</h3>
-			<p></p>
-		</div>
-		<div class="type-explanation">
-			<h3>Float</h3>
-			<p></p>
-		</div>
-		<div class="type-explanation">
-			<h3>String</h3>
-			<p></p>
-		</div>
-		<div class="type-explanation">
-			<h3>Boolean</h3>
-			<p></p>
-		</div>
-		<div class="type-explanation">
-			<h3>Struct</h3>
-			<p></p>
+	<div class="classes">
+		<h3>Tipos de Símbolos</h3>
+		<div class="isa_info">
+    		<i class="fa fa-info-circle"></i>
+    		Symbol
 		</div>
 	</div>
-	<div class="classes-desc">
-		<div class="Symbol">
-			<h3>Struct</h3>
-			<p></p>
-		</div>
-		<div class="VariableSymbol">
-			<h3>Struct</h3>
-			<p></p>
-		</div>
-		<div class="StructSymbol">
-			<h3>Struct</h3>
-			<p></p>
-		</div>
-		<div class="StructDefinition">
-			<h3>Struct</h3>
-			<p></p>
+	<button class="accordion">Mostrar</button>
+	<div class="panel">
+	 	<pre>
+	 		<code>
+
+public class Symbol {
+	
+	public String name;
+	
+	public enum Types {
+		FUNCTION,
+		VARIABLE,
+		STRUCT_DEFINITION,
+		STRUCT_VARIABLE
+	}
+	Types t;
+	
+	public Symbol(String name) {
+		this.name = name;
+	}
+	public Symbol(String name, Types t) {
+		this.name = name;
+		this.t = t;
+	}
+
+}
+
+	 		</code>
+	 	</pre>
+	</div>
+
+	<div class="classes">
+		<div class="isa_info">
+    		<i class="fa fa-info-circle"></i>
+    		SymbolVariable
 		</div>
 	</div>
+	<button class="accordion">Mostrar</button>
+	<div class="panel">
+	 	<pre>
+	 		<code>
+
+
+public class VariableSymbol extends Symbol{
+	private int size = 1; // if greater than one => means that is an array
+	private String varType;
+	public VariableSymbol(String name, String type, int size) {
+		super(name);
+		this.setSize(size);
+		this.varType = type;
+	}
+	public VariableSymbol(String name) {
+		super(name);
+		setSize(1);
+	}
+	public String getVarType() {
+		return this.varType;
+	}
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(varType + " ");
+		if (getSize() > 1) {
+			sb.append(name + "[" + getSize() + "]");
+		} else {
+			sb.append(name);
+		}
+		return sb.toString();
+	}
+	public int getSize() {
+		return size;
+	}
+	public void setSize(int size) {
+		this.size = size;
+	}
+}
+
+
+	 		</code>
+	 	</pre>
+	</div>
+	<div class="classes">
+		<div class="isa_info">
+    		<i class="fa fa-info-circle"></i>
+    		StructDefinition
+		</div>
+	</div>
+	<button class="accordion">Mostrar</button>
+	<div class="panel">
+	 	<pre>
+	 		<code>
+import java.util.ArrayList;
+
+public class StructDefinitionSymbol extends Symbol{
+	private ArrayList<Symbol> fields;
+	public StructDefinitionSymbol(String name, ArrayList<Symbol> fields) {
+		super(name);
+		this.setFields(fields);
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(name + " {\n");
+		for (Symbol field : getFields()) {
+			if(field.t == Symbol.Types.STRUCT_VARIABLE)
+				sb.append("\t\t" + field.toString());
+			else
+				sb.append("\t" + field.toString() + "\n");
+		}
+		
+		sb.append("}");
+		
+		return sb.toString();
+	}
+
+	public ArrayList<Symbol> getFields() {
+		return fields;
+	}
+
+	public void setFields(ArrayList<Symbol> fields) {
+		this.fields = fields;
+	}
+
+}
+
+
+	 		</code>
+	 	</pre>
+	</div>
+	<div class="classes">
+		<div class="isa_info">
+    		<i class="fa fa-info-circle"></i>
+    		StructVariable
+		</div>
+	</div>
+	<button class="accordion">Mostrar</button>
+	<div class="panel">
+	 	<pre>
+	 		<code>
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.antlr.v4.automata.LexerATNFactory;
+
+public class StructSymbol extends StructDefinitionSymbol {
+	boolean initialized = false;
+	private String structDefName;
+	private int size = 1;
+	public StructSymbol(String name, ArrayList<Symbol> fields) {
+		super(name, fields);
+		t = Symbol.Types.STRUCT_VARIABLE;
+	}
+	
+	public void setInitialized(boolean initialized) {
+		this.initialized = initialized;
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.structDefName + " " + name + " {\n");
+		for (Symbol field : getFields()) {
+			if(field.t == Symbol.Types.STRUCT_VARIABLE || field.t == Symbol.Types.STRUCT_DEFINITION)
+				sb.append("\t\t" + field.toString() + "\n");
+			else
+				sb.append("\t" + field.toString() + "\n");
+		}
+		
+		sb.append("}" + "[" + size +"]");
+		
+		return sb.toString();
+	}
+
+	public String getStructDefName() {
+		return structDefName;
+	}
+
+	public void setStructDefName(String structDefName) {
+		this.structDefName = structDefName;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+	public String getFieldType(String field) {
+		
+		
+		
+		return "";
+	}
+	public Symbol findFieldByName(String name) {
+		
+		for(Symbol s: getFields()) {
+			if(s.name.equals(name)) {
+				return s;
+			}
+		}
+		return null;
+	}
+	public Symbol findFieldByField(String fieldAccessToken) {
+		String[] fields = fieldAccessToken.split("\\.");
+		int i = 1;
+		Symbol s = this.findFieldByName(fields[1]);
+		System.out.println(s);
+		for(i = 2; i < fields.length; i++) {
+			s = this.findFieldByName(fields[i]);
+			System.out.println(s);
+		}
+		
+		return null;
+	}
+
+}
+
+
+	 		</code>
+	 	</pre>
+	</div>
+	<div class="classes">
+		<div class="isa_info">
+    		<i class="fa fa-info-circle"></i>
+    		FunctionSymbol
+		</div>
+	</div>
+	<button class="accordion">Mostrar</button>
+	<div class="panel">
+	 	<pre>
+	 		<code>
+import java.util.ArrayList;
+
+public class FunctionSymbol extends Symbol {
+	private ArrayList<Param> params;
+	private String retType;
+	public FunctionSymbol(String name, ArrayList<Param> params) {
+		super(name);
+		this.params = params;
+	}
+	public String toString() {
+		StringBuilder  sb = new StringBuilder();
+		
+		for (int i = 0; i < params.size(); i++) {
+			sb.append(params.get(i).toString());
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
+	public ArrayList<Param> getParams() {
+		return this.params;
+	}
+	public String getRetType() {
+		return retType;
+	}
+	public void setRetType(String retType) {
+		this.retType = retType;
+	}
+}
+
+	 		</code>
+	 	</pre>
+	</div>
+
+	<div class="classes">
+		<div class="isa_info">
+    		<i class="fa fa-info-circle"></i>
+    		SymbolTable
+		</div>
+	</div>
+
 	<div class="semantic-errors">
 		<h2>Erros Semânticos tratados</h2>
 
 		<h3>Variáveis Não Declaradas</h3>
+		<code>
+		<pre>
+void main():
+	int a = b;
+end
+	</pre>
+</code>
+		<div class="isa_error">
+		   <i class="fa fa-times-circle"></i>
+		   O símbolo b não foi declarado como função ou variável
+		</div>
+		<h3>Variáveis Não Declaradas</h3>
+		<code>
+			<pre>
+void main():
+	funcaoNaoDeclarada();
+end
+			</pre>
+		</code>
+		<div class="isa_error">
+		   <i class="fa fa-times-circle"></i>
+			A função ``funcaoNaoDeclarada()`` não foi declarada
+		</div>
 	</div>
+
+
+		<h3>Função chamada com uma assinatura diferente</h3>
+		<code>
+			<pre>
+void test(int a, string b):
+	return 1;
+end
+
+
+void main():
+	test(12);
+end
+			</pre>
+		</code>
+		<div class="isa_error">
+		   <i class="fa fa-times-circle"></i>
+			A função ``test()`` com essa assinatura não foi declarada
+		</div>
+	</div>
+
+
+		<h3>Funções chamadas com parametros de tipos diferentes da assinatura</h3>
+		<code>
+			<pre>
+void test(int a, string b):
+	return 1;
+end
+
+
+void main():
+	test("a", 12);
+end
+			</pre>
+		</code>
+		<div class="isa_error">
+		   <i class="fa fa-times-circle"></i>
+			Tipo dos parametros não correspondem :/
+		</div>
+		<div class="isa_error">
+		   <i class="fa fa-times-circle"></i>
+			Tipo dos parametros não correspondem :/
+		</div>
+	</div>
+
+
+		<h3>Expressões com tipos incompatíveis</h3>
+		<code>
+			<pre>
+void main():
+	3+3 + "s";
+end
+			</pre>
+		</code>
+		<div class="isa_error">
+		   <i class="fa fa-times-circle"></i>
+			Tipos incompatíveis na expressão
+		</div>
+	</div>
+
+
+		<h3>Array sendo inicializado com tamanho diferente</h3>
+		<code>
+			<pre>
+void main():
+	array int nros[3] = {1,2,3,3};
+end
+			</pre>
+		</code>
+		<div class="isa_error">
+		   <i class="fa fa-times-circle"></i>
+		Inicialize o array com o número de elementos corretos
+		</div>
+	</div>
+
+		<h3>Acessando array com índice maior que seu tamanho</h3>
+		<code>
+			<pre>
+void main():
+	array int nros[4] = {1,2,3,3};
+	int a = nros[8];
+end
+			</pre>
+		</code>
+		<div class="isa_error">
+		   <i class="fa fa-times-circle"></i>
+		   Index 8 não existe no vetor nros
+		</div>
+	</div>
+
+		<h3>Inicializando uma variável usando campo de uma struct inválido</h3>
+		<code>
+			<pre>
+struct Pessoa {
+	string nome,
+	string idade
+};
+
+struct Aluno {
+	Pessoa p,
+	int nota
+};
+
+
+void main():
+	Aluno Joao = {};
+	int idade = Joao.p.idade;
+end
+			</pre>
+		</code>
+		<div class="isa_error">
+		   <i class="fa fa-times-circle"></i>
+		   O campo idade  deveria ser um inteiro :/
+		</div>
+	</div>
+
+
+		<h3>Inicializando uma variável usando uma função cujo retorno não é compatível</h3>
+		<code>
+			<pre>
+string func():
+	return "MinhaString";
+end
+
+void main():
+	int idade = func();
+end
+			</pre>
+		</code>
+		<div class="isa_error">
+		   <i class="fa fa-times-circle"></i>
+Retorno da função func() não pode ser usado para esta expressão
+		</div>
+	</div>
+
+
+		<h3>Exemplo com vários erros semânticos</h3>
+		<code>
+			<pre>
+struct Pessoa {
+	string nome,
+	string idade
+};
+
+struct Aluno {
+	Pessoa p,
+	int nota
+};
+
+string func():
+	return "MinhaString";
+end
+
+void main():
+	Aluno Joao = {};
+	array string strArray[4] = {"a","b"};
+	int idade = Joao.p.idade + func("a") + VarNaoDeclarada;
+end	</pre>
+		</code>
+		<div class="isa_error">
+			 <i class="fa fa-times-circle"></i>
+		  Inicialize o array com o número de elementos corretos
+		</div>
+		<div class="isa_error">
+			<i class="fa fa-times-circle"></i>
+		   O campo idade  deveria ser um inteiro :/		
+		</div>
+		<div class="isa_error">
+			<i class="fa fa-times-circle"></i>
+		   Retorno da função ``func("a")`` não pode ser usado para esta expressão
+		</div>
+		<div class="isa_error">
+			<i class="fa fa-times-circle"></i>
+		   O símbolo VarNaoDeclarada não foi declarado como função ou variável
+</i>		
+		</div>
+		<div class="isa_error">
+			<i class="fa fa-times-circle"></i>
+		   Tipos incompatíveis na expressão	
+		</div>
+		<div class="isa_error">
+		   <i class="fa fa-times-circle"></i>
+		   A função ``func("a")`` com essa assinatura não foi declarada		
+		</div>
+	</div>
+
+
 </body>
 </html>

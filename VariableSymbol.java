@@ -4,13 +4,12 @@ public class VariableSymbol extends Symbol{
 	private String varType;
 	public VariableSymbol(String name, String type, int size) {
 		super(name);
-		this.size = size;
+		this.setSize(size);
 		this.varType = type;
-		// TODO Auto-generated constructor stub
 	}
 	public VariableSymbol(String name) {
 		super(name);
-		size = 1;
+		setSize(1);
 	}
 	public String getVarType() {
 		return this.varType;
@@ -18,11 +17,17 @@ public class VariableSymbol extends Symbol{
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(varType + " ");
-		if (size > 1) {
-			sb.append(name + "[" + size + "]");
+		if (getSize() > 1) {
+			sb.append(name + "[" + getSize() + "]");
 		} else {
 			sb.append(name);
 		}
 		return sb.toString();
+	}
+	public int getSize() {
+		return size;
+	}
+	public void setSize(int size) {
+		this.size = size;
 	}
 }
