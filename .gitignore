@@ -54,3 +54,9 @@
 /Symbol$Types.class
 /StructDefinitionSymbol.class
 /MyVisitor$Errors.class
+/CaronteParser$BinExpContext.class
+/CaronteParser$ExpListExpContext.class
+/CaronteParser$ExpPrefixContext.class
+/CaronteParser$ExpValuesContext.class
+/CaronteParser$ParaExpContext.class
+/CaronteParser$UnariaExpContext.class

@@ -285,15 +285,77 @@ public interface CaronteListener extends ParseTreeListener {
 	 */
 	void exitListaexp(CaronteParser.ListaexpContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CaronteParser#exp}.
+	 * Enter a parse tree produced by the {@code expListExp}
+	 * labeled alternative in {@link CaronteParser#exp}.
 	 * @param ctx the parse tree
 	 */
-	void enterExp(CaronteParser.ExpContext ctx);
+	void enterExpListExp(CaronteParser.ExpListExpContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link CaronteParser#exp}.
+	 * Exit a parse tree produced by the {@code expListExp}
+	 * labeled alternative in {@link CaronteParser#exp}.
 	 * @param ctx the parse tree
 	 */
-	void exitExp(CaronteParser.ExpContext ctx);
+	void exitExpListExp(CaronteParser.ExpListExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code binExp}
+	 * labeled alternative in {@link CaronteParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinExp(CaronteParser.BinExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code binExp}
+	 * labeled alternative in {@link CaronteParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinExp(CaronteParser.BinExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code unariaExp}
+	 * labeled alternative in {@link CaronteParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnariaExp(CaronteParser.UnariaExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code unariaExp}
+	 * labeled alternative in {@link CaronteParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnariaExp(CaronteParser.UnariaExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code expValues}
+	 * labeled alternative in {@link CaronteParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpValues(CaronteParser.ExpValuesContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code expValues}
+	 * labeled alternative in {@link CaronteParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpValues(CaronteParser.ExpValuesContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code paraExp}
+	 * labeled alternative in {@link CaronteParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void enterParaExp(CaronteParser.ParaExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code paraExp}
+	 * labeled alternative in {@link CaronteParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void exitParaExp(CaronteParser.ParaExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code expPrefix}
+	 * labeled alternative in {@link CaronteParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpPrefix(CaronteParser.ExpPrefixContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code expPrefix}
+	 * labeled alternative in {@link CaronteParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpPrefix(CaronteParser.ExpPrefixContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CaronteParser#valores}.
 	 * @param ctx the parse tree

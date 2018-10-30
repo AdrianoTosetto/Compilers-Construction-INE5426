@@ -1,6 +1,15 @@
+struct outroStruct1 {
+	int numero
+};
+
+struct outroStruct{
+	outroStruct1 s
+};
+
 struct pessoa {
 	string nome,
-	int idade
+	int idade,
+	outroStruct outra
 };
 
 struct aluno {
@@ -8,7 +17,13 @@ struct aluno {
 	int nota
 };
 
+int func():
+	return 1;
+end
+
 void main():
 	aluno joao = {};
-	int nota = joao.p.idade;
+	int i = joao.p.outra.s.numero + func();
+	
+	int a = 3+3+3+b+func();
 end

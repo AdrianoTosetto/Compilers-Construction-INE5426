@@ -6,6 +6,8 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.tree.*;
@@ -22,7 +24,6 @@ public class MyVisitor extends CaronteBaseVisitor {
     		STRUCT_NOT_DECLARED,
     		FUNCTION_RETURN_TYPE_NOT_APPROPRIATE_FOR_EXPRESSION,
     		SYMBOL_WAS_NOT_DECLARED
-    		
     }
 
     @Override
@@ -80,7 +81,6 @@ public class MyVisitor extends CaronteBaseVisitor {
             break;
             case "int":
                 if(!Utils.isInteger(varValue)) {
-                	 System.out.println("hmm not a integer");
                 	 ArrayList<String> tokens = Utils.splitExpressionIntoTokens(varValue);
                 	 Errors e = null;
                 	 //System.out.println(tokens);
@@ -108,15 +108,23 @@ public class MyVisitor extends CaronteBaseVisitor {
                 			 }
                 		 }
                 		 String[] tt = t.split("\\.");
-                		 System.out.println(t);
-                		 System.out.println(Arrays.asList(tt));
+                		 //System.out.println(t);
+                		 //System.out.println(Arrays.asList(tt));
                 		 
                 		 String structName = tt[0];
-                		 Symbol structVariable = getSymbol(t.trim(), Symbol.Types.STRUCT_VARIABLE);
-                		 String lastField = tt[tt.length - 1];
+                		 StructSymbol structVariable = (StructSymbol) getSymbol(structName, Symbol.Types.STRUCT_VARIABLE);
+                		 System.out.println(Arrays.asList(tt));
                 		 if(structVariable != null) {
                 			 symbolFound = true;
-                			 checkFieldType(t);
+                			 int i = 2;
+                			 Symbol s = structVariable.findFieldByName(tt[1]);
+                			 while(s.t == Symbol.Types.STRUCT_VARIABLE) {
+                				 s = ((StructSymbol) s).findFieldByName(tt[i]);
+                				 i++;
+                			 }
+                			 if(!((VariableSymbol)s).getVarType().equals("int")) {
+                				 System.out.println("Este campo deveria ser um int :/");
+                			 }
                 		 }
                 		 
                 		 if(Utils.isInteger(t)) {
@@ -149,7 +157,6 @@ public class MyVisitor extends CaronteBaseVisitor {
                	 System.out.println("hmm not a string");
                } else {
                	String varName = ctx.getChild(1).getText();
-               	System.out.println(varName);
                	VariableSymbol vs = new VariableSymbol(varName, "string", 1);
                	vs.t = Symbol.Types.VARIABLE;
                	symbolTable.add(vs);
@@ -163,6 +170,7 @@ public class MyVisitor extends CaronteBaseVisitor {
             default:
             	String structType = ctx.getChild(0).getText();
             	String strctVarName = ctx.getChild(1).getText();
+            	//System.out.println("strctVarName "+ strctVarName);
             	/*
             	 * tipo não foi declarado
             	 * */
@@ -173,10 +181,10 @@ public class MyVisitor extends CaronteBaseVisitor {
             		//System.out.println(temp);
             		for (Symbol f: ((StructDefinitionSymbol) temp).getFields()) {
             			if(f.t == Symbol.Types.STRUCT_VARIABLE) {
-            				System.out.println("====================================");
-            				System.out.println(((StructSymbol) f).getFields().get(0));
-            				System.out.println(((StructSymbol) f).getFields().get(1));
-            				System.out.println("====================================");
+            				//System.out.println("====================================");
+            				//System.out.println(((StructSymbol) f).getFields().get(0));
+            				//System.out.println(((StructSymbol) f).getFields().get(1));
+            				//System.out.println("====================================");
             			}
             		}
             		ParseTree initParamsStruct = ctx.getChild(3).getChild(1);
@@ -197,7 +205,7 @@ public class MyVisitor extends CaronteBaseVisitor {
 							if(Utils.isVar(initParamsStruct.getChild(j).getText())) {
 								Symbol s = getSymbol(initParamsStruct.getChild(j).getText(), Symbol.Types.VARIABLE);
 								if(s == null) {
-									System.out.println(initParamsStruct.getChild(j).getText());
+									//System.out.println(initParamsStruct.getChild(j).getText());
 									System.out.println("Variável usada na inicialização da estrutura não foi declarada");
 									break;
 								} else {
@@ -223,8 +231,12 @@ public class MyVisitor extends CaronteBaseVisitor {
 						}
             		}
             	}
-            	System.out.println(new StructSymbol(strctVarName, ((StructDefinitionSymbol) temp).getFields()));
-            	symbolTable.add(new StructSymbol(strctVarName, ((StructDefinitionSymbol) temp).getFields()));
+            	StructSymbol ss = new StructSymbol(strctVarName, ((StructDefinitionSymbol) temp).getFields());
+            	ss.setStructDefName(structType);
+            	//System.out.println("------------------");
+            	//System.out.println(((VariableSymbol)ss.getFields().get(1)).getVarType());
+            	//System.out.println("------------------");
+            	symbolTable.add(ss);
             break;
 
         }
@@ -244,11 +256,10 @@ public class MyVisitor extends CaronteBaseVisitor {
     }
     
     public String checkFieldType(String structToken) {
-    	
-    	String[] accessLine = structToken.split(".");
+    	String[] accessLine = structToken.split("\\.");
+    	System.out.println(Arrays.asList(accessLine));
     	StructSymbol ss = (StructSymbol) getSymbol(accessLine[0], Symbol.Types.STRUCT_VARIABLE);
     	ArrayList<Symbol> fields = ss.getFields();
-    	System.out.println(fields.get(0));
     	for(int i = 1; i < accessLine.length; i++) {
     		if(i == accessLine.length-1) {
     			
@@ -462,11 +473,109 @@ public class MyVisitor extends CaronteBaseVisitor {
     
     @Override
     public String visitVar(CaronteParser.VarContext ctx) { 
-
+    	
         //System.out.println(ctx.getChild(0).getText());
         return "";
     }
-
+    @Override
+    
+    public Object visitBinExp(CaronteParser.BinExpContext ctx) { 
+    	//String leftSide = ctx.getChild(0).getText();
+    	//ArrayList<String> tokens = Utils.splitExpressionIntoTokens(leftSide);
+    	
+    	//String rightSide = ctx.getChild(2).getText();
+    	//System.out.println(ctx.);
+    	//System.out.println(leftSide);
+    	//System.out.println(rightSide);
+    	
+//    	System.out.println("kkk" + ctx.children.size());
+    	
+    	ArrayList<ParseTree> leafNodes = new ArrayList(), toVisit = new ArrayList();
+    	
+    	for (ParseTree child : ctx.children) {
+    		toVisit.add(child);
+    	}
+    	
+    	while (toVisit.size() > 0) {
+    		ParseTree p = toVisit.remove(0);
+    		int childCount = p.getChildCount();
+    		if (childCount == 0) {
+    			leafNodes.add(p);
+    		} else {
+    			for (int i = 0; i < childCount; i++) {
+    				toVisit.add(p.getChild(i));
+    			}
+    		}
+    	}
+    	
+    	ArrayList<ParseTree> newLeaves = new ArrayList();
+    	
+    	
+    	for (ParseTree p : leafNodes) {
+//    		if (checkToken(p.getText()) == null) {
+//    			leafNodes.remove(p);
+//    		}
+    		if (!(p.getText().equals("+") ||
+    				p.getText().equals("-") ||
+    				p.getText().equals("(") ||
+    				p.getText().equals(")"))) {
+    			newLeaves.add(p);
+    		}
+    	}
+    	
+    	Set<String> types = new HashSet<String>();
+    	
+    	for (ParseTree p : newLeaves) {
+    		types.add(checkToken(p.getText()));
+    	}
+    	
+    	if (types.contains("Unknown")) {
+    		System.out.println("Variável não declarada");
+    	}
+    	if (types.size() > 1) {
+    		System.out.println("Tipos incompatíveis");
+    	}
+    	
+    	System.out.println(types);
+    	
+//    	for (int i = 0; i < ctx.children)
+    	
+//    	toVisit.add();
+    	
+//    	while
+    	
+    	return visitChildren(ctx);
+    }
+    
+    public String checkToken(String token) {
+    	Symbol symVar = getSymbol(token, Symbol.Types.VARIABLE);
+    	Symbol symFun = getSymbol(token, Symbol.Types.FUNCTION);
+    	Symbol symStr = getSymbol(token, Symbol.Types.STRUCT_VARIABLE);
+    	Symbol symTyp = getSymbol(token, Symbol.Types.STRUCT_DEFINITION);
+    	if (symVar != null) {
+    		return ((VariableSymbol) symVar).getVarType();
+    	}
+    	if (symFun != null) {
+    		return ((FunctionSymbol) symFun).getRetType();
+    	}
+    	if (symStr != null) {
+    		return ((StructSymbol) symStr).getStructDefName();
+    	}
+    	if (symTyp != null) {
+//    		return  ((StructDefinitionSymbol) symTyp).get
+    	}
+    	if (Utils.isInteger(token)) {
+    		return "int";
+    	}
+    	if (Utils.isBoolean(token)) {
+    		return "boolean";
+    	}
+    	if (Utils.isString(token)) {
+    		return "string";
+    	}
+    	return "Unknown";
+    }
+    
     public static void main(String[] args) {
         ANTLRInputStream input = null;
         try {
@@ -482,10 +591,9 @@ public class MyVisitor extends CaronteBaseVisitor {
 
         MyVisitor mv = new MyVisitor();
         mv.visit(tree);
-        System.out.println(mv.symbolTable.size());
-        System.out.println(mv.symbolTable.get(2).toString());
+        //System.out.println(mv.symbolTable.size());
         for (Symbol s: mv.symbolTable) {
-        	System.out.println(s.t +" " +s.toString());	
+        	//System.out.println(s.t +" " +s.toString());	
         }
        
     }

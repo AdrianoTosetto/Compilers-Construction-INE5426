@@ -59,14 +59,12 @@ grammar Caronte;
 
 	listaexp: (exp ',')* exp;
 
-	exp:    valores | expprefixo | '{' (listaexp)? '}' |
-		exp opbin exp | opunaria exp | '(' exp ')' |
-
-		'(' exp {notifyErrorListeners(" existem parênteses não fechados! ");} |
-		exp ')' {notifyErrorListeners(" existem parênteses fechados a mais! ");} |
-		exp opbin {notifyErrorListeners("um operando era esperado no lado direito de " + $opbin.text);} |
-		opbin exp {notifyErrorListeners("um operando era esperado no lado esquerdo de " + $opbin.text);} |
-		opunaria {notifyErrorListeners("Era esperado um operando para " + $opunaria.text);}
+	exp: valores #expValues
+		 | expprefixo #expPrefix 
+		 | '{' (listaexp)? '}' #expListExp
+		 | exp opbin exp #binExp
+		 | opunaria exp #unariaExp
+		 | '(' exp ')' #paraExp
 	;
 
 	valores: 'null' | 'false' | 'true' | Decimal | String | Inteiro;

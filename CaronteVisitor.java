@@ -175,11 +175,47 @@ public interface CaronteVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitListaexp(CaronteParser.ListaexpContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CaronteParser#exp}.
+	 * Visit a parse tree produced by the {@code expListExp}
+	 * labeled alternative in {@link CaronteParser#exp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExp(CaronteParser.ExpContext ctx);
+	T visitExpListExp(CaronteParser.ExpListExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code binExp}
+	 * labeled alternative in {@link CaronteParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinExp(CaronteParser.BinExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code unariaExp}
+	 * labeled alternative in {@link CaronteParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnariaExp(CaronteParser.UnariaExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code expValues}
+	 * labeled alternative in {@link CaronteParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpValues(CaronteParser.ExpValuesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code paraExp}
+	 * labeled alternative in {@link CaronteParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParaExp(CaronteParser.ParaExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code expPrefix}
+	 * labeled alternative in {@link CaronteParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpPrefix(CaronteParser.ExpPrefixContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CaronteParser#valores}.
 	 * @param ctx the parse tree
