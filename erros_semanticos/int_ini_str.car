@@ -13,7 +13,7 @@ string func():
 end
 
 void main():
-	Aluno Joao = {};
-	array string strArray[4] = {"a","b"};
-	int idade = Joao.p.idade + func("a") + VarNaoDeclarada;
+	string a = "stringaaa";
+	string b = "hahha";
+	string x = ++func();
 end

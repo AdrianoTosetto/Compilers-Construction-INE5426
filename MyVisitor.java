@@ -12,10 +12,12 @@ import java.util.Set;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.tree.*;
 
+import jdk.internal.org.objectweb.asm.Type;
 import sun.text.normalizer.SymbolTable;
 
 public class MyVisitor extends CaronteBaseVisitor {
     public ParseTreeProperty<String> productionNames = new ParseTreeProperty<>();
+    public ParseTreeProperty<String> types = new ParseTreeProperty<>();
     ArrayList<Symbol> symbolTable = new ArrayList<Symbol>();
     
     public enum Errors{
@@ -28,8 +30,17 @@ public class MyVisitor extends CaronteBaseVisitor {
 
     @Override
     public Object visitChamadadefuncao(CaronteParser.ChamadadefuncaoContext ctx) {
-    	
+    	//if(ctx.getStart().getLine());
     	String functionName = ctx.getChild(0).getText();
+    	
+    	FunctionSymbol fs = (FunctionSymbol)getSymbol(functionName, Symbol.Types.FUNCTION);
+    	
+    	if(fs == null) {
+    		System.out.println("Função ``" +functionName+"`` não foi declarada. Linha: " + ctx.getStart().getLine());
+    	} else {
+    		types.put(ctx, fs.getRetType()+"");
+    	}
+    	
     	ParseTree funcParams = ctx.getChild(2);
     	ArrayList<Integer> sizes = new ArrayList<Integer>();
     	ArrayList<String> types = new ArrayList<String>();
@@ -75,6 +86,7 @@ public class MyVisitor extends CaronteBaseVisitor {
         String varType = ctx.getChild(0).getText();
         String varValue = ctx.getChild(3).getText();
         System.out.println(varType);
+        visitChildren(ctx);
         switch(varType) {
 
             case "boolean":
@@ -168,14 +180,15 @@ public class MyVisitor extends CaronteBaseVisitor {
 
             case "string":
             	
-                if(!Utils.isString(varValue)) {
-               	 System.out.println("hmm not a string");
+               if(!Utils.isString(varValue)) {
+               	 //System.out.println("hmm not a string");
+            	   
                } else {
-               	String varName = ctx.getChild(1).getText();
-               	VariableSymbol vs = new VariableSymbol(varName, "string", 1);
-               	vs.t = Symbol.Types.VARIABLE;
-               	symbolTable.add(vs);
-               }
+	               	String varName = ctx.getChild(1).getText();
+	               	VariableSymbol vs = new VariableSymbol(varName, "string", 1);
+	               	vs.t = Symbol.Types.VARIABLE;
+	               	symbolTable.add(vs);
+               	}
             break;
             
             case "array":
@@ -511,14 +524,63 @@ public class MyVisitor extends CaronteBaseVisitor {
     }
     
     @Override
-    public String visitVar(CaronteParser.VarContext ctx) { 
+    public Object visitVar(CaronteParser.VarContext ctx) { 
     	
-        //System.out.println(ctx.getChild(0).getText());
-        return "";
+        visitChildren(ctx);
+    	String varName = ctx.getText();
+    	VariableSymbol varSymbol = (VariableSymbol)getSymbol(varName, Symbol.Types.VARIABLE);
+    	if(varSymbol == null) {
+    		System.out.println("Variável ``"+varName+"`` não foi declarada. Linha do erro: " + ctx.getStart().getLine());
+    	} else {
+    		types.put(ctx, varSymbol.getVarType());
+    	}
+
+    	return visitChildren(ctx);
     }
-    @Override
     
-    public Object visitBinExp(CaronteParser.BinExpContext ctx) { 
+    @Override
+    public Object visitExpPrefix(CaronteParser.ExpPrefixContext ctx) {
+    	visitChildren(ctx);
+    	types.put(ctx, types.get(ctx.getChild(0).getChild(0)));
+    	
+    	//System.out.println(ctx.getChild(0).getChild(0).getText());
+    	//System.out.println("GHAHAHAHA="+ types.get(ctx.getChild(0).getChild(0)));
+    	//System.out.println(types);
+    	return null;
+    }
+    
+    public boolean isUnaryOperatorValidForType(String operator, String type) {
+    	switch (operator) {
+		case "++":
+			if(type.equals("boolean") || type.equals("string")) return false;
+			return true;
+		case "--":
+			if(type.equals("boolean") || type.equals("string")) return false;
+			return true;
+		default:
+			return false;
+		}    	
+    }
+    
+    @Override
+    public Object visitUnariaExp(CaronteParser.UnariaExpContext ctx) {
+    	visitChildren(ctx);
+    	String type = types.get(ctx.getChild(1));
+    	String operator = ctx.getChild(0).getText();
+    	if(!isUnaryOperatorValidForType(operator, type)) {
+    		System.out.println("O operador " + operator + " não pode ser usado em conjunto com o tipo " + 
+    		type+". Linha: " + ctx.getStart().getLine()
+    				);
+    	}
+    	
+    	return null;
+    }
+    
+    @Override
+    public Object visitBinExp(CaronteParser.BinExpContext ctx) {
+    	visitChildren(ctx);
+    	//types.put(ctx, "testando");
+    	//System.out.println("CHILDCOUNT = "+ctx.getChildCount());
     	//String leftSide = ctx.getChild(0).getText();
     	//ArrayList<String> tokens = Utils.splitExpressionIntoTokens(leftSide);
     	
@@ -529,7 +591,25 @@ public class MyVisitor extends CaronteBaseVisitor {
     	
 //    	System.out.println("kkk" + ctx.children.size());
     	
-    	ArrayList<ParseTree> leafNodes = new ArrayList(), toVisit = new ArrayList();
+    	Set<String> childrenTypes = new HashSet<String>();
+    	
+    	String typeOperandOne = types.get(ctx.getChild(0));
+    	String nameOperandOne = ctx.getChild(0).getText();
+    	String typeOperandTwo = types.get(ctx.getChild(2));
+    	String nameOperandTwo = ctx.getChild(2).getText();
+    	if(typeOperandOne == null || typeOperandTwo == null) return null;
+    	if(!typeOperandOne.equals(typeOperandTwo)) {
+    		System.out.println("Operandos ``"+nameOperandOne+"`` e ``"+nameOperandTwo+"`` não têm o mesmo tipo");
+    	} else {
+    		/*
+    		 * tipo da expressão binária está ok, marca esse nodo com o tipo
+    		 * */
+    		
+    		types.put(ctx, typeOperandOne);
+    	}
+    	
+    	
+    	/*ArrayList<ParseTree> leafNodes = new ArrayList(), toVisit = new ArrayList();
     	
     	for (ParseTree child : ctx.children) {
     		toVisit.add(child);
@@ -575,7 +655,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     		System.out.println("Tipos incompatíveis");
     	}
     	
-    	System.out.println(types);
+    	System.out.println(types);*/
     	
 //    	for (int i = 0; i < ctx.children)
     	
@@ -583,7 +663,8 @@ public class MyVisitor extends CaronteBaseVisitor {
     	
 //    	while
     	
-    	return visitChildren(ctx);
+    	//return visitChildren(ctx);
+    	return null;
     }
     
     public String checkToken(String token) {
