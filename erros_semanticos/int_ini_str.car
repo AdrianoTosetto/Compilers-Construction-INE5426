@@ -8,12 +8,18 @@ struct Aluno {
 	int nota
 };
 
-string func():
-	return "MinhaString";
+int func():
+	return "kkk";
 end
 
+struct Pessoa {
+	string name,
+	int idade
+};
+
 void main():
-	string a = "stringaaa";
-	string b = "hahha";
-	string x = ++func();
+	int a = 12;
+	int y = true;
+	int x = a + func() + 12;
+	boolean kkk = x + true;
 end

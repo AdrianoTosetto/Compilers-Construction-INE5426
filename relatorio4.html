@@ -518,7 +518,7 @@ end
 		</div>
 	</div>
 
-
+<div>
 		<h3>Inicializando uma variável usando uma função cujo retorno não é compatível</h3>
 		<code>
 			<pre>
@@ -586,7 +586,45 @@ end	</pre>
 		   <i class="fa fa-times-circle"></i>
 		   A função ``func("a")`` com essa assinatura não foi declarada		
 		</div>
+
+
+
+
+
+<div>
+		<h3>Função com tipo e retorno compatíveis</h3>
+		<code>
+			<pre>
+int func():
+	return "MinhaString";
+end
+			</pre>
+		</code>
+		<div class="isa_error">
+		   <i class="fa fa-times-circle"></i>
+Função func não pode retornar com tipo string. Linha do erro: 11
+		</div>
 	</div>
+
+
+	</div>
+
+<div>
+		<h3>Atribuição com lados esquerdo e direito compatíveis</h3>
+		<code>
+			<pre>
+int y = true;
+			</pre>
+		</code>
+		<div class="isa_error">
+		   <i class="fa fa-times-circle"></i>
+A variável ``y`` não pode ser inicializada com valores do tipo boolean. Linha do erro: 22
+		</div>
+	</div>
+
+
+	</div>
+
 
 
 </body>

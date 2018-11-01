@@ -87,81 +87,94 @@ public class MyVisitor extends CaronteBaseVisitor {
         String varValue = ctx.getChild(3).getText();
         System.out.println(varType);
         visitChildren(ctx);
+        
         switch(varType) {
 
             case "boolean":
-
+            	if (!types.get(ctx.getChild(3)).equals("bool")) {
+            		System.out.println("A variável ``" + ctx.getChild(1).getText() + "`` não pode ser inicializada"+
+     					   " com valores do tipo " + types.get(ctx.getChild(3)) + "."+
+     					   " Linha do erro: " + ctx.getStart().getLine());
+            	} else {
+                	String varName = ctx.getChild(1).getText();
+                	VariableSymbol vs = new VariableSymbol(varName, "bool", 1);
+                	vs.t = Symbol.Types.VARIABLE;
+                	symbolTable.add(vs);
+                }
             break;
             case "int":
-                if(!Utils.isInteger(varValue)) {
-                	 ArrayList<String> tokens = Utils.splitExpressionIntoTokens(varValue);
-                	 Errors e = null;
-                	 //System.out.println(tokens);
-                	 for(String t : tokens) {
-                		 boolean symbolFound = false;
-                		 /*
-                		  * verifica se o símbolo encontrado é uma função
-                		  * */
-                		 Symbol func = getSymbol(t.split("[(]")[0], Symbol.Types.FUNCTION);
-                		 if(func != null) {
-                			 symbolFound = true;
-                			 if(!((FunctionSymbol)func).getRetType().equals("int")) {
-                				 System.out.println("Retorno da função " + t + " não pode ser usado para esta expressão");
-                			 }
-                		 }
-                		 /*
-                		  * verifica se é uma veriavel
-                		  * */
-                		 if(t.contains("[")) {
-                			 System.out.println("um array");
-                			 String arrayName = t.substring(0, t.length()-3);
-                			 System.out.println("Array = " +arrayName);
-                			 int arrayIndex = Integer.parseInt(t.substring(t.length()-2, t.length()-1));
-                			 System.out.println("index = " + arrayIndex);
-                			 VariableSymbol arrayVar = (VariableSymbol)getSymbol(arrayName, Symbol.Types.VARIABLE);
-                			 if(arrayIndex > arrayVar.getSize()) {
-                				 System.out.println("Index " +arrayIndex +" não existe no vetor " + arrayName);
-                			 }
-                		 }
-                		 Symbol variable = getSymbol(t.trim(), Symbol.Types.VARIABLE);
-                		 if(variable != null) {
-                			 symbolFound = true;
-                			 System.out.println();
-                			 if(!((VariableSymbol)variable).getVarType().equals("int")) {
-                				 System.out.println("Operando " +t +" Não pode ser");
-                			 }
-                		 }
-                		 String[] tt = t.split("\\.");
-                		 //System.out.println(t);
-                		 //System.out.println(Arrays.asList(tt));
-                		 
-                		 String structName = tt[0];
-                		 StructSymbol structVariable = (StructSymbol) getSymbol(structName, Symbol.Types.STRUCT_VARIABLE);
-                		 System.out.println(Arrays.asList(tt));
-                		 if(structVariable != null) {
-                			 symbolFound = true;
-                			 int i = 2;
-                			 Symbol s = structVariable.findFieldByName(tt[1]);
-                			 while(s.t == Symbol.Types.STRUCT_VARIABLE) {
-                				 s = ((StructSymbol) s).findFieldByName(tt[i]);
-                				 i++;
-                			 }
-                			 if(!((VariableSymbol)s).getVarType().equals("int")) {
-                				 System.out.println("Este campo deveria ser um int :/");
-                			 }
-                		 }
-                		 
-                		 if(Utils.isInteger(t)) {
-                			 symbolFound = true;
-                		 }
-                		 if(Utils.isString(t)) {
-                			 System.out.println();
-                		 }
-                		 if(!symbolFound) {
-                			 System.out.println("O símbolo " + t + " não foi declarado como função ou variável");
-                			 e = Errors.SYMBOL_WAS_NOT_DECLARED;
-                		 }
-                	 }
+                if (!types.get(ctx.getChild(3)).equals("int")) {
+                	System.out.println("A variável ``" + ctx.getChild(1).getText() + "`` não pode ser inicializada"+
+                					   " com valores do tipo " + types.get(ctx.getChild(3)) + "."+
+                					   " Linha do erro: " + ctx.getStart().getLine());
+//                	 ArrayList<String> tokens = Utils.splitExpressionIntoTokens(varValue);
+//                	 Errors e = null;
+//                	 //System.out.println(tokens);
+//                	 for(String t : tokens) {
+//                		 boolean symbolFound = false;
+//                		 /*
+//                		  * verifica se o símbolo encontrado é uma função
+//                		  * */
+//                		 Symbol func = getSymbol(t.split("[(]")[0], Symbol.Types.FUNCTION);
+//                		 if(func != null) {
+//                			 symbolFound = true;
+//                			 if(!((FunctionSymbol)func).getRetType().equals("int")) {
+//                				 System.out.println("Retorno da função " + t + " não pode ser usado para esta expressão");
+//                			 }
+//                		 }
+//                		 /*
+//                		  * verifica se é uma veriavel
+//                		  * */
+//                		 if(t.contains("[")) {
+//                			 System.out.println("um array");
+//                			 String arrayName = t.substring(0, t.length()-3);
+//                			 System.out.println("Array = " +arrayName);
+//                			 int arrayIndex = Integer.parseInt(t.substring(t.length()-2, t.length()-1));
+//                			 System.out.println("index = " + arrayIndex);
+//                			 VariableSymbol arrayVar = (VariableSymbol)getSymbol(arrayName, Symbol.Types.VARIABLE);
+//                			 if(arrayIndex > arrayVar.getSize()) {
+//                				 System.out.println("Index " +arrayIndex +" não existe no vetor " + arrayName);
+//                			 }
+//                		 }
+//                		 Symbol variable = getSymbol(t.trim(), Symbol.Types.VARIABLE);
+//                		 if(variable != null) {
+//                			 symbolFound = true;
+//                			 System.out.println();
+//                			 if(!((VariableSymbol)variable).getVarType().equals("int")) {
+//                				 System.out.println("Operando " +t +" Não pode ser");
+//                			 }
+//                		 }
+//                		 String[] tt = t.split("\\.");
+//                		 //System.out.println(t);
+//                		 //System.out.println(Arrays.asList(tt));
+//                		 
+//                		 String structName = tt[0];
+//                		 StructSymbol structVariable = (StructSymbol) getSymbol(structName, Symbol.Types.STRUCT_VARIABLE);
+//                		 System.out.println(Arrays.asList(tt));
+//                		 if(structVariable != null) {
+//                			 symbolFound = true;
+//                			 int i = 2;
+//                			 Symbol s = structVariable.findFieldByName(tt[1]);
+//                			 while(s.t == Symbol.Types.STRUCT_VARIABLE) {
+//                				 s = ((StructSymbol) s).findFieldByName(tt[i]);
+//                				 i++;
+//                			 }
+//                			 if(!((VariableSymbol)s).getVarType().equals("int")) {
+//                				 System.out.println("Este campo deveria ser um int :/");
+//                			 }
+//                		 }
+//                		 
+//                		 if(Utils.isInteger(t)) {
+//                			 symbolFound = true;
+//                		 }
+//                		 if(Utils.isString(t)) {
+//                			 System.out.println();
+//                		 }
+//                		 if(!symbolFound) {
+//                			 System.out.println("O símbolo " + t + " não foi declarado como função ou variável");
+//                			 e = Errors.SYMBOL_WAS_NOT_DECLARED;
+//                		 }
+//                	 }
                 } else {
                 	String varName = ctx.getChild(1).getText();
                 	VariableSymbol vs = new VariableSymbol(varName, "int", 1);
@@ -179,16 +192,16 @@ public class MyVisitor extends CaronteBaseVisitor {
             break;
 
             case "string":
-            	
-               if(!Utils.isString(varValue)) {
-               	 //System.out.println("hmm not a string");
-            	   
-               } else {
-	               	String varName = ctx.getChild(1).getText();
-	               	VariableSymbol vs = new VariableSymbol(varName, "string", 1);
-	               	vs.t = Symbol.Types.VARIABLE;
-	               	symbolTable.add(vs);
-               	}
+            	if (!types.get(ctx.getChild(3)).equals("string")) {
+            		System.out.println("A variável ``" + ctx.getChild(1).getText() + "`` não pode ser inicializada"+
+     					   " com valores do tipo " + types.get(ctx.getChild(3)) + "."+
+     					   " Linha do erro: " + ctx.getStart().getLine());
+            	} else {
+                	String varName = ctx.getChild(1).getText();
+                	VariableSymbol vs = new VariableSymbol(varName, "string", 1);
+                	vs.t = Symbol.Types.VARIABLE;
+                	symbolTable.add(vs);
+                }
             break;
             
             case "array":
@@ -436,11 +449,12 @@ public class MyVisitor extends CaronteBaseVisitor {
 
     @Override
     public Object visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx) {
+    	visitChildren(ctx);
     	
     	ParseTree params = ctx.getChild(1).getChild(1); // the subtree of params
     	
-    	String retType = ctx.getChild(0).getChild(0).getText();
-    	String functionName = ctx.getChild(0).getChild(1).getText();
+    	String retType = ctx.getChild(0).getChild(ctx.getChild(0).getChildCount()-2).getText();
+    	String functionName = ctx.getChild(0).getChild(ctx.getChild(0).getChildCount()-1).getText();
     	ArrayList<Param> functionParams = new ArrayList<Param>();
     	ArrayList<String> functionParamsTypes = new ArrayList<String>();
     	ArrayList<Integer> paramSizes = new ArrayList<Integer>();
@@ -473,6 +487,24 @@ public class MyVisitor extends CaronteBaseVisitor {
     		}
     	}
     	
+    	ParseTree lastValue = ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).
+    		getChild(ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).getChildCount()-1).
+    		getChild(ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).
+    	    		getChild(ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).getChildCount()-1).getChildCount()-2);
+    	ParseTree lastCommand = ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).
+        		getChild(ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).getChildCount()-1).
+        		getChild(0);
+    	String returningType;
+    	if (lastValue.getText().equals("return") || !lastCommand.getText().equals("return")) returningType = "void";
+    	else returningType = types.get(lastValue.getChild(0));
+    	
+    	System.out.println(lastCommand.getText());
+    	System.out.println(returningType);
+    	
+    	if (!returningType.equals(retType)) {
+    		System.out.println("Função " + functionName + " não pode retornar com tipo " + returningType + ". Linha do erro: "+
+    						   ctx.getStart().getLine());
+    	}
     	
     	FunctionSymbol fs = new FunctionSymbol(functionName, functionParams);
     	fs.setRetType(retType);
@@ -524,15 +556,63 @@ public class MyVisitor extends CaronteBaseVisitor {
     }
     
     @Override
+    public Object visitExpValues(CaronteParser.ExpValuesContext ctx) {
+    	visitChildren(ctx);
+    	
+    	String valueContent = ctx.getText();
+    	
+    	types.put(ctx, Utils.getTypeValue(valueContent));
+    	
+    	return visitChildren(ctx);
+    }
+    
+    @Override
+    public Object visitParaExp(CaronteParser.ParaExpContext ctx) {
+    	visitChildren(ctx);
+    	
+    	types.put(ctx, types.get(ctx.getChild(1)));
+    	
+    	return visitChildren(ctx);
+    }
+    
+    @Override
     public Object visitVar(CaronteParser.VarContext ctx) { 
     	
         visitChildren(ctx);
     	String varName = ctx.getText();
     	VariableSymbol varSymbol = (VariableSymbol)getSymbol(varName, Symbol.Types.VARIABLE);
-    	if(varSymbol == null) {
-    		System.out.println("Variável ``"+varName+"`` não foi declarada. Linha do erro: " + ctx.getStart().getLine());
+    	
+    	if(varName.contains(".")) {
+        	/*
+        	 * O nome é um estrutura
+        	 * */
+    		String structName = varName.split("\\.")[0];
+    		StructSymbol ss  = (StructSymbol) getSymbol(structName, Symbol.Types.STRUCT_VARIABLE);
+    		if(ss == null) {
+    			System.out.println("A Struct ``" + structName + "`` não foi anteriormente declarada. Linha: " + ctx.getStart().getLine());
+    		} else {
+    			/*
+    			 * verificar se o campo existe, se sim, verificar o tipo dele
+    			 * */
+	   			int i = 2;
+	   			String[] tt = varName.split("\\.");
+	   			Symbol s = ss.findFieldByName(tt[1]);
+	   			while(s.t == Symbol.Types.STRUCT_VARIABLE) {
+	   				s = ((StructSymbol) s).findFieldByName(tt[i]);
+	   				i++;
+	   			}
+	   			System.out.println("TIPO DA VARIÁVEL: "+((VariableSymbol)s).getVarType());
+    		}
+    		
     	} else {
-    		types.put(ctx, varSymbol.getVarType());
+    		/*
+    		 * O nome é uma variavel normal
+    		 * */
+	    	if(varSymbol == null) {
+	    		System.out.println("Variável ``"+varName+"`` não foi declarada. Linha do erro: " + ctx.getStart().getLine());
+	    	} else {
+	    		types.put(ctx, varSymbol.getVarType());
+	    	}
     	}
 
     	return visitChildren(ctx);
@@ -557,6 +637,15 @@ public class MyVisitor extends CaronteBaseVisitor {
 		case "--":
 			if(type.equals("boolean") || type.equals("string")) return false;
 			return true;
+		case "-":
+			if(type.equals("boolean") || type.equals("string")) return false;
+			return true;
+		case "#":
+			if(type.equals("string")) return true;
+			return false;
+		case "not":
+			if(type.equals("boolean")) return true;
+			return false;
 		default:
 			return false;
 		}    	
@@ -571,6 +660,8 @@ public class MyVisitor extends CaronteBaseVisitor {
     		System.out.println("O operador " + operator + " não pode ser usado em conjunto com o tipo " + 
     		type+". Linha: " + ctx.getStart().getLine()
     				);
+    	} else {
+    		types.put(ctx, type);
     	}
     	
     	return null;
@@ -600,6 +691,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if(typeOperandOne == null || typeOperandTwo == null) return null;
     	if(!typeOperandOne.equals(typeOperandTwo)) {
     		System.out.println("Operandos ``"+nameOperandOne+"`` e ``"+nameOperandTwo+"`` não têm o mesmo tipo");
+    		types.put(ctx, "invalid");
     	} else {
     		/*
     		 * tipo da expressão binária está ok, marca esse nodo com o tipo
