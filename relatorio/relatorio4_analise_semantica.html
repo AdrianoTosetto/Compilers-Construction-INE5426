@@ -48,31 +48,39 @@
 		    font-size:2em;
 		    vertical-align:middle;
 		}
-.accordion {
-    background-color: #eee;
-    color: #444;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    text-align: left;
-    border: none;
-    outline: none;
-    transition: 0.4s;
-}
+		.accordion {
+		    background-color: #eee;
+		    color: #444;
+		    cursor: pointer;
+		    padding: 18px;
+		    width: 100%;
+		    text-align: left;
+		    border: none;
+		    outline: none;
+		    transition: 0.4s;
+		}
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-.active, .accordion:hover {
-    background-color: #ccc;
-}
+		.active, .accordion:hover {
+		    background-color: #ccc;
+		}
+		i{
+			color:red;
+		}
 
-/* Style the accordion panel. Note: hidden by default */
-.panel {
-    padding: 0 18px;
-    background-color: white;
-    display: none;
-    overflow: hidden;
-}
-	</style>
+		/* Style the accordion panel. Note: hidden by default */
+			.panel {
+			    padding: 0 18px;
+			    background-color: white;
+			    display: none;
+			    overflow: hidden;
+			}
+			#list1 { }
+			#list1 ul { list-style:none; text-align:center; border-top:1px solid #eee; border-bottom:1px solid #eee; padding:10px 0; }
+			#list1 ul li { display:inline; text-transform:uppercase; padding:0 10px; letter-spacing:10px; }
+			#list1 ul li a { text-decoration:none; color:#eee; }
+			#list1 ul li a:hover { text-decoration:underline; }
+</style>
 	<script type="text/javascript">
 		window.onload = function(){
 		var acc = document.getElementsByClassName("accordion");
@@ -97,6 +105,90 @@
 	</script>
 </head>
 <body>
+	<div class="us">
+		<h2>Análise Semântica</h2>
+		<ol>
+			<li>Adriano Tosetto: 15104099</li>
+			<li>Giulio Simão: 15100738</li>
+		</ol>
+	</div>
+	<div class="strategy">
+		<h3>Estratégia</h3>
+		<p>
+			Quando começamos a fazer a análise semântica, nós não tínhamos atribuido nenhuma informação aos nodos em um primeiro momento. Isso fez com que, por exemplo, na hora de analisar uma atribuição de uma variávels, nós quebrássemos a parte direita da atribuição em tokens e com esses tokens, descobrir o tipo deles. Mas eles poderiam ser uma função, variável normal, array ou literal. Isso gerava muitas verificações. Depois da apresentação, nós descobrimos um jeito de fazer isso de uma forma mais fácil.
+		</p>
+		<img src="explicacao_estrategia.png">
+		<p>Como mostrado na imagem, os nodos folha são filhos de nodos que facilmente dizem qual o seu papel. Por exemplo, o nodo  <i>func ( )</i> é filho do nodo <i>chamadadefuncao</i>. Com isso é muito mais fácil determinar o tipo já no nodo folha. Nós passamos isso para o nodo pai, e esse tipo vai sendo verificado até chegar no nodo <i>exp</i>. Isso facilitou muito na hora de verificar atribuições pois a nossa regra na gramática para isso é <i>tipo_var var ('=' (exp))? ';' </i>. Os filhos de <i>exp</i> vão passando seus respectivos tipos para cima até chegar nele, e claro, já veerificando por erros.</i>
+
+		<p>Nós utilizamos o <i>Visitor</i> para implementação, isso nos deu a possibilidade de avisar todos os erros sem precisar para a análise semântica em si.</p>
+
+		<pre>
+			<code>
+@Override
+public Object visitVar(CaronteParser.VarContext ctx) { 
+    	
+    visitChildren(ctx);
+   	String varName = ctx.getText();
+   	VariableSymbol varSymbol = (VariableSymbol)getSymbol(varName, Symbol.Types.VARIABLE);
+    	
+    if(varName.contains(".")) {
+        	/*
+        	 * O nome é um estrutura
+        	 * */
+    String structName = varName.split("\\.")[0];
+    StructSymbol ss  = (StructSymbol) getSymbol(structName, Symbol.Types.STRUCT_VARIABLE);
+	    if(ss == null) {
+	    	System.out.println("A Struct ``" + structName + "`` não foi anteriormente declarada. Linha: " + ctx.getStart().getLine());
+	    } else {
+	    	/*
+	    	 * verificar se o campo existe, se sim, verificar o tipo dele
+	    	 * */
+			int i = 2;
+		   	String[] tt = varName.split("\\.");
+		   	Symbol s = ss.findFieldByName(tt[1]);
+		   	while(s.t == Symbol.Types.STRUCT_VARIABLE) {
+		   			s = ((StructSymbol) s).findFieldByName(tt[i]);
+		   				i++;
+		   	}
+		   	System.out.println("TIPO DA VARIÁVEL: "+((VariableSymbol)s).getVarType());
+	    }
+    		
+    } else {
+    		/*
+    		 * O nome é uma variavel normal
+    		 * */
+	    if(varSymbol == null) {
+	    	System.out.println("Variável ``"+varName+"`` não foi declarada. Linha do erro: " + ctx.getStart().getLine());
+	    } else {
+	    	types.put(ctx, varSymbol.getVarType());
+	    }
+    }
+
+    	return visitChildren(ctx);
+}
+			</code>
+		</pre>
+<p>
+	Esse é o código da produção <i>Var</i>, que pode ser uma Struct ou variável normal. Com a linha <i>
+		types.put(ctx, varSymbol.getVarType()); 
+	</i>
+	nós podemos dizer ao pai de <i>Var</i> qual o seu tipo e ir repassando isso.
+</p>
+<p>
+	Nós criamos algumas classes para símbolos comuns da nossa liguagem:
+	<div id="">
+	<ul id="">
+		<li>Symbol:</li> é a classe mais genérica, todo símbolo possui um <i>nome</i>
+		<li>SymbolVariable :</li> é a classe para tipos nativos da linguagem, como int e string. Possui tipos como<i>varType</i> para diferenciar os tipos (string, int e etc) e <i>size</i> que é usado para verificar se é um array ou não.
+		<li>StructDefintion:</li> é a classe para definição de Structs, do tipo mesmo. Ela tem os <i>fields</i> que são seus campos, os campos são do tipo <i>Symbol</i> para permitir todos os tipos possíveis, inclusive structs dentro de structs.
+		<li> StructVariable:</li> é uma variável de um tipo definido por <i>StructDefintion</i>.
+		<li> FunctionSymbol:</li> define uma função, possuir uma lista do tipo <i>Param</i> (outra classe do nosso projeto) e o tipo de retorno <i>retType</i>. Colocar os paramêtros na definição de funções permite a criação de função com nomes iguais, mais que têm parâmetros diferentes.
+
+ 	</ul> 
+ </div>
+
+</p>
+	</div>
 	<div class="classes">
 		<h3>Tipos de Símbolos</h3>
 		<div class="isa_info">

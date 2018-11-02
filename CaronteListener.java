@@ -95,15 +95,101 @@ public interface CaronteListener extends ParseTreeListener {
 	 */
 	void exitErro_ponto_virgula(CaronteParser.Erro_ponto_virgulaContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CaronteParser#comandobloco}.
+	 * Enter a parse tree produced by the {@code do}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
 	 * @param ctx the parse tree
 	 */
-	void enterComandobloco(CaronteParser.ComandoblocoContext ctx);
+	void enterDo(CaronteParser.DoContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link CaronteParser#comandobloco}.
+	 * Exit a parse tree produced by the {@code do}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
 	 * @param ctx the parse tree
 	 */
-	void exitComandobloco(CaronteParser.ComandoblocoContext ctx);
+	void exitDo(CaronteParser.DoContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code while}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void enterWhile(CaronteParser.WhileContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code while}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void exitWhile(CaronteParser.WhileContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code repeat}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void enterRepeat(CaronteParser.RepeatContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code repeat}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void exitRepeat(CaronteParser.RepeatContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code if}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void enterIf(CaronteParser.IfContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code if}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void exitIf(CaronteParser.IfContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code for}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void enterFor(CaronteParser.ForContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code for}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void exitFor(CaronteParser.ForContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code forInutil}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void enterForInutil(CaronteParser.ForInutilContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code forInutil}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void exitForInutil(CaronteParser.ForInutilContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code goto}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void enterGoto(CaronteParser.GotoContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code goto}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void exitGoto(CaronteParser.GotoContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code label}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void enterLabel(CaronteParser.LabelContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code label}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 */
+	void exitLabel(CaronteParser.LabelContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code atrib}
 	 * labeled alternative in {@link CaronteParser#comandoexpressao}.

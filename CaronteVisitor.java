@@ -62,11 +62,61 @@ public interface CaronteVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitErro_ponto_virgula(CaronteParser.Erro_ponto_virgulaContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CaronteParser#comandobloco}.
+	 * Visit a parse tree produced by the {@code do}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitComandobloco(CaronteParser.ComandoblocoContext ctx);
+	T visitDo(CaronteParser.DoContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code while}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhile(CaronteParser.WhileContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code repeat}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRepeat(CaronteParser.RepeatContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code if}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIf(CaronteParser.IfContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code for}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFor(CaronteParser.ForContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code forInutil}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForInutil(CaronteParser.ForInutilContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code goto}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGoto(CaronteParser.GotoContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code label}
+	 * labeled alternative in {@link CaronteParser#comandobloco}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLabel(CaronteParser.LabelContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code atrib}
 	 * labeled alternative in {@link CaronteParser#comandoexpressao}.

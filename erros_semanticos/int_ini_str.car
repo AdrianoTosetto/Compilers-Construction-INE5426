@@ -8,7 +8,7 @@ struct Aluno {
 	int nota
 };
 
-int func():
+string func():
 	return "kkk";
 end
 
@@ -17,9 +17,12 @@ struct Pessoa {
 	int idade
 };
 
+struct Joao {
+	int b
+};
+
 void main():
-	int a = 12;
-	int y = true;
-	int x = a + func() + 12;
-	boolean kkk = x + true;
+	Joao joao = {12};
+	int x = a + func() + joao.idade;
+	break;
 end

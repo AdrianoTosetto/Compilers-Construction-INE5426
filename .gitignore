@@ -60,3 +60,12 @@
 /CaronteParser$ExpValuesContext.class
 /CaronteParser$ParaExpContext.class
 /CaronteParser$UnariaExpContext.class
+/CaronteParser$DoContext.class
+/CaronteParser$ForContext.class
+/CaronteParser$ForInutilContext.class
+/CaronteParser$GotoContext.class
+/CaronteParser$IfContext.class
+/CaronteParser$LabelContext.class
+/CaronteParser$RepeatContext.class
+/CaronteParser$WhileContext.class
+/Scope.class

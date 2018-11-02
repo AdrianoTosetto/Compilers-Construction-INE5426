@@ -15,12 +15,13 @@ grammar Caronte;
 
 	erro_ponto_virgula: comandounico {notifyErrorListeners("';' é necessário");};
 
-	comandobloco: 'do' trecho 'end' |
-		      'while' exp 'do' trecho 'end' | 
-		      'repeat' trecho 'until' exp ';' | 
-		      'if' exp 'then' trecho ('elseif' exp 'then' trecho)* ('else' trecho)? 'end' |
-		      'for' ((tipovar | 'auto') Nome '=' exp)? ':' (exp)? ':' (comandounico)? 'do' trecho 'end' | 
-		      'for'  listadenomes 'in' listaexp 'do' trecho 'end' |  'goto' Nome ';' | Nome ':' comando;
+	comandobloco: 'do' trecho 'end' #do |
+		      'while' exp 'do' trecho 'end' #while | 
+		      'repeat' trecho 'until' exp ';' #repeat | 
+		      'if' exp 'then' trecho ('elseif' exp 'then' trecho)* ('else' trecho)? 'end' #if |
+		      'for' ((tipovar | 'auto') Nome '=' exp)? ':' (exp)? ':' (comandounico)? 'do' trecho 'end' #for | 
+		      'for'  listadenomes 'in' listaexp 'do' trecho 'end' #forInutil | 
+		      'goto' Nome ';' #goto | Nome ':' comando #label;
 	
 	comandoexpressao:   var listaatri exp #atrib | 
 			    'array' tipovar var ( '[' Inteiro ']' )+ ('=' exp)? #arrayDeclaration |

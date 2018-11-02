@@ -667,49 +667,198 @@ public class CaronteParser extends Parser {
 	}
 
 	public static class ComandoblocoContext extends ParserRuleContext {
-		public List<TrechoContext> trecho() {
-			return getRuleContexts(TrechoContext.class);
+		public ComandoblocoContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
 		}
-		public TrechoContext trecho(int i) {
-			return getRuleContext(TrechoContext.class,i);
+		@Override public int getRuleIndex() { return RULE_comandobloco; }
+	 
+		public ComandoblocoContext() { }
+		public void copyFrom(ComandoblocoContext ctx) {
+			super.copyFrom(ctx);
 		}
-		public List<ExpContext> exp() {
-			return getRuleContexts(ExpContext.class);
-		}
-		public ExpContext exp(int i) {
-			return getRuleContext(ExpContext.class,i);
-		}
-		public TerminalNode Nome() { return getToken(CaronteParser.Nome, 0); }
-		public ComandounicoContext comandounico() {
-			return getRuleContext(ComandounicoContext.class,0);
-		}
-		public TipovarContext tipovar() {
-			return getRuleContext(TipovarContext.class,0);
-		}
+	}
+	public static class ForInutilContext extends ComandoblocoContext {
 		public ListadenomesContext listadenomes() {
 			return getRuleContext(ListadenomesContext.class,0);
 		}
 		public ListaexpContext listaexp() {
 			return getRuleContext(ListaexpContext.class,0);
 		}
-		public ComandoContext comando() {
-			return getRuleContext(ComandoContext.class,0);
+		public TrechoContext trecho() {
+			return getRuleContext(TrechoContext.class,0);
 		}
-		public ComandoblocoContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_comandobloco; }
+		public ForInutilContext(ComandoblocoContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).enterComandobloco(this);
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).enterForInutil(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitComandobloco(this);
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitForInutil(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitComandobloco(this);
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitForInutil(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class GotoContext extends ComandoblocoContext {
+		public TerminalNode Nome() { return getToken(CaronteParser.Nome, 0); }
+		public GotoContext(ComandoblocoContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).enterGoto(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitGoto(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitGoto(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class RepeatContext extends ComandoblocoContext {
+		public TrechoContext trecho() {
+			return getRuleContext(TrechoContext.class,0);
+		}
+		public ExpContext exp() {
+			return getRuleContext(ExpContext.class,0);
+		}
+		public RepeatContext(ComandoblocoContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).enterRepeat(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitRepeat(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitRepeat(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ForContext extends ComandoblocoContext {
+		public TrechoContext trecho() {
+			return getRuleContext(TrechoContext.class,0);
+		}
+		public TerminalNode Nome() { return getToken(CaronteParser.Nome, 0); }
+		public List<ExpContext> exp() {
+			return getRuleContexts(ExpContext.class);
+		}
+		public ExpContext exp(int i) {
+			return getRuleContext(ExpContext.class,i);
+		}
+		public ComandounicoContext comandounico() {
+			return getRuleContext(ComandounicoContext.class,0);
+		}
+		public TipovarContext tipovar() {
+			return getRuleContext(TipovarContext.class,0);
+		}
+		public ForContext(ComandoblocoContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).enterFor(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitFor(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitFor(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class DoContext extends ComandoblocoContext {
+		public TrechoContext trecho() {
+			return getRuleContext(TrechoContext.class,0);
+		}
+		public DoContext(ComandoblocoContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).enterDo(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitDo(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitDo(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class LabelContext extends ComandoblocoContext {
+		public TerminalNode Nome() { return getToken(CaronteParser.Nome, 0); }
+		public ComandoContext comando() {
+			return getRuleContext(ComandoContext.class,0);
+		}
+		public LabelContext(ComandoblocoContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).enterLabel(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitLabel(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitLabel(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class WhileContext extends ComandoblocoContext {
+		public ExpContext exp() {
+			return getRuleContext(ExpContext.class,0);
+		}
+		public TrechoContext trecho() {
+			return getRuleContext(TrechoContext.class,0);
+		}
+		public WhileContext(ComandoblocoContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).enterWhile(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitWhile(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitWhile(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IfContext extends ComandoblocoContext {
+		public List<ExpContext> exp() {
+			return getRuleContexts(ExpContext.class);
+		}
+		public ExpContext exp(int i) {
+			return getRuleContext(ExpContext.class,i);
+		}
+		public List<TrechoContext> trecho() {
+			return getRuleContexts(TrechoContext.class);
+		}
+		public TrechoContext trecho(int i) {
+			return getRuleContext(TrechoContext.class,i);
+		}
+		public IfContext(ComandoblocoContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).enterIf(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitIf(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitIf(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -723,6 +872,7 @@ public class CaronteParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
 			case 1:
+				_localctx = new DoContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(137);
@@ -734,6 +884,7 @@ public class CaronteParser extends Parser {
 				}
 				break;
 			case 2:
+				_localctx = new WhileContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(141);
@@ -749,6 +900,7 @@ public class CaronteParser extends Parser {
 				}
 				break;
 			case 3:
+				_localctx = new RepeatContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(147);
@@ -764,6 +916,7 @@ public class CaronteParser extends Parser {
 				}
 				break;
 			case 4:
+				_localctx = new IfContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(153);
@@ -811,6 +964,7 @@ public class CaronteParser extends Parser {
 				}
 				break;
 			case 5:
+				_localctx = new ForContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(173);
@@ -885,6 +1039,7 @@ public class CaronteParser extends Parser {
 				}
 				break;
 			case 6:
+				_localctx = new ForInutilContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(195);
@@ -904,6 +1059,7 @@ public class CaronteParser extends Parser {
 				}
 				break;
 			case 7:
+				_localctx = new GotoContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
 				setState(203);
@@ -915,6 +1071,7 @@ public class CaronteParser extends Parser {
 				}
 				break;
 			case 8:
+				_localctx = new LabelContext(_localctx);
 				enterOuterAlt(_localctx, 8);
 				{
 				setState(206);

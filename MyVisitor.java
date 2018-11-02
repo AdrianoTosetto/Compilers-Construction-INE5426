@@ -2,6 +2,7 @@
 //import CaronteMilGrau.CaronteParser;
 
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.ANTLRInputStream;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ import sun.text.normalizer.SymbolTable;
 public class MyVisitor extends CaronteBaseVisitor {
     public ParseTreeProperty<String> productionNames = new ParseTreeProperty<>();
     public ParseTreeProperty<String> types = new ParseTreeProperty<>();
+    public ParseTreeProperty<Boolean> isBreakable = new ParseTreeProperty<>();
+
     ArrayList<Symbol> symbolTable = new ArrayList<Symbol>();
     
     public enum Errors{
@@ -27,9 +30,31 @@ public class MyVisitor extends CaronteBaseVisitor {
     		FUNCTION_RETURN_TYPE_NOT_APPROPRIATE_FOR_EXPRESSION,
     		SYMBOL_WAS_NOT_DECLARED
     }
+    
+    @Override
+    public Object visitInicio(CaronteParser.InicioContext ctx) {
+    	isBreakable.put(ctx, false);
+    	productionNames.put(ctx,"inicio");
+    	
+    	ArrayList<ParseTree> allNodes = new ArrayList<>();
+    	allNodes.add(ctx); 	
+    	
+    	
+    	while (!allNodes.isEmpty()) {
+    		ParseTree nextNode = allNodes.remove(0);
+    		isBreakable.put(nextNode, false);
+    		for (int i = 0; i < nextNode.getChildCount(); i++) {
+        		allNodes.add(nextNode.getChild(i));
+        	}
+    	}
+    	
+    	return visitChildren(ctx);
+    }
 
     @Override
     public Object visitChamadadefuncao(CaronteParser.ChamadadefuncaoContext ctx) {
+    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
+    	else isBreakable.put(ctx, false);
     	//if(ctx.getStart().getLine());
     	String functionName = ctx.getChild(0).getText();
     	
@@ -81,9 +106,57 @@ public class MyVisitor extends CaronteBaseVisitor {
     public String getTokenType(String type) {
     	return "";
     }
+    
+    @Override
+    public Object visitDo(CaronteParser.DoContext ctx) {
+    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
+    	else isBreakable.put(ctx, false);
+    	
+    	if (!isBreakable.get(ctx)) {
+    		String lastCommand = ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-1).
+    								getChild(0).getText();
+    		if (lastCommand.equals("break")) {
+    			System.out.println("Seção inquebrável. Linha do erro: " + ctx.getStart().getLine());
+    		}
+    	}
+    	
+    	return visitChildren(ctx);
+    }
+    
+    @Override
+    public Object visitWhile(CaronteParser.WhileContext ctx) {
+    	isBreakable.put(ctx, true);
+    	return visitChildren(ctx);
+    }
+    
+    @Override
+    public Object visitIf(CaronteParser.IfContext ctx) {
+    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
+    	else isBreakable.put(ctx, false);
+    	
+    	if (!isBreakable.get(ctx)) {
+    		String lastCommand = ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-1).
+    								getChild(0).getText();
+    		if (lastCommand.equals("break")) {
+    			System.out.println("Seção inquebrável. Linha do erro: " + ctx.getStart().getLine());
+    		}
+    	}
+    	
+    	return visitChildren(ctx);
+    }
+    
+    @Override
+    public Object visitFor(CaronteParser.ForContext ctx) {
+    	isBreakable.put(ctx, true);
+    	return visitChildren(ctx);
+    }
+    
     @Override
     public Object visitTypedDeclaration(CaronteParser.TypedDeclarationContext ctx) {
+    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
+    	else isBreakable.put(ctx, false);
         String varType = ctx.getChild(0).getText();
+        System.out.println("=====> " + ctx.getText());
         String varValue = ctx.getChild(3).getText();
         System.out.println(varType);
         visitChildren(ctx);
@@ -103,6 +176,7 @@ public class MyVisitor extends CaronteBaseVisitor {
                 }
             break;
             case "int":
+            	System.out.println("========>" + ctx.getChild(3).getText());
                 if (!types.get(ctx.getChild(3)).equals("int")) {
                 	System.out.println("A variável ``" + ctx.getChild(1).getText() + "`` não pode ser inicializada"+
                 					   " com valores do tipo " + types.get(ctx.getChild(3)) + "."+
@@ -288,6 +362,8 @@ public class MyVisitor extends CaronteBaseVisitor {
     }
     @Override
     public Object visitArrayDeclaration(CaronteParser.ArrayDeclarationContext ctx) {
+    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
+    	else isBreakable.put(ctx, false);
     	
     	String typeArray = ctx.getChild(1).getText();
     	String nameArray = ctx.getChild(2).getText();
@@ -348,6 +424,8 @@ public class MyVisitor extends CaronteBaseVisitor {
     }
     @Override
     public Object visitStructOrArrayDeclaration(CaronteParser.StructOrArrayDeclarationContext ctx) {
+    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
+    	else isBreakable.put(ctx, false);
     	String structName = ctx.getChild(1).getText();
     	for (int i = 0; i < symbolTable.size(); i++) {
     		if(symbolTable.get(i).t == Symbol.Types.STRUCT_DEFINITION) {
@@ -448,7 +526,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     }
 
     @Override
-    public Object visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx) {
+    public Object visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx) {    	
     	visitChildren(ctx);
     	
     	ParseTree params = ctx.getChild(1).getChild(1); // the subtree of params
@@ -487,14 +565,14 @@ public class MyVisitor extends CaronteBaseVisitor {
     		}
     	}
     	
-    	ParseTree lastValue = ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).
-    		getChild(ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).getChildCount()-1).
-    		getChild(ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).
-    	    		getChild(ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).getChildCount()-1).getChildCount()-2);
-    	ParseTree lastCommand = ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).
-        		getChild(ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).getChildCount()-1).
-        		getChild(0);
+    	ParseTree lastNode = ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).
+        		getChild(ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).getChildCount()-1);
+    	
+    	ParseTree lastValue = lastNode.getChildCount() > 1 ? lastNode.getChild(lastNode.getChildCount()-2) : lastNode.getChild(0);
+    	ParseTree lastCommand = lastNode.getChild(0);
     	String returningType;
+//    	System.out.println("kkk " + lastNode.getText());
+    	if (lastCommand.getText().equals("break")) System.out.println("Impossível quebrar função. Linha do erro: " + ctx.getStart().getLine());
     	if (lastValue.getText().equals("return") || !lastCommand.getText().equals("return")) returningType = "void";
     	else returningType = types.get(lastValue.getChild(0));
     	
@@ -552,11 +630,15 @@ public class MyVisitor extends CaronteBaseVisitor {
     }
     @Override
     public Object visitListapar(CaronteParser.ListaparContext ctx) {
+    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
+    	else isBreakable.put(ctx, false);
     	return visitChildren(ctx);
     }
     
     @Override
     public Object visitExpValues(CaronteParser.ExpValuesContext ctx) {
+    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
+    	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
     	
     	String valueContent = ctx.getText();
@@ -568,6 +650,8 @@ public class MyVisitor extends CaronteBaseVisitor {
     
     @Override
     public Object visitParaExp(CaronteParser.ParaExpContext ctx) {
+    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
+    	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
     	
     	types.put(ctx, types.get(ctx.getChild(1)));
@@ -577,6 +661,8 @@ public class MyVisitor extends CaronteBaseVisitor {
     
     @Override
     public Object visitVar(CaronteParser.VarContext ctx) { 
+    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
+    	else isBreakable.put(ctx, false);
     	
         visitChildren(ctx);
     	String varName = ctx.getText();
@@ -587,6 +673,7 @@ public class MyVisitor extends CaronteBaseVisitor {
         	 * O nome é um estrutura
         	 * */
     		String structName = varName.split("\\.")[0];
+    		System.out.println("===>"+structName);
     		StructSymbol ss  = (StructSymbol) getSymbol(structName, Symbol.Types.STRUCT_VARIABLE);
     		if(ss == null) {
     			System.out.println("A Struct ``" + structName + "`` não foi anteriormente declarada. Linha: " + ctx.getStart().getLine());
@@ -594,14 +681,15 @@ public class MyVisitor extends CaronteBaseVisitor {
     			/*
     			 * verificar se o campo existe, se sim, verificar o tipo dele
     			 * */
-	   			int i = 2;
+    			
+	   			/*int i = 2;
 	   			String[] tt = varName.split("\\.");
 	   			Symbol s = ss.findFieldByName(tt[1]);
 	   			while(s.t == Symbol.Types.STRUCT_VARIABLE) {
 	   				s = ((StructSymbol) s).findFieldByName(tt[i]);
 	   				i++;
 	   			}
-	   			System.out.println("TIPO DA VARIÁVEL: "+((VariableSymbol)s).getVarType());
+	   			System.out.println("TIPO DA VARIÁVEL: "+((VariableSymbol)s).getVarType());*/
     		}
     		
     	} else {
@@ -620,6 +708,8 @@ public class MyVisitor extends CaronteBaseVisitor {
     
     @Override
     public Object visitExpPrefix(CaronteParser.ExpPrefixContext ctx) {
+    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
+    	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
     	types.put(ctx, types.get(ctx.getChild(0).getChild(0)));
     	
@@ -653,6 +743,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     
     @Override
     public Object visitUnariaExp(CaronteParser.UnariaExpContext ctx) {
+    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	visitChildren(ctx);
     	String type = types.get(ctx.getChild(1));
     	String operator = ctx.getChild(0).getText();
@@ -669,6 +760,8 @@ public class MyVisitor extends CaronteBaseVisitor {
     
     @Override
     public Object visitBinExp(CaronteParser.BinExpContext ctx) {
+    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
+    	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
     	//types.put(ctx, "testando");
     	//System.out.println("CHILDCOUNT = "+ctx.getChildCount());
@@ -688,9 +781,21 @@ public class MyVisitor extends CaronteBaseVisitor {
     	String nameOperandOne = ctx.getChild(0).getText();
     	String typeOperandTwo = types.get(ctx.getChild(2));
     	String nameOperandTwo = ctx.getChild(2).getText();
-    	if(typeOperandOne == null || typeOperandTwo == null) return null;
+    	
+    	if(typeOperandOne == null) {
+    		System.out.println("Operando " +nameOperandOne + " não foi anteriormente definido. Linha: " + ctx.getStart().getLine());
+    		types.put(ctx, "invalid");
+    		return null;
+    	}
+    	if(typeOperandTwo == null) {
+    		System.out.println("Operando " +nameOperandTwo + " não foi anteriormente definido. Linha: "+ ctx.getStart().getLine());
+    		types.put(ctx, "invalid");
+    		return null;
+    	}
+    		
     	if(!typeOperandOne.equals(typeOperandTwo)) {
-    		System.out.println("Operandos ``"+nameOperandOne+"`` e ``"+nameOperandTwo+"`` não têm o mesmo tipo");
+    		System.out.println("Operandos ``"+nameOperandOne+"`` e ``"+nameOperandTwo+"`` não têm o mesmo tipo. Linha: "
+    				+ctx.getStart().getLine());
     		types.put(ctx, "invalid");
     	} else {
     		/*
