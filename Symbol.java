@@ -7,7 +7,8 @@ public class Symbol {
 		FUNCTION,
 		VARIABLE,
 		STRUCT_DEFINITION,
-		STRUCT_VARIABLE
+		STRUCT_VARIABLE,
+		SCOPE
 	}
 	Types t;
 	
