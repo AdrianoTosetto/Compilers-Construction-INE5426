@@ -20,6 +20,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     public ParseTreeProperty<String> productionNames = new ParseTreeProperty<>();
     public ParseTreeProperty<String> types = new ParseTreeProperty<>();
     public ParseTreeProperty<Boolean> isBreakable = new ParseTreeProperty<>();
+    public ParseTreeProperty<ArrayList<Symbol>> scope = new ParseTreeProperty<>();
 
     ArrayList<Symbol> symbolTable = new ArrayList<Symbol>();
     
@@ -37,7 +38,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	productionNames.put(ctx,"inicio");
     	
     	ArrayList<ParseTree> allNodes = new ArrayList<>();
-    	allNodes.add(ctx); 	
+    	allNodes.add(ctx);
     	
     	
     	while (!allNodes.isEmpty()) {
@@ -55,10 +56,15 @@ public class MyVisitor extends CaronteBaseVisitor {
     public Object visitChamadadefuncao(CaronteParser.ChamadadefuncaoContext ctx) {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
+    	visitChildren(ctx);
+    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
+    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	parentScope.addAll(currentScope);
+    	scope.put(ctx.getParent(), parentScope);
     	//if(ctx.getStart().getLine());
     	String functionName = ctx.getChild(0).getText();
     	
-    	FunctionSymbol fs = (FunctionSymbol)getSymbol(functionName, Symbol.Types.FUNCTION);
+    	FunctionSymbol fs = (FunctionSymbol)getSymbol(functionName, Symbol.Types.FUNCTION, currentScope);
     	
     	if(fs == null) {
     		System.out.println("Função ``" +functionName+"`` não foi declarada. Linha: " + ctx.getStart().getLine());
@@ -155,6 +161,10 @@ public class MyVisitor extends CaronteBaseVisitor {
     public Object visitTypedDeclaration(CaronteParser.TypedDeclarationContext ctx) {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
+    	visitChildren(ctx);
+    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
+    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	
         String varType = ctx.getChild(0).getText();
         System.out.println("=====> " + ctx.getText());
         String varValue = ctx.getChild(3).getText();
@@ -173,6 +183,7 @@ public class MyVisitor extends CaronteBaseVisitor {
                 	VariableSymbol vs = new VariableSymbol(varName, "bool", 1);
                 	vs.t = Symbol.Types.VARIABLE;
                 	symbolTable.add(vs);
+                	currentScope.add(vs);
                 }
             break;
             case "int":
@@ -181,79 +192,12 @@ public class MyVisitor extends CaronteBaseVisitor {
                 	System.out.println("A variável ``" + ctx.getChild(1).getText() + "`` não pode ser inicializada"+
                 					   " com valores do tipo " + types.get(ctx.getChild(3)) + "."+
                 					   " Linha do erro: " + ctx.getStart().getLine());
-//                	 ArrayList<String> tokens = Utils.splitExpressionIntoTokens(varValue);
-//                	 Errors e = null;
-//                	 //System.out.println(tokens);
-//                	 for(String t : tokens) {
-//                		 boolean symbolFound = false;
-//                		 /*
-//                		  * verifica se o símbolo encontrado é uma função
-//                		  * */
-//                		 Symbol func = getSymbol(t.split("[(]")[0], Symbol.Types.FUNCTION);
-//                		 if(func != null) {
-//                			 symbolFound = true;
-//                			 if(!((FunctionSymbol)func).getRetType().equals("int")) {
-//                				 System.out.println("Retorno da função " + t + " não pode ser usado para esta expressão");
-//                			 }
-//                		 }
-//                		 /*
-//                		  * verifica se é uma veriavel
-//                		  * */
-//                		 if(t.contains("[")) {
-//                			 System.out.println("um array");
-//                			 String arrayName = t.substring(0, t.length()-3);
-//                			 System.out.println("Array = " +arrayName);
-//                			 int arrayIndex = Integer.parseInt(t.substring(t.length()-2, t.length()-1));
-//                			 System.out.println("index = " + arrayIndex);
-//                			 VariableSymbol arrayVar = (VariableSymbol)getSymbol(arrayName, Symbol.Types.VARIABLE);
-//                			 if(arrayIndex > arrayVar.getSize()) {
-//                				 System.out.println("Index " +arrayIndex +" não existe no vetor " + arrayName);
-//                			 }
-//                		 }
-//                		 Symbol variable = getSymbol(t.trim(), Symbol.Types.VARIABLE);
-//                		 if(variable != null) {
-//                			 symbolFound = true;
-//                			 System.out.println();
-//                			 if(!((VariableSymbol)variable).getVarType().equals("int")) {
-//                				 System.out.println("Operando " +t +" Não pode ser");
-//                			 }
-//                		 }
-//                		 String[] tt = t.split("\\.");
-//                		 //System.out.println(t);
-//                		 //System.out.println(Arrays.asList(tt));
-//                		 
-//                		 String structName = tt[0];
-//                		 StructSymbol structVariable = (StructSymbol) getSymbol(structName, Symbol.Types.STRUCT_VARIABLE);
-//                		 System.out.println(Arrays.asList(tt));
-//                		 if(structVariable != null) {
-//                			 symbolFound = true;
-//                			 int i = 2;
-//                			 Symbol s = structVariable.findFieldByName(tt[1]);
-//                			 while(s.t == Symbol.Types.STRUCT_VARIABLE) {
-//                				 s = ((StructSymbol) s).findFieldByName(tt[i]);
-//                				 i++;
-//                			 }
-//                			 if(!((VariableSymbol)s).getVarType().equals("int")) {
-//                				 System.out.println("Este campo deveria ser um int :/");
-//                			 }
-//                		 }
-//                		 
-//                		 if(Utils.isInteger(t)) {
-//                			 symbolFound = true;
-//                		 }
-//                		 if(Utils.isString(t)) {
-//                			 System.out.println();
-//                		 }
-//                		 if(!symbolFound) {
-//                			 System.out.println("O símbolo " + t + " não foi declarado como função ou variável");
-//                			 e = Errors.SYMBOL_WAS_NOT_DECLARED;
-//                		 }
-//                	 }
                 } else {
                 	String varName = ctx.getChild(1).getText();
                 	VariableSymbol vs = new VariableSymbol(varName, "int", 1);
                 	vs.t = Symbol.Types.VARIABLE;
                 	symbolTable.add(vs);
+                	currentScope.add(vs);
                 }
 
             break;
@@ -275,6 +219,7 @@ public class MyVisitor extends CaronteBaseVisitor {
                 	VariableSymbol vs = new VariableSymbol(varName, "string", 1);
                 	vs.t = Symbol.Types.VARIABLE;
                 	symbolTable.add(vs);
+                	currentScope.add(vs);
                 }
             break;
             
@@ -291,7 +236,7 @@ public class MyVisitor extends CaronteBaseVisitor {
             	/*
             	 * tipo não foi declarado
             	 * */
-            	Symbol temp = getSymbol(structType, Symbol.Types.STRUCT_DEFINITION);
+            	Symbol temp = getSymbol(structType, Symbol.Types.STRUCT_DEFINITION, currentScope);
             	if(temp == null) {
             		System.out.println("essa struct não foi definida");
             	} else {
@@ -320,7 +265,7 @@ public class MyVisitor extends CaronteBaseVisitor {
             			
 						case VARIABLE: {
 							if(Utils.isVar(initParamsStruct.getChild(j).getText())) {
-								Symbol s = getSymbol(initParamsStruct.getChild(j).getText(), Symbol.Types.VARIABLE);
+								Symbol s = getSymbol(initParamsStruct.getChild(j).getText(), Symbol.Types.VARIABLE, currentScope);
 								if(s == null) {
 									//System.out.println(initParamsStruct.getChild(j).getText());
 									System.out.println("Variável usada na inicialização da estrutura não foi declarada");
@@ -354,16 +299,23 @@ public class MyVisitor extends CaronteBaseVisitor {
             	//System.out.println(((VariableSymbol)ss.getFields().get(1)).getVarType());
             	//System.out.println("------------------");
             	symbolTable.add(ss);
+            	currentScope.add(ss);
             break;
 
         }
 
+        parentScope.addAll(currentScope);
+        scope.put(ctx.getParent(), parentScope);
+        scope.put(ctx, currentScope);
         return visitChildren(ctx);
     }
     @Override
     public Object visitArrayDeclaration(CaronteParser.ArrayDeclarationContext ctx) {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
+    	visitChildren(ctx);
+    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
+    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
     	
     	String typeArray = ctx.getChild(1).getText();
     	String nameArray = ctx.getChild(2).getText();
@@ -374,12 +326,17 @@ public class MyVisitor extends CaronteBaseVisitor {
     	VariableSymbol varSym = new VariableSymbol(nameArray, typeArray, arraySize);
     	varSym.t = Symbol.Types.VARIABLE;
     	symbolTable.add(varSym);
+    	currentScope.add(varSym);
     	int initSize = ctx.getChild(7).getChildCount();
     	String temp[] = ctx.getChild(7).getText().substring(1, ctx.getChild(7).getText().length()-3).split(",");
     	System.out.println(temp.length);
     	if(temp.length+1 != arraySize) {
     		System.out.println("Inicialize o array com o número de elementos corretos");
     	}
+    	
+    	parentScope.addAll(currentScope);
+    	scope.put(ctx.getParent(), parentScope);
+    	scope.put(ctx, currentScope);
     	
     	return visitChildren(ctx);
     }
@@ -395,10 +352,10 @@ public class MyVisitor extends CaronteBaseVisitor {
     	return false;
     }
     
-    public String checkFieldType(String structToken) {
+    public String checkFieldType(String structToken, ArrayList<Symbol> currentScope) {
     	String[] accessLine = structToken.split("\\.");
     	System.out.println(Arrays.asList(accessLine));
-    	StructSymbol ss = (StructSymbol) getSymbol(accessLine[0], Symbol.Types.STRUCT_VARIABLE);
+    	StructSymbol ss = (StructSymbol) getSymbol(accessLine[0], Symbol.Types.STRUCT_VARIABLE, currentScope);
     	ArrayList<Symbol> fields = ss.getFields();
     	for(int i = 1; i < accessLine.length; i++) {
     		if(i == accessLine.length-1) {
@@ -409,7 +366,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	return null;
     }
     
-    public Symbol getSymbol(String symbolName, Symbol.Types t) {
+    public Symbol getSymbol(String symbolName, Symbol.Types t, ArrayList<Symbol> symbolTable) {
     	for (Symbol e: this.symbolTable) {
     		if(e.name.equals(symbolName) && e.t == t) {
     			return e;
@@ -426,6 +383,10 @@ public class MyVisitor extends CaronteBaseVisitor {
     public Object visitStructOrArrayDeclaration(CaronteParser.StructOrArrayDeclarationContext ctx) {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
+    	visitChildren(ctx);
+    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
+    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	
     	String structName = ctx.getChild(1).getText();
     	for (int i = 0; i < symbolTable.size(); i++) {
     		if(symbolTable.get(i).t == Symbol.Types.STRUCT_DEFINITION) {
@@ -522,12 +483,22 @@ public class MyVisitor extends CaronteBaseVisitor {
     	StructDefinitionSymbol sds = new StructDefinitionSymbol(structName, fields);
     	sds.t = Symbol.Types.STRUCT_DEFINITION;
     	symbolTable.add(sds);
+    	currentScope.add(sds);
+    	
+    	parentScope.addAll(currentScope);
+    	scope.put(ctx.getParent(), parentScope);
+    	scope.put(ctx, currentScope);
+    	
     	return visitChildren(ctx);
     }
 
     @Override
-    public Object visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx) {    	
+    public Object visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx) { 
+    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
+    	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
+    	
+    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	
     	ParseTree params = ctx.getChild(1).getChild(1); // the subtree of params
     	
@@ -592,6 +563,9 @@ public class MyVisitor extends CaronteBaseVisitor {
     	}
     	fs.t = Symbol.Types.FUNCTION;
     	symbolTable.add(fs);
+    	parentScope.add(fs);
+    	
+    	scope.put(ctx.getParent(), parentScope);
     	
     	return visitChildren(ctx);
     }
@@ -630,16 +604,27 @@ public class MyVisitor extends CaronteBaseVisitor {
     }
     @Override
     public Object visitListapar(CaronteParser.ListaparContext ctx) {
+    	visitChildren(ctx);
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
+    	visitChildren(ctx);
+    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
+    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	parentScope.addAll(currentScope);
+    	scope.put(ctx.getParent(), parentScope);
     	return visitChildren(ctx);
     }
     
     @Override
     public Object visitExpValues(CaronteParser.ExpValuesContext ctx) {
+    	visitChildren(ctx);
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
+    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
+    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	parentScope.addAll(currentScope);
+    	scope.put(ctx.getParent(), parentScope);
     	
     	String valueContent = ctx.getText();
     	
@@ -653,6 +638,10 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
+    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
+    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	parentScope.addAll(currentScope);
+    	scope.put(ctx.getParent(), parentScope);
     	
     	types.put(ctx, types.get(ctx.getChild(1)));
     	
@@ -664,9 +653,14 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
     	
-        visitChildren(ctx);
+    	visitChildren(ctx);
+    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
+    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	parentScope.addAll(currentScope);
+    	scope.put(ctx.getParent(), parentScope);
+    	
     	String varName = ctx.getText();
-    	VariableSymbol varSymbol = (VariableSymbol)getSymbol(varName, Symbol.Types.VARIABLE);
+    	VariableSymbol varSymbol = (VariableSymbol)getSymbol(varName, Symbol.Types.VARIABLE, currentScope);
     	
     	if(varName.contains(".")) {
         	/*
@@ -674,7 +668,7 @@ public class MyVisitor extends CaronteBaseVisitor {
         	 * */
     		String structName = varName.split("\\.")[0];
     		System.out.println("===>"+structName);
-    		StructSymbol ss  = (StructSymbol) getSymbol(structName, Symbol.Types.STRUCT_VARIABLE);
+    		StructSymbol ss  = (StructSymbol) getSymbol(structName, Symbol.Types.STRUCT_VARIABLE, currentScope);
     		if(ss == null) {
     			System.out.println("A Struct ``" + structName + "`` não foi anteriormente declarada. Linha: " + ctx.getStart().getLine());
     		} else {
@@ -711,6 +705,10 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
+    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
+    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	parentScope.addAll(currentScope);
+    	scope.put(ctx.getParent(), parentScope);
     	types.put(ctx, types.get(ctx.getChild(0).getChild(0)));
     	
     	//System.out.println(ctx.getChild(0).getChild(0).getText());
@@ -744,7 +742,12 @@ public class MyVisitor extends CaronteBaseVisitor {
     @Override
     public Object visitUnariaExp(CaronteParser.UnariaExpContext ctx) {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
+    	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
+    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
+    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	parentScope.addAll(currentScope);
+    	scope.put(ctx.getParent(), parentScope);
     	String type = types.get(ctx.getChild(1));
     	String operator = ctx.getChild(0).getText();
     	if(!isUnaryOperatorValidForType(operator, type)) {
@@ -763,17 +766,10 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
-    	//types.put(ctx, "testando");
-    	//System.out.println("CHILDCOUNT = "+ctx.getChildCount());
-    	//String leftSide = ctx.getChild(0).getText();
-    	//ArrayList<String> tokens = Utils.splitExpressionIntoTokens(leftSide);
-    	
-    	//String rightSide = ctx.getChild(2).getText();
-    	//System.out.println(ctx.);
-    	//System.out.println(leftSide);
-    	//System.out.println(rightSide);
-    	
-//    	System.out.println("kkk" + ctx.children.size());
+    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
+    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	parentScope.addAll(currentScope);
+    	scope.put(ctx.getParent(), parentScope);
     	
     	Set<String> childrenTypes = new HashSet<String>();
     	
@@ -864,11 +860,11 @@ public class MyVisitor extends CaronteBaseVisitor {
     	return null;
     }
     
-    public String checkToken(String token) {
-    	Symbol symVar = getSymbol(token, Symbol.Types.VARIABLE);
-    	Symbol symFun = getSymbol(token, Symbol.Types.FUNCTION);
-    	Symbol symStr = getSymbol(token, Symbol.Types.STRUCT_VARIABLE);
-    	Symbol symTyp = getSymbol(token, Symbol.Types.STRUCT_DEFINITION);
+    public String checkToken(String token, ArrayList<Symbol> currentScope) {
+    	Symbol symVar = getSymbol(token, Symbol.Types.VARIABLE, currentScope);
+    	Symbol symFun = getSymbol(token, Symbol.Types.FUNCTION, currentScope);
+    	Symbol symStr = getSymbol(token, Symbol.Types.STRUCT_VARIABLE, currentScope);
+    	Symbol symTyp = getSymbol(token, Symbol.Types.STRUCT_DEFINITION, currentScope);
     	if (symVar != null) {
     		return ((VariableSymbol) symVar).getVarType();
     	}

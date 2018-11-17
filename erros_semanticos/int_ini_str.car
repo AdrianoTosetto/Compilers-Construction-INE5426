@@ -23,6 +23,9 @@ struct Joao {
 
 void main():
 	Joao joao = {12};
-	int x = a + func() + joao.idade;
+	do
+		int x = a + func() + joao.idade;
+	end
+	x = 2;
 	break;
 end
