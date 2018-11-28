@@ -24,6 +24,9 @@ public class MyVisitor extends CaronteBaseVisitor {
 
     ArrayList<Symbol> symbolTable = new ArrayList<Symbol>();
     
+    String code = 	".class public GlobalClass\n"+
+    				".super java/lang/Object\n";
+    
     public enum Errors{
     		FUNCTION_NOT_DECLARED,
     		VARIABLE_NOT_DECLARED,
@@ -533,10 +536,10 @@ public class MyVisitor extends CaronteBaseVisitor {
     }
 
     @Override
-    public Object visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx) { 
+    public Object visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx) {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
-    	visitChildren(ctx);
+    	
     	
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	
@@ -548,6 +551,19 @@ public class MyVisitor extends CaronteBaseVisitor {
     	ArrayList<String> functionParamsTypes = new ArrayList<String>();
     	ArrayList<Integer> paramSizes = new ArrayList<Integer>();
     	
+    	if(functionName.equals("main")) {
+    		this.code += ".method public static main([Ljava/lang/String;)V\n";
+    	} else {
+    		this.code += ".method " + functionName + "(";
+    		for(int i = 0; i < functionParamsTypes.size(); i++) {
+    			if(functionParamsTypes.get(i).equals("int")) {
+    				this.code+="I";
+    			}
+    		}
+    		this.code += ")\n";
+    	}
+    	
+    	visitChildren(ctx);
     	int i = 0;
     	
     	while(true) { 
@@ -607,7 +623,8 @@ public class MyVisitor extends CaronteBaseVisitor {
     	
     	scope.put(ctx.getParent(), parentScope);
     	
-//    	return visitChildren(ctx);
+    	this.code += ".end method\n";
+    	
     	return null;
     }
     /*
@@ -847,63 +864,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     		
     		types.put(ctx, typeOperandOne);
     	}
-    	
-    	
-    	/*ArrayList<ParseTree> leafNodes = new ArrayList(), toVisit = new ArrayList();
-    	
-    	for (ParseTree child : ctx.children) {
-    		toVisit.add(child);
-    	}
-    	
-    	while (toVisit.size() > 0) {
-    		ParseTree p = toVisit.remove(0);
-    		int childCount = p.getChildCount();
-    		if (childCount == 0) {
-    			leafNodes.add(p);
-    		} else {
-    			for (int i = 0; i < childCount; i++) {
-    				toVisit.add(p.getChild(i));
-    			}
-    		}
-    	}
-    	
-    	ArrayList<ParseTree> newLeaves = new ArrayList();
-    	
-    	
-    	for (ParseTree p : leafNodes) {
-//    		if (checkToken(p.getText()) == null) {
-//    			leafNodes.remove(p);
-//    		}
-    		if (!(p.getText().equals("+") ||
-    				p.getText().equals("-") ||
-    				p.getText().equals("(") ||
-    				p.getText().equals(")"))) {
-    			newLeaves.add(p);
-    		}
-    	}
-    	
-    	Set<String> types = new HashSet<String>();
-    	
-    	for (ParseTree p : newLeaves) {
-    		types.add(checkToken(p.getText()));
-    	}
-    	
-    	if (types.contains("Unknown")) {
-    		System.out.println("Variável não declarada");
-    	}
-    	if (types.size() > 1) {
-    		System.out.println("Tipos incompatíveis");
-    	}
-    	
-    	System.out.println(types);*/
-    	
-//    	for (int i = 0; i < ctx.children)
-    	
-//    	toVisit.add();
-    	
-//    	while
-    	
-    	//return visitChildren(ctx);
+
     	return null;
     }
     
@@ -951,6 +912,7 @@ public class MyVisitor extends CaronteBaseVisitor {
 
         MyVisitor mv = new MyVisitor();
         mv.visit(tree);
+        System.out.println(mv.code);
         //System.out.println(mv.symbolTable.size());
         for (Symbol s: mv.symbolTable) {
         	//System.out.println(s.t +" " +s.toString());	

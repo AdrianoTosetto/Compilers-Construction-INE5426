@@ -2,6 +2,8 @@
 public class VariableSymbol extends Symbol{
 	private int size = 1; // if greater than one => means that is an array
 	private String varType;
+	private boolean initialized = false;
+	private String value;
 	public VariableSymbol(String name, String type, int size) {
 		super(name);
 		this.setSize(size);
@@ -29,5 +31,17 @@ public class VariableSymbol extends Symbol{
 	}
 	public void setSize(int size) {
 		this.size = size;
+	}
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
+	}
+	public boolean isInitialized() {
+		return initialized;
+	}
+	public void setInitialized(boolean initialized) {
+		this.initialized = initialized;
 	}
 }
