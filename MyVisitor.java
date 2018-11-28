@@ -67,11 +67,12 @@ public class MyVisitor extends CaronteBaseVisitor {
     	//if(ctx.getStart().getLine());
     	String functionName = ctx.getChild(0).getText();
     	
-    	if (functionName != "print") {
+    	if (!functionName.equals("print")) {
     		FunctionSymbol fs = (FunctionSymbol)getSymbol(functionName, Symbol.Types.FUNCTION, currentScope);
         	
         	if(fs == null) {
         		System.out.println("Função ``" +functionName+"`` não foi declarada. Linha: " + ctx.getStart().getLine());
+        		System.exit(0);
         	} else {
         		types.put(ctx, fs.getRetType()+"");
         	}
@@ -108,6 +109,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	}
     	if(!functionDeclared(functionName, types, sizes)) {
     		System.out.println("A função com essa assinatura não foi declarada");
+    		System.exit(0);
     	}
 //    	return visitChildren(ctx);
     	return null;
@@ -131,6 +133,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     								getChild(0).getText();
     		if (lastCommand.equals("break")) {
     			System.out.println("Seção inquebrável. Linha do erro: " + ctx.getStart().getLine());
+    			System.exit(0);
     		}
     	}
     	
@@ -159,6 +162,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     								getChild(0).getText();
     		if (lastCommand.equals("break")) {
     			System.out.println("Seção inquebrável. Linha do erro: " + ctx.getStart().getLine());
+    			System.exit(0);
     		}
     	}
     	
@@ -182,6 +186,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	
         String varType = ctx.getChild(0).getText();
         System.out.println("=====> " + ctx.getText());
+        System.out.println("======> " + varType);
         String varValue;
         if (ctx.getChildCount() >= 3) {
         	ctx.getChild(3).getText();
@@ -206,8 +211,9 @@ public class MyVisitor extends CaronteBaseVisitor {
                 	currentScope.add(vs);
             	} else {
             		System.out.println("A variável ``" + ctx.getChild(1).getText() + "`` não pode ser inicializada"+
-      					   " com valores do tipo " + types.get(ctx.getChild(3)) + "."+
+      					   " com valores do tipo " + types.get(ctx.getChild(3)) + ". Deveria ser boolean."+
       					   " Linha do erro: " + ctx.getStart().getLine());
+            		System.exit(0);
             	}
             break;
             case "int":
@@ -225,8 +231,9 @@ public class MyVisitor extends CaronteBaseVisitor {
                 	currentScope.add(vs);
             	} else {
             		System.out.println("A variável ``" + ctx.getChild(1).getText() + "`` não pode ser inicializada"+
-     					   " com valores do tipo " + types.get(ctx.getChild(3)) + "."+
+     					   " com valores do tipo " + types.get(ctx.getChild(3)) + ". Deveria ser int."+
      					   " Linha do erro: " + ctx.getStart().getLine());
+            		System.exit(0);
             	}
             break;
 
@@ -244,7 +251,7 @@ public class MyVisitor extends CaronteBaseVisitor {
                 	vs.t = Symbol.Types.VARIABLE;
                 	symbolTable.add(vs);
                 	currentScope.add(vs);
-            	} else if (types.get(ctx.getChild(3)).equals("int")) {
+            	} else if (types.get(ctx.getChild(3)).equals("string")) {
             		String varName = ctx.getChild(1).getText();
                 	VariableSymbol vs = new VariableSymbol(varName, "string", 1);
                 	vs.t = Symbol.Types.VARIABLE;
@@ -252,8 +259,9 @@ public class MyVisitor extends CaronteBaseVisitor {
                 	currentScope.add(vs);
             	} else {
             		System.out.println("A variável ``" + ctx.getChild(1).getText() + "`` não pode ser inicializada"+
-      					   " com valores do tipo " + types.get(ctx.getChild(3)) + "."+
+      					   " com valores do tipo " + types.get(ctx.getChild(3)) + ". Deveria ser string."+
       					   " Linha do erro: " + ctx.getStart().getLine());
+            		System.exit(0);
             	}
             break;
             
@@ -274,6 +282,7 @@ public class MyVisitor extends CaronteBaseVisitor {
             	Symbol temp = getSymbol(structType, Symbol.Types.STRUCT_DEFINITION, currentScope);
             	if(temp == null) {
             		System.out.println("essa struct não foi definida");
+            		System.exit(0);
             	} else {
             		if (ctx.getChildCount() < 3) {
                 		StructSymbol ss = new StructSymbol(strctVarName, ((StructDefinitionSymbol) temp).getFields());
@@ -302,6 +311,7 @@ public class MyVisitor extends CaronteBaseVisitor {
             			//System.out.println(initParamsSize);
             			//System.out.println(fieldsSize);
             			System.out.println("Número de campos não corresponde");
+            			System.exit(0);
             		}
             		for (int i = 0, j = 0; i < fieldsSize && j < initParamsSize; i++, j+=2) {
             			switch (fields.get(i).t) {
@@ -312,11 +322,13 @@ public class MyVisitor extends CaronteBaseVisitor {
 								if(s == null) {
 									//System.out.println(initParamsStruct.getChild(j).getText());
 									System.out.println("Variável usada na inicialização da estrutura não foi declarada");
+									System.exit(0);
 									break;
 								} else {
 									System.out.println("====" + ((VariableSymbol) s).getVarType());
 									if(!((VariableSymbol) s).getVarType().equals(((VariableSymbol)fields.get(i)).getVarType())) {
-										System.out.println("Variabel não tem o seu tipo compativel com o campo da estrutura sendo inicializado");
+										System.out.println("Variável não tem o seu tipo compativel com o campo da estrutura sendo inicializado");
+										System.exit(0);
 										break;
 									}
 								}
@@ -376,6 +388,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	System.out.println(temp.length);
     	if(temp.length+1 != arraySize) {
     		System.out.println("Inicialize o array com o número de elementos corretos");
+    		System.exit(0);
     	}
     	
     	parentScope.addAll(currentScope);
@@ -603,7 +616,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	ParseTree lastCommand = lastNode.getChild(0);
     	String returningType;
 //    	System.out.println("kkk " + lastNode.getText());
-    	if (lastCommand.getText().equals("break")) System.out.println("Impossível quebrar função. Linha do erro: " + ctx.getStart().getLine());
+    	if (lastCommand.getText().equals("break")) {System.out.println("Impossível quebrar função. Linha do erro: " + ctx.getStart().getLine()); System.exit(0);}
     	if (lastValue.getText().equals("return") || !lastCommand.getText().equals("return")) returningType = "void";
     	else returningType = types.get(lastValue.getChild(0));
     	
@@ -613,6 +626,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if (!returningType.equals(retType)) {
     		System.out.println("Função " + functionName + " não pode retornar com tipo " + returningType + ". Linha do erro: "+
     						   ctx.getStart().getLine());
+    		System.exit(0);
     	}
     	
     	FunctionSymbol fs = new FunctionSymbol(functionName, functionParams);
@@ -620,6 +634,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	System.out.println("retType = " + retType);
     	if(functionDeclared(functionName, functionParamsTypes, paramSizes)) {
     		System.out.println("Função já declarada!");
+    		System.exit(0);
     	}
     	fs.t = Symbol.Types.FUNCTION;
     	symbolTable.add(fs);
@@ -644,6 +659,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     				int paramsSize = fs.getParams().size();
     				if(types.size() != paramsSize) {
     					System.out.println("Número diferente de params :/");
+    					System.exit(0);
     					continue;
     				}
 
@@ -651,10 +667,12 @@ public class MyVisitor extends CaronteBaseVisitor {
     					if(!types.get(j).equals(fs.getParams().get(j).getType())) {
     						System.out.println(fs.getParams().get(j).getType());
     						System.out.println("Tipo dos parametros não correspondem :/");
+    						System.exit(0);
     						continue;
     					}
     					if(sizes.get(j) != fs.getParams().get(j).getSize()) {
     						System.out.println("Arrays não correspondem em tamanho :/");
+    						System.exit(0);
     						continue;
     					}
     				}
@@ -736,6 +754,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     		StructSymbol ss  = (StructSymbol) getSymbol(structName, Symbol.Types.STRUCT_VARIABLE, currentScope);
     		if(ss == null) {
     			System.out.println("A Struct ``" + structName + "`` não foi anteriormente declarada. Linha: " + ctx.getStart().getLine());
+    			System.exit(0);
     		} else {
     			/*
     			 * verificar se o campo existe, se sim, verificar o tipo dele
@@ -753,14 +772,22 @@ public class MyVisitor extends CaronteBaseVisitor {
     		
     	} else {
     		ParseTree type = ctx.getParent().getChild(0);
+    		ParseTree isReturn = ctx.getParent().getParent().getParent().getParent().getChild(0);
+
+//    		System.out.println("kkk " + type.getText());
+//    		System.out.println("opa " + isReturn.getText());
+//    		System.out.println("ata " + varName);
     		/*
     		 * O nome é uma variavel normal
     		 * */
 //    		System.out.println(varSymbol);
-	    	if(varSymbol == null && type == ctx) {
+    		if(varSymbol == null && type == ctx || varSymbol == null && isReturn.getText().equals("return")) {
 	    		System.out.println("Variável ``"+varName+"`` não foi declarada. Linha do erro: " + ctx.getStart().getLine());
-	    	} else {
+	    		System.exit(0);
+	    	} else if (!isReturn.getText().equals("return")) {
 	    		types.put(ctx, type.getText());
+	    	} else {
+	    		types.put(ctx, varSymbol.getVarType());
 	    	}
     	}
 
@@ -822,6 +849,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     		System.out.println("O operador " + operator + " não pode ser usado em conjunto com o tipo " + 
     		type+". Linha: " + ctx.getStart().getLine()
     				);
+    		System.exit(0);
     	} else {
     		types.put(ctx, type);
     	}
@@ -848,11 +876,13 @@ public class MyVisitor extends CaronteBaseVisitor {
     	
     	if(typeOperandOne == null) {
     		System.out.println("Operando " +nameOperandOne + " não foi anteriormente definido. Linha: " + ctx.getStart().getLine());
+    		System.exit(0);
     		types.put(ctx, "invalid");
     		return null;
     	}
     	if(typeOperandTwo == null) {
     		System.out.println("Operando " +nameOperandTwo + " não foi anteriormente definido. Linha: "+ ctx.getStart().getLine());
+    		System.exit(0);
     		types.put(ctx, "invalid");
     		return null;
     	}
@@ -860,6 +890,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if(!typeOperandOne.equals(typeOperandTwo)) {
     		System.out.println("Operandos ``"+nameOperandOne+"`` e ``"+nameOperandTwo+"`` não têm o mesmo tipo. Linha: "
     				+ctx.getStart().getLine());
+    		System.exit(0);
     		types.put(ctx, "invalid");
     	} else {
     		/*

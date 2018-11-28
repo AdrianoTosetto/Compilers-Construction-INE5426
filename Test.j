@@ -29,6 +29,7 @@ Label1:
     if_icmpge Label0
 .line 5
     iconst_1
+    goto Label2
 Label0:
 .line 7
     iconst_2
@@ -89,7 +90,7 @@ Label0:
     aload_1
     fconst_2
     iconst_1
-    invokevirtual Test/ff(IZ)Z
+    invokevirtual Test/ff(FZ)Z
     invokevirtual java/io/PrintStream/println(Z)V
 Label1:
 .line 22
