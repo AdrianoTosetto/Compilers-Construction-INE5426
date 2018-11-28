@@ -1,31 +1,4 @@
-struct Pessoa {
-	string nome,
-	string idade
-};
-
-struct Aluno {
-	Pessoa p,
-	int nota
-};
-
-string func():
-	return "kkk";
-end
-
-struct Pessoa {
-	string name,
-	int idade
-};
-
-struct Joao {
-	int b
-};
-
 void main():
-	Joao joao = {12};
-	do
-		int x;
-	end
-	int x;
-	x = 2;
+	int x = 2;
+	print(x);
 end

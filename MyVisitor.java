@@ -67,12 +67,16 @@ public class MyVisitor extends CaronteBaseVisitor {
     	//if(ctx.getStart().getLine());
     	String functionName = ctx.getChild(0).getText();
     	
-    	FunctionSymbol fs = (FunctionSymbol)getSymbol(functionName, Symbol.Types.FUNCTION, currentScope);
-    	
-    	if(fs == null) {
-    		System.out.println("Função ``" +functionName+"`` não foi declarada. Linha: " + ctx.getStart().getLine());
+    	if (functionName != "print") {
+    		FunctionSymbol fs = (FunctionSymbol)getSymbol(functionName, Symbol.Types.FUNCTION, currentScope);
+        	
+        	if(fs == null) {
+        		System.out.println("Função ``" +functionName+"`` não foi declarada. Linha: " + ctx.getStart().getLine());
+        	} else {
+        		types.put(ctx, fs.getRetType()+"");
+        	}
     	} else {
-    		types.put(ctx, fs.getRetType()+"");
+    		types.put(ctx, "void");
     	}
     	
     	ParseTree funcParams = ctx.getChild(2);
