@@ -5,5 +5,7 @@ end
 
 void main():
     string x = "ab";
+    func(2,3);
     print(x);
+    int a = 2;
 end

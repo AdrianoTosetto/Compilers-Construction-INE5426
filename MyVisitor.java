@@ -67,8 +67,10 @@ public class MyVisitor extends CaronteBaseVisitor {
     	//if(ctx.getStart().getLine());
     	String functionName = ctx.getChild(0).getText();
     	
+    	FunctionSymbol fs = (FunctionSymbol)getSymbol(functionName, Symbol.Types.FUNCTION, currentScope);
+    	
     	if (!functionName.equals("print")) {
-    		FunctionSymbol fs = (FunctionSymbol)getSymbol(functionName, Symbol.Types.FUNCTION, currentScope);
+    		System.out.println(fs.getRetType());
         	
         	if(fs == null) {
         		System.out.println("Função ``" +functionName+"`` não foi declarada. Linha: " + ctx.getStart().getLine());
