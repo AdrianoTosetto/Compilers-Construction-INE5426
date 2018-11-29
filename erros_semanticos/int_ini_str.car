@@ -5,9 +5,10 @@ end
 
 int func(int a, int b):
 	int b = 3;
+	int b = 0;
 	int a = 3 + 2 * 5 + b;
 	
-	return a;
+	return b;
 end
 
 void main():

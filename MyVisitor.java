@@ -801,7 +801,11 @@ public class MyVisitor extends CaronteBaseVisitor {
 	    		System.out.println("Variável ``"+varName+"`` não foi declarada. Linha do erro: " + ctx.getStart().getLine());
 	    		System.exit(0);
 	    	} else if (!isReturn.getText().equals("return")) {
-	    		types.put(ctx, type.getText());
+	    		if (varSymbol == null) {
+	    			types.put(ctx, type.getText());
+	    		} else {
+	    			types.put(ctx, varSymbol.getVarType());
+	    		}
 	    	} else {
 	    		types.put(ctx, varSymbol.getVarType());
 	    	}
