@@ -67,7 +67,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	//if(ctx.getStart().getLine());
     	String functionName = ctx.getChild(0).getText();
     	
-    	if (functionName != "print") {
+    	if (!functionName.equals("print")) {
     		FunctionSymbol fs = (FunctionSymbol)getSymbol(functionName, Symbol.Types.FUNCTION, currentScope);
         	
         	if(fs == null) {
@@ -181,7 +181,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
     	
         String varType = ctx.getChild(0).getText();
-        System.out.println("=====> " + ctx.getText());
+        //System.out.println("=====> " + ctx.getText());
         String varValue;
         if (ctx.getChildCount() >= 3) {
         	ctx.getChild(3).getText();
@@ -543,7 +543,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     public Object visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx) {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
-    	
+    	visitChildren(ctx);
     	
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	
@@ -562,12 +562,12 @@ public class MyVisitor extends CaronteBaseVisitor {
     		for(int i = 0; i < functionParamsTypes.size(); i++) {
     			if(functionParamsTypes.get(i).equals("int")) {
     				this.code+="I";
+    				System.out.println("heyyy");
     			}
     		}
     		this.code += ")\n";
     	}
     	
-    	visitChildren(ctx);
     	int i = 0;
     	
     	while(true) { 
@@ -607,8 +607,8 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if (lastValue.getText().equals("return") || !lastCommand.getText().equals("return")) returningType = "void";
     	else returningType = types.get(lastValue.getChild(0));
     	
-    	System.out.println(lastCommand.getText());
-    	System.out.println(returningType);
+    	//System.out.println(lastCommand.getText());
+    	//System.out.println(returningType);
     	
     	if (!returningType.equals(retType)) {
     		System.out.println("Função " + functionName + " não pode retornar com tipo " + returningType + ". Linha do erro: "+
@@ -617,7 +617,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	
     	FunctionSymbol fs = new FunctionSymbol(functionName, functionParams);
     	fs.setRetType(retType);
-    	System.out.println("retType = " + retType);
+    	//System.out.println("retType = " + retType);
     	if(functionDeclared(functionName, functionParamsTypes, paramSizes)) {
     		System.out.println("Função já declarada!");
     	}
@@ -732,7 +732,7 @@ public class MyVisitor extends CaronteBaseVisitor {
         	 * O nome é um estrutura
         	 * */
     		String structName = varName.split("\\.")[0];
-    		System.out.println("===>"+structName);
+    		//System.out.println("===>"+structName);
     		StructSymbol ss  = (StructSymbol) getSymbol(structName, Symbol.Types.STRUCT_VARIABLE, currentScope);
     		if(ss == null) {
     			System.out.println("A Struct ``" + structName + "`` não foi anteriormente declarada. Linha: " + ctx.getStart().getLine());
@@ -916,11 +916,7 @@ public class MyVisitor extends CaronteBaseVisitor {
 
         MyVisitor mv = new MyVisitor();
         mv.visit(tree);
-        System.out.println(mv.code);
-        //System.out.println(mv.symbolTable.size());
-        for (Symbol s: mv.symbolTable) {
-        	//System.out.println(s.t +" " +s.toString());	
-        }
-       
+        String x = mv.code;
+        System.out.println(x);
     }
 }
