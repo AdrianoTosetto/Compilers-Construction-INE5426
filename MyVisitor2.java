@@ -868,9 +868,13 @@ public class MyVisitor2 extends CaronteBaseVisitor {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         CaronteParser parser = new CaronteParser(tokens);
         ParseTree tree = parser.inicio();
-
+        MyVisitor mv0 = new MyVisitor();
+        mv0.visit(tree);
+        
         MyVisitor2 mv = new MyVisitor2();
+        mv.scope = mv0.scope;
         mv.visit(tree);
+       
         String x = mv.code;
         System.out.println(x);
     }

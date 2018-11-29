@@ -1,6 +1,11 @@
-int func(int a, int b):
+int func0():
+	int b = 3;
+	return 2;
+end
 
-	int a = 3+2*5;
+int func(int a, int b):
+	int b = 3;
+	int a = 3 + 2 * 5 + b;
 	
 	return a;
 end

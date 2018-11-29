@@ -21,7 +21,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     public ParseTreeProperty<String> types = new ParseTreeProperty<>();
     public ParseTreeProperty<Boolean> isBreakable = new ParseTreeProperty<>();
     public ParseTreeProperty<ArrayList<Symbol>> scope = new ParseTreeProperty<>();
-
+   
     ArrayList<Symbol> symbolTable = new ArrayList<Symbol>();
     
     String code = 	".class public GlobalClass\n"+
@@ -37,6 +37,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     
     @Override
     public Object visitInicio(CaronteParser.InicioContext ctx) {
+    
     	isBreakable.put(ctx, false);
     	productionNames.put(ctx,"inicio");
     	
@@ -110,9 +111,11 @@ public class MyVisitor extends CaronteBaseVisitor {
     			break;
     		}
     	}
-    	if(!functionDeclared(functionName, types, sizes)) {
-    		System.out.println("A função com essa assinatura não foi declarada");
-    		System.exit(0);
+    	if (!functionName.equals("print")) {
+    		if(!functionDeclared(functionName, types, sizes)) {
+        		System.out.println("A função com essa assinatura não foi declarada");
+        		System.exit(0);
+        	}
     	}
 //    	return visitChildren(ctx);
     	return null;
@@ -886,6 +889,9 @@ public class MyVisitor extends CaronteBaseVisitor {
     	String nameOperandOne = ctx.getChild(0).getText();
     	String typeOperandTwo = types.get(ctx.getChild(2));
     	String nameOperandTwo = ctx.getChild(2).getText();
+    	
+    	System.out.println(typeOperandOne);
+    	System.out.println(typeOperandTwo);
     	
     	if(typeOperandOne == null) {
     		System.out.println("Operando " +nameOperandOne + " não foi anteriormente definido. Linha: " + ctx.getStart().getLine());
