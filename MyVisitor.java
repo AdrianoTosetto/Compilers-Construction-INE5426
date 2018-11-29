@@ -96,6 +96,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     				ArrayList<String> tokens = 
     						(ArrayList<String>) (Utils.splitExpressionIntoTokens(paramName));
     				checkTokensTypes(tokens);
+    				i+=2;
     			} else {
 	    			int size = 1;
 	    			sizes.add(size);
@@ -184,14 +185,12 @@ public class MyVisitor extends CaronteBaseVisitor {
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
     	
-        String varType = ctx.getChild(0).getText();System.out.println("=====> " + ctx.getText());
+        String varType = ctx.getChild(0).getText();
         
-        System.out.println("======> " + varType);
         String varValue;
         if (ctx.getChildCount() >= 3) {
         	ctx.getChild(3).getText();
         }
-        System.out.println(varType);
 //        visitChildren(ctx);
         
         switch(varType) {
@@ -385,7 +384,6 @@ public class MyVisitor extends CaronteBaseVisitor {
     	currentScope.add(varSym);
     	int initSize = ctx.getChild(7).getChildCount();
     	String temp[] = ctx.getChild(7).getText().substring(1, ctx.getChild(7).getText().length()-3).split(",");
-    	System.out.println(temp.length);
     	if(temp.length+1 != arraySize) {
     		System.out.println("Inicialize o array com o número de elementos corretos");
     		System.exit(0);
@@ -568,19 +566,6 @@ public class MyVisitor extends CaronteBaseVisitor {
     	ArrayList<String> functionParamsTypes = new ArrayList<String>();
     	ArrayList<Integer> paramSizes = new ArrayList<Integer>();
     	
-    	if(functionName.equals("main")) {
-    		this.code += ".method public static main([Ljava/lang/String;)V\n";
-    	} else {
-    		this.code += ".method " + functionName + "(";
-    		for(int i = 0; i < functionParamsTypes.size(); i++) {
-    			if(functionParamsTypes.get(i).equals("int")) {
-    				this.code+="I";
-    				System.out.println("heyyy");
-    			}
-    		}
-    		this.code += ")\n";
-    	}
-    	
     	int i = 0;
     	
     	while(true) { 
@@ -641,6 +626,31 @@ public class MyVisitor extends CaronteBaseVisitor {
     	parentScope.add(fs);
     	
     	scope.put(ctx.getParent(), parentScope);
+    	if(functionName.equals("main")) {
+    		this.code += ".method public static main([Ljava/lang/String;)V\n";
+    	} else {
+    		this.code += ".method " + functionName + "(";
+    		for(i = 0; i < functionParamsTypes.size(); i++) {
+    			System.out.println(functionParamsTypes.get(i));
+    			if(functionParamsTypes.get(i).equals("int")) {
+    				this.code+="I";
+    			}
+    		}
+    		String retCode = null;
+    		if(retType.equals(("void"))) {
+    			retCode = "V";
+    		}
+    		if(retType.equals(("int"))) {
+    			retCode = "I";
+    		}
+    		if(retType.equals(("boolean"))) {
+    			retCode = "ZB";
+    		}
+    		if(retType.equals(("string"))) {
+    			retCode = "S";
+    		}
+    		this.code += ")"+retCode+"\n";
+    	}
     	
     	this.code += ".end method\n";
     	
