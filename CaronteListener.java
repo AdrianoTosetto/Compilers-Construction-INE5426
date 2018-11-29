@@ -503,6 +503,36 @@ public interface CaronteListener extends ParseTreeListener {
 	 */
 	void exitOpbin(CaronteParser.OpbinContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CaronteParser#opbin2}.
+	 * @param ctx the parse tree
+	 */
+	void enterOpbin2(CaronteParser.Opbin2Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link CaronteParser#opbin2}.
+	 * @param ctx the parse tree
+	 */
+	void exitOpbin2(CaronteParser.Opbin2Context ctx);
+	/**
+	 * Enter a parse tree produced by {@link CaronteParser#opbin3}.
+	 * @param ctx the parse tree
+	 */
+	void enterOpbin3(CaronteParser.Opbin3Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link CaronteParser#opbin3}.
+	 * @param ctx the parse tree
+	 */
+	void exitOpbin3(CaronteParser.Opbin3Context ctx);
+	/**
+	 * Enter a parse tree produced by {@link CaronteParser#opbin4}.
+	 * @param ctx the parse tree
+	 */
+	void enterOpbin4(CaronteParser.Opbin4Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link CaronteParser#opbin4}.
+	 * @param ctx the parse tree
+	 */
+	void exitOpbin4(CaronteParser.Opbin4Context ctx);
+	/**
 	 * Enter a parse tree produced by {@link CaronteParser#opunaria}.
 	 * @param ctx the parse tree
 	 */

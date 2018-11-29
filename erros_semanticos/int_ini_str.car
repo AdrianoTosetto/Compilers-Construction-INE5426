@@ -1,8 +1,10 @@
 int func(int a, int b):
-    int a = 0;
-    return 3;
+
+	int a = 3+2*5;
+	
+	return a;
 end
 
 void main():
-    string x = "ab";
+    print("penus");
 end

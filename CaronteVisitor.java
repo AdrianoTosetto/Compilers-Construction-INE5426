@@ -303,6 +303,24 @@ public interface CaronteVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOpbin(CaronteParser.OpbinContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link CaronteParser#opbin2}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOpbin2(CaronteParser.Opbin2Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link CaronteParser#opbin3}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOpbin3(CaronteParser.Opbin3Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link CaronteParser#opbin4}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOpbin4(CaronteParser.Opbin4Context ctx);
+	/**
 	 * Visit a parse tree produced by {@link CaronteParser#opunaria}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

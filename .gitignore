@@ -69,3 +69,8 @@
 /CaronteParser$RepeatContext.class
 /CaronteParser$WhileContext.class
 /Scope.class
+/MyVisitor2.class
+/MyVisitor2$Errors.class
+/CaronteParser$Opbin2Context.class
+/CaronteParser$Opbin3Context.class
+/CaronteParser$Opbin4Context.class
