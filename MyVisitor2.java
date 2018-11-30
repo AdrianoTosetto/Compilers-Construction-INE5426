@@ -162,7 +162,10 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     
     @Override
     public Object visitIf(CaronteParser.IfContext ctx) {
-    	visitChildren((RuleNode) ctx.getChild(1));
+    	//visitChildren((CaronteParser.ExpContext) ctx.getChild(1));
+    	visitBinExp((CaronteParser.BinExpContext)ctx.getChild(1));
+    	//visitChildren(ctx);
+//    	System.out.println(ctx.getChild(1).getChild(2).getText());
     	int nextLabel = this.labelCount;
     	this.code += "ifeq Label" + this.labelCount++ + "\n";
     	visitChildren((RuleNode) ctx.getChild(3));
@@ -808,16 +811,18 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     @Override
     public Object visitBinExp(CaronteParser.BinExpContext ctx) {
     	visitChildren(ctx);
-    	Set<String> childrenTypes = new HashSet<String>();
+//    	Set<String> childrenTypes = new HashSet<String>();
+//    	
+//    	String typeOperandOne = types.get(ctx.getChild(0));
+//    	String nameOperandOne = ctx.getChild(0).getText();
+//    	String typeOperandTwo = types.get(ctx.getChild(2));
+//    	String nameOperandTwo = ctx.getChild(2).getText();
+//    	
+//    	expressionStack.add(ctx.getChild(1).getText());
     	
-    	String typeOperandOne = types.get(ctx.getChild(0));
-    	String nameOperandOne = ctx.getChild(0).getText();
-    	String typeOperandTwo = types.get(ctx.getChild(2));
-    	String nameOperandTwo = ctx.getChild(2).getText();
-    	
-    	expressionStack.add(ctx.getChild(1).getText());
-    	
-    	System.out.println(ctx.getChild(1).getText());
+    	System.out.println("Operando 1: " + ctx.getChild(0).getText());
+    	System.out.println("Operador: " + ctx.getChild(1).getText());
+    	System.out.println("Operando 2: " + ctx.getChild(2).getText());
     	
     	if(ctx.getChild(1).getText().equals("+")) {
     		this.code += "iadd\n";

@@ -196,7 +196,8 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
-HashSet<Symbol> removeDuplicates;
+    	
+    	HashSet<Symbol> removeDuplicates;
     	
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
@@ -644,9 +645,9 @@ HashSet<Symbol> removeDuplicates;
     	}
     	
     	for (int x = 0; x < functionParams.size(); x++) {
-    		Param param = functionParams.get(x);
+    		Symbol param = (Symbol)functionParams.get(x);
     		param.t = Symbol.Types.VARIABLE;
-    		param.setSize(paramSizes.get(x));
+    		//param.setSize(paramSizes.get(x));
     		System.out.println(param);
     		symbolTable.add(param);
     		currentScope.add(param);

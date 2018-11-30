@@ -1,4 +1,4 @@
-// Generated from Caronte.g4 by ANTLR 4.5.3
+// Generated from Caronte.g4 by ANTLR 4.7.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class CaronteParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.5.3", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.7.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -131,6 +131,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitInicio(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitInicio(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final InicioContext inicio() throws RecognitionException {
@@ -192,6 +197,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitDefineDeclaration(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitDefineDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class AContext extends BlocoContext {
 		public ComandoexpressaoContext comandoexpressao() {
@@ -205,6 +215,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitA(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitA(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class StructOrArrayDeclarationContext extends BlocoContext {
@@ -231,6 +246,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitStructOrArrayDeclaration(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitStructOrArrayDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class FunctionDeclarationContext extends BlocoContext {
 		public NomedafuncaoContext nomedafuncao() {
@@ -247,6 +267,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitFunctionDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitFunctionDeclaration(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -277,6 +302,7 @@ public class CaronteParser extends Parser {
 				setState(70);
 				match(T__1);
 				setState(84);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case T__28:
 				case T__29:
@@ -331,6 +357,7 @@ public class CaronteParser extends Parser {
 					setState(86);
 					match(T__5);
 					setState(100);
+					_errHandler.sync(this);
 					switch (_input.LA(1)) {
 					case T__28:
 					case T__29:
@@ -445,6 +472,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitTrecho(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitTrecho(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final TrechoContext trecho() throws RecognitionException {
@@ -473,6 +505,7 @@ public class CaronteParser extends Parser {
 					_la = _input.LA(1);
 				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__2) | (1L << T__9) | (1L << T__11) | (1L << T__12) | (1L << T__14) | (1L << T__18) | (1L << T__19) | (1L << T__23) | (1L << T__28) | (1L << T__29) | (1L << T__30) | (1L << T__31) | (1L << T__32) | (1L << T__35) | (1L << T__37) | (1L << T__38) | (1L << T__39) | (1L << T__48) | (1L << T__61) | (1L << T__62))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (T__63 - 64)) | (1L << (T__64 - 64)) | (1L << (Inteiro - 64)) | (1L << (Decimal - 64)) | (1L << (String - 64)) | (1L << (Nome - 64)))) != 0) );
 				setState(124);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==T__24 || _la==T__25) {
 					{
@@ -539,6 +572,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitComando(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitComando(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ComandoContext comando() throws RecognitionException {
@@ -600,6 +638,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitErro_ponto_virgula(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitErro_ponto_virgula(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Erro_ponto_virgulaContext erro_ponto_virgula() throws RecognitionException {
@@ -654,6 +697,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitForInutil(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitForInutil(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class GotoContext extends ComandoblocoContext {
 		public TerminalNode Nome() { return getToken(CaronteParser.Nome, 0); }
@@ -665,6 +713,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitGoto(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitGoto(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class RepeatContext extends ComandoblocoContext {
@@ -682,6 +735,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitRepeat(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitRepeat(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class ForContext extends ComandoblocoContext {
@@ -710,6 +768,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitFor(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitFor(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class DoContext extends ComandoblocoContext {
 		public TrechoContext trecho() {
@@ -723,6 +786,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitDo(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitDo(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class LabelContext extends ComandoblocoContext {
@@ -738,6 +806,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitLabel(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitLabel(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class WhileContext extends ComandoblocoContext {
@@ -755,6 +828,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitWhile(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitWhile(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class IfContext extends ComandoblocoContext {
@@ -778,6 +856,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitIf(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitIf(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -866,6 +949,7 @@ public class CaronteParser extends Parser {
 					_la = _input.LA(1);
 				}
 				setState(177);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==T__17) {
 					{
@@ -887,10 +971,12 @@ public class CaronteParser extends Parser {
 				setState(181);
 				match(T__18);
 				setState(189);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (((((_la - 20)) & ~0x3f) == 0 && ((1L << (_la - 20)) & ((1L << (T__19 - 20)) | (1L << (T__28 - 20)) | (1L << (T__29 - 20)) | (1L << (T__30 - 20)) | (1L << (T__31 - 20)) | (1L << (T__32 - 20)) | (1L << (Nome - 20)))) != 0)) {
 					{
 					setState(184);
+					_errHandler.sync(this);
 					switch (_input.LA(1)) {
 					case T__28:
 					case T__29:
@@ -924,6 +1010,7 @@ public class CaronteParser extends Parser {
 				setState(191);
 				match(T__21);
 				setState(193);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__35) | (1L << T__37) | (1L << T__38) | (1L << T__39) | (1L << T__48) | (1L << T__61) | (1L << T__62))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (T__63 - 64)) | (1L << (T__64 - 64)) | (1L << (Inteiro - 64)) | (1L << (Decimal - 64)) | (1L << (String - 64)) | (1L << (Nome - 64)))) != 0)) {
 					{
@@ -935,6 +1022,7 @@ public class CaronteParser extends Parser {
 				setState(195);
 				match(T__21);
 				setState(197);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__2) | (1L << T__19) | (1L << T__28) | (1L << T__29) | (1L << T__30) | (1L << T__31) | (1L << T__32) | (1L << T__35) | (1L << T__37) | (1L << T__38) | (1L << T__39) | (1L << T__48) | (1L << T__61) | (1L << T__62))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (T__63 - 64)) | (1L << (T__64 - 64)) | (1L << (Inteiro - 64)) | (1L << (Decimal - 64)) | (1L << (String - 64)) | (1L << (Nome - 64)))) != 0)) {
 					{
@@ -1032,6 +1120,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitErrorDeclaration(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitErrorDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class AtribContext extends ComandoexpressaoContext {
 		public VarContext var() {
@@ -1051,6 +1144,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitAtrib(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitAtrib(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class ArrayDeclarationContext extends ComandoexpressaoContext {
@@ -1076,6 +1174,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitArrayDeclaration(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitArrayDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class AutoDeclarationContext extends ComandoexpressaoContext {
 		public VarContext var() {
@@ -1092,6 +1195,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitAutoDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitAutoDeclaration(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class TypedDeclarationContext extends ComandoexpressaoContext {
@@ -1112,6 +1220,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitTypedDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitTypedDeclaration(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1164,6 +1277,7 @@ public class CaronteParser extends Parser {
 					_la = _input.LA(1);
 				} while ( _la==T__3 );
 				setState(235);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==T__20) {
 					{
@@ -1185,6 +1299,7 @@ public class CaronteParser extends Parser {
 				setState(238);
 				var();
 				setState(241);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==T__20) {
 					{
@@ -1249,6 +1364,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitErro_var_declaracao(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitErro_var_declaracao(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Erro_var_declaracaoContext erro_var_declaracao() throws RecognitionException {
@@ -1293,6 +1413,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitComandounico(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitComandounico(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1346,6 +1471,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitUltimocomando(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitUltimocomando(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final UltimocomandoContext ultimocomando() throws RecognitionException {
@@ -1354,6 +1484,7 @@ public class CaronteParser extends Parser {
 		int _la;
 		try {
 			setState(266);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__24:
 				enterOuterAlt(_localctx, 1);
@@ -1361,6 +1492,7 @@ public class CaronteParser extends Parser {
 				setState(259);
 				match(T__24);
 				setState(261);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__35) | (1L << T__37) | (1L << T__38) | (1L << T__39) | (1L << T__48) | (1L << T__61) | (1L << T__62))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (T__63 - 64)) | (1L << (T__64 - 64)) | (1L << (Inteiro - 64)) | (1L << (Decimal - 64)) | (1L << (String - 64)) | (1L << (Nome - 64)))) != 0)) {
 					{
@@ -1419,6 +1551,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitListaatri(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitListaatri(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ListaatriContext listaatri() throws RecognitionException {
@@ -1426,6 +1563,7 @@ public class CaronteParser extends Parser {
 		enterRule(_localctx, 20, RULE_listaatri);
 		try {
 			setState(275);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__5:
 				enterOuterAlt(_localctx, 1);
@@ -1484,6 +1622,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitNomedafuncao(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitNomedafuncao(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final NomedafuncaoContext nomedafuncao() throws RecognitionException {
@@ -1498,6 +1641,7 @@ public class CaronteParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(278);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==T__26 || _la==T__27) {
 					{
@@ -1505,7 +1649,10 @@ public class CaronteParser extends Parser {
 					_la = _input.LA(1);
 					if ( !(_la==T__26 || _la==T__27) ) {
 					_errHandler.recoverInline(this);
-					} else {
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
 						consume();
 					}
 					}
@@ -1554,6 +1701,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitErro_inline_fastcall(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitErro_inline_fastcall(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Erro_inline_fastcallContext erro_inline_fastcall() throws RecognitionException {
@@ -1598,6 +1750,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitTipovar(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitTipovar(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final TipovarContext tipovar() throws RecognitionException {
@@ -1611,7 +1768,10 @@ public class CaronteParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(((((_la - 29)) & ~0x3f) == 0 && ((1L << (_la - 29)) & ((1L << (T__28 - 29)) | (1L << (T__29 - 29)) | (1L << (T__30 - 29)) | (1L << (T__31 - 29)) | (1L << (T__32 - 29)) | (1L << (Nome - 29)))) != 0)) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -1643,6 +1803,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitTiporet(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitTiporet(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final TiporetContext tiporet() throws RecognitionException {
@@ -1650,6 +1815,7 @@ public class CaronteParser extends Parser {
 		enterRule(_localctx, 28, RULE_tiporet);
 		try {
 			setState(296);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__28:
 			case T__29:
@@ -1703,6 +1869,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitListavar(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitListavar(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1764,6 +1935,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitVar(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitVar(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1862,6 +2038,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitListadenomes(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitListadenomes(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ListadenomesContext listadenomes() throws RecognitionException {
@@ -1920,6 +2101,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitListaexp(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitListaexp(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1987,6 +2173,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitExpListExp(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitExpListExp(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class BinExpContext extends ExpContext {
 		public List<ExpContext> exp() {
@@ -2007,6 +2198,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitBinExp(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitBinExp(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class UnariaExpContext extends ExpContext {
 		public OpunariaContext opunaria() {
@@ -2024,6 +2220,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitUnariaExp(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitUnariaExp(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class ExpValuesContext extends ExpContext {
 		public ValoresContext valores() {
@@ -2037,6 +2238,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitExpValues(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitExpValues(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class ParaExpContext extends ExpContext {
@@ -2052,6 +2258,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitParaExp(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitParaExp(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class ExpPrefixContext extends ExpContext {
 		public ExpprefixoContext expprefixo() {
@@ -2065,6 +2276,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitExpPrefix(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitExpPrefix(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2085,6 +2301,7 @@ public class CaronteParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(362);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__37:
 			case T__38:
@@ -2118,6 +2335,7 @@ public class CaronteParser extends Parser {
 				setState(350);
 				match(T__1);
 				setState(352);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__35) | (1L << T__37) | (1L << T__38) | (1L << T__39) | (1L << T__48) | (1L << T__61) | (1L << T__62))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (T__63 - 64)) | (1L << (T__64 - 64)) | (1L << (Inteiro - 64)) | (1L << (Decimal - 64)) | (1L << (String - 64)) | (1L << (Nome - 64)))) != 0)) {
 					{
@@ -2215,6 +2433,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitValores(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitValores(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ValoresContext valores() throws RecognitionException {
@@ -2228,7 +2451,10 @@ public class CaronteParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(((((_la - 38)) & ~0x3f) == 0 && ((1L << (_la - 38)) & ((1L << (T__37 - 38)) | (1L << (T__38 - 38)) | (1L << (T__39 - 38)) | (1L << (Inteiro - 38)) | (1L << (Decimal - 38)) | (1L << (String - 38)))) != 0)) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -2262,6 +2488,11 @@ public class CaronteParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitExpprefixo(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitExpprefixo(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2316,6 +2547,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitChamadadefuncao(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitChamadadefuncao(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ChamadadefuncaoContext chamadadefuncao() throws RecognitionException {
@@ -2330,6 +2566,7 @@ public class CaronteParser extends Parser {
 			setState(380);
 			match(T__35);
 			setState(382);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__35) | (1L << T__37) | (1L << T__38) | (1L << T__39) | (1L << T__48) | (1L << T__61) | (1L << T__62))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (T__63 - 64)) | (1L << (T__64 - 64)) | (1L << (Inteiro - 64)) | (1L << (Decimal - 64)) | (1L << (String - 64)) | (1L << (Nome - 64)))) != 0)) {
 				{
@@ -2372,6 +2609,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitCorpodafuncao(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitCorpodafuncao(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final CorpodafuncaoContext corpodafuncao() throws RecognitionException {
@@ -2384,6 +2626,7 @@ public class CaronteParser extends Parser {
 			setState(386);
 			match(T__35);
 			setState(388);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__28) | (1L << T__29) | (1L << T__30) | (1L << T__31) | (1L << T__32))) != 0) || _la==Nome) {
 				{
@@ -2440,6 +2683,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitListapar(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitListapar(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ListaparContext listapar() throws RecognitionException {
@@ -2458,6 +2706,7 @@ public class CaronteParser extends Parser {
 					{
 					{
 					setState(408);
+					_errHandler.sync(this);
 					switch (_input.LA(1)) {
 					case T__28:
 					case T__29:
@@ -2513,6 +2762,7 @@ public class CaronteParser extends Parser {
 				_alt = getInterpreter().adaptivePredict(_input,44,_ctx);
 			}
 			setState(430);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__28:
 			case T__29:
@@ -2587,6 +2837,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitOpbin(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitOpbin(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final OpbinContext opbin() throws RecognitionException {
@@ -2594,6 +2849,7 @@ public class CaronteParser extends Parser {
 		enterRule(_localctx, 50, RULE_opbin);
 		try {
 			setState(436);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__40:
 				enterOuterAlt(_localctx, 1);
@@ -2671,6 +2927,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitOpbin2(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitOpbin2(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Opbin2Context opbin2() throws RecognitionException {
@@ -2678,6 +2939,7 @@ public class CaronteParser extends Parser {
 		enterRule(_localctx, 52, RULE_opbin2);
 		try {
 			setState(443);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__43:
 				enterOuterAlt(_localctx, 1);
@@ -2758,6 +3020,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitOpbin3(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitOpbin3(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Opbin3Context opbin3() throws RecognitionException {
@@ -2765,6 +3032,7 @@ public class CaronteParser extends Parser {
 		enterRule(_localctx, 54, RULE_opbin3);
 		try {
 			setState(448);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__47:
 				enterOuterAlt(_localctx, 1);
@@ -2829,6 +3097,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitOpbin4(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitOpbin4(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Opbin4Context opbin4() throws RecognitionException {
@@ -2836,6 +3109,7 @@ public class CaronteParser extends Parser {
 		enterRule(_localctx, 56, RULE_opbin4);
 		try {
 			setState(457);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__49:
 				enterOuterAlt(_localctx, 1);
@@ -2919,6 +3193,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitOpbin5(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitOpbin5(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Opbin5Context opbin5() throws RecognitionException {
@@ -2932,7 +3211,10 @@ public class CaronteParser extends Parser {
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__55) | (1L << T__56) | (1L << T__57) | (1L << T__58) | (1L << T__59) | (1L << T__60))) != 0)) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -2961,6 +3243,11 @@ public class CaronteParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof CaronteListener ) ((CaronteListener)listener).exitOpunaria(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CaronteVisitor ) return ((CaronteVisitor<? extends T>)visitor).visitOpunaria(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final OpunariaContext opunaria() throws RecognitionException {
@@ -2974,7 +3261,10 @@ public class CaronteParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(((((_la - 49)) & ~0x3f) == 0 && ((1L << (_la - 49)) & ((1L << (T__48 - 49)) | (1L << (T__61 - 49)) | (1L << (T__62 - 49)) | (1L << (T__63 - 49)) | (1L << (T__64 - 49)))) != 0)) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -3006,7 +3296,7 @@ public class CaronteParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3J\u01d2\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3J\u01d2\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -3043,7 +3333,7 @@ public class CaronteParser extends Parser {
 		"\34\3\34\5\34\u01be\n\34\3\35\3\35\3\35\5\35\u01c3\n\35\3\36\3\36\3\36"+
 		"\3\36\3\36\3\36\3\36\5\36\u01cc\n\36\3\37\3\37\3 \3 \3 \2\3(!\2\4\6\b"+
 		"\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>\2\7\3\2\35\36"+
-		"\4\2\37#GG\4\2(*DF\3\2:?\4\2\63\63@C\u01ff\2A\3\2\2\2\4v\3\2\2\2\6\u0087"+
+		"\4\2\37#GG\4\2(*DF\3\2:?\4\2\63\63@C\2\u01ff\2A\3\2\2\2\4v\3\2\2\2\6\u0087"+
 		"\3\2\2\2\b\u008e\3\2\2\2\n\u0090\3\2\2\2\f\u00db\3\2\2\2\16\u00fb\3\2"+
 		"\2\2\20\u00fd\3\2\2\2\22\u0103\3\2\2\2\24\u010c\3\2\2\2\26\u0115\3\2\2"+
 		"\2\30\u011e\3\2\2\2\32\u0120\3\2\2\2\34\u0126\3\2\2\2\36\u012a\3\2\2\2"+
