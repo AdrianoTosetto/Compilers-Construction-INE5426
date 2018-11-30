@@ -84,9 +84,15 @@ grammar Caronte;
 
 	listapar: ((tipovar Nome | 'array' tipovar Nome ('[' Inteiro ']')+) ',')* (tipovar Nome | 'array' tipovar Nome ('[' Inteiro ']')+);
 
-	opbin: '+' | '-' | '*' | '/' | '^' | '%' | '..' | 
-		 '<' | '<=' | '>' | '>=' | '==' | '!=' | 
-		 'and' | 'or' | '+=' | '-=' | '*=' | '/=' | '^=' | '%=';
+	opbin: '^' | '..' | 'and' | opbin2;
+	
+	opbin2: '*' | '/' | '%' | 'or' | opbin3;
+	
+	opbin3: '+' | '-' | opbin4;
+	
+	opbin4: '<' | '<=' | '>' | '>=' | '==' | '!=' | opbin5;
+	
+	opbin5: '+=' | '-=' | '*=' | '/=' | '^=' | '%=';
 
 	opunaria: '-' | 'not' | '#' | '++' | '--';
 

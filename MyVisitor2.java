@@ -22,6 +22,7 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     public ParseTreeProperty<Boolean> isBreakable = new ParseTreeProperty<>();
     public ParseTreeProperty<ArrayList<Symbol>> scope = new ParseTreeProperty<>();
     public ArrayList<String> expressionStack = new ArrayList<>();
+    public int labelCount = 0;
 
     ArrayList<Symbol> symbolTable = new ArrayList<Symbol>();
     
@@ -149,33 +150,37 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     
     @Override
     public Object visitWhile(CaronteParser.WhileContext ctx) {
-    	isBreakable.put(ctx, true);
-    	return visitChildren(ctx);
+    	int whileLabel = this.labelCount;
+    	this.code += "Label" + this.labelCount++ + ":\n";
+    	visitChildren((RuleNode) ctx.getChild(1));
+    	int nextLabel = this.labelCount;
+    	this.code += "ifeq Label" + this.labelCount++ + "\n";
+    	visitChildren((RuleNode) ctx.getChild(3));
+    	this.code += "goto Label" + whileLabel + "\nLabel" + nextLabel + ":\n";
+    	return null;
     }
     
     @Override
     public Object visitIf(CaronteParser.IfContext ctx) {
-    	visitChildren(ctx);
-    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
-    	else isBreakable.put(ctx, false);
-    	
-    	if (!isBreakable.get(ctx)) {
-    		String lastCommand = ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-1).
-    								getChild(0).getText();
-    		if (lastCommand.equals("break")) {
-    			System.out.println("Seção inquebrável. Linha do erro: " + ctx.getStart().getLine());
-    			//System.exit(0);
-    		}
-    	}
-    	
-//    	return visitChildren(ctx);
+    	visitChildren((RuleNode) ctx.getChild(1));
+    	int nextLabel = this.labelCount;
+    	this.code += "ifeq Label" + this.labelCount++ + "\n";
+    	visitChildren((RuleNode) ctx.getChild(3));
+    	this.code += "Label" + nextLabel + ":\n";
     	return null;
     }
     
     @Override
     public Object visitFor(CaronteParser.ForContext ctx) {
-    	isBreakable.put(ctx, true);
-    	return visitChildren(ctx);
+    	// 'for' ((tipovar | 'auto') Nome '=' exp)? ':' (exp)? ':' (comandounico)? 'do' trecho 'end'
+//    	int forLabel = this.labelCount;
+//    	this.code += "Label" + this.labelCount++ + ":\n";
+//    	visitChildren((RuleNode) ctx.getChild(1));
+//    	int nextLabel = this.labelCount;
+//    	this.code += "ifeq Label" + this.labelCount++ + "\n";
+//    	visitChildren((RuleNode) ctx.getChild(3));
+//    	this.code += "goto Label" + forLabel + "\nLabel" + nextLabel + ":\n";
+    	return null;
     }
     
     @Override
@@ -811,6 +816,8 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     	String nameOperandTwo = ctx.getChild(2).getText();
     	
     	expressionStack.add(ctx.getChild(1).getText());
+    	
+    	System.out.println(ctx.getChild(1).getText());
     	
     	if(ctx.getChild(1).getText().equals("+")) {
     		this.code += "iadd\n";

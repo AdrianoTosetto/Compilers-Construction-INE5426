@@ -4,13 +4,13 @@ int func0():
 end
 
 int func(int a, int b):
-	int b = 3;
-	int b = 0;
-	int a = 3 + 2 * 5 + b;
+	b = 3 + 2 * 5 + 6;
 	
 	return b;
 end
 
 void main():
-    print("penus");
+	if 1 then
+		print();
+	end
 end

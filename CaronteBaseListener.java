@@ -1,4 +1,4 @@
-// Generated from Caronte.g4 by ANTLR 4.7.1
+// Generated from Caronte.g4 by ANTLR 4.5.3
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -586,6 +586,18 @@ public class CaronteBaseListener implements CaronteListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitOpbin4(CaronteParser.Opbin4Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOpbin5(CaronteParser.Opbin5Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOpbin5(CaronteParser.Opbin5Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

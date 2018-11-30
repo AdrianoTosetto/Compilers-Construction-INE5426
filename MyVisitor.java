@@ -61,18 +61,27 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
+    	
+    	HashSet<Symbol> removeDuplicates;
+    	
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	
+    	currentScope.addAll(parentScope);
+    	removeDuplicates = new HashSet<Symbol>(currentScope);
+    	currentScope = new ArrayList<>(removeDuplicates);
+    	
     	parentScope.addAll(currentScope);
+    	removeDuplicates = new HashSet<Symbol>(parentScope);
+    	parentScope = new ArrayList<>(removeDuplicates);
+    	
     	scope.put(ctx.getParent(), parentScope);
     	//if(ctx.getStart().getLine());
     	String functionName = ctx.getChild(0).getText();
     	
     	FunctionSymbol fs = (FunctionSymbol)getSymbol(functionName, Symbol.Types.FUNCTION, currentScope);
     	
-    	if (!functionName.equals("print")) {
-    		System.out.println(fs.getRetType());
-        	
+    	if (!functionName.equals("print")) {        	
         	if(fs == null) {
         		System.out.println("Função ``" +functionName+"`` não foi declarada. Linha: " + ctx.getStart().getLine());
         		System.exit(0);
@@ -164,7 +173,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	else isBreakable.put(ctx, false);
     	
     	if (!isBreakable.get(ctx)) {
-    		String lastCommand = ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-1).
+    		String lastCommand = ctx.getChild(3).getChild(ctx.getChild(3).getChildCount()-1).
     								getChild(0).getText();
     		if (lastCommand.equals("break")) {
     			System.out.println("Seção inquebrável. Linha do erro: " + ctx.getStart().getLine());
@@ -187,10 +196,16 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
+HashSet<Symbol> removeDuplicates;
+    	
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
     	
-        String varType = ctx.getChild(0).getText();
+    	currentScope.addAll(parentScope);
+    	removeDuplicates = new HashSet<Symbol>(currentScope);
+    	currentScope = new ArrayList<>(removeDuplicates);
+    	
+    	String varType = ctx.getChild(0).getText();
         
         String varValue;
         if (ctx.getChildCount() >= 3) {
@@ -364,6 +379,9 @@ public class MyVisitor extends CaronteBaseVisitor {
         }
 
         parentScope.addAll(currentScope);
+    	removeDuplicates = new HashSet<Symbol>(parentScope);
+    	parentScope = new ArrayList<>(removeDuplicates);
+    	
         scope.put(ctx.getParent(), parentScope);
         scope.put(ctx, currentScope);
 //        return visitChildren(ctx);
@@ -374,8 +392,15 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
+    	
+    	HashSet<Symbol> removeDuplicates;
+    	
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	
+    	currentScope.addAll(parentScope);
+    	removeDuplicates = new HashSet<Symbol>(currentScope);
+    	currentScope = new ArrayList<>(removeDuplicates);
     	
     	String typeArray = ctx.getChild(1).getText();
     	String nameArray = ctx.getChild(2).getText();
@@ -395,6 +420,9 @@ public class MyVisitor extends CaronteBaseVisitor {
     	}
     	
     	parentScope.addAll(currentScope);
+    	removeDuplicates = new HashSet<Symbol>(parentScope);
+    	parentScope = new ArrayList<>(removeDuplicates);
+    	
     	scope.put(ctx.getParent(), parentScope);
     	scope.put(ctx, currentScope);
     	
@@ -445,8 +473,15 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
+    	
+    	HashSet<Symbol> removeDuplicates;
+    	
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	
+    	currentScope.addAll(parentScope);
+    	removeDuplicates = new HashSet<Symbol>(currentScope);
+    	currentScope = new ArrayList<>(removeDuplicates);
     	
     	String structName = ctx.getChild(1).getText();
     	for (int i = 0; i < symbolTable.size(); i++) {
@@ -548,6 +583,9 @@ public class MyVisitor extends CaronteBaseVisitor {
     	currentScope.add(sds);
     	
     	parentScope.addAll(currentScope);
+    	removeDuplicates = new HashSet<Symbol>(parentScope);
+    	parentScope = new ArrayList<>(removeDuplicates);
+    	
     	scope.put(ctx.getParent(), parentScope);
     	scope.put(ctx, currentScope);
     	
@@ -559,9 +597,15 @@ public class MyVisitor extends CaronteBaseVisitor {
     public Object visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx) {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
-    	visitChildren(ctx);
+    	
+    	HashSet<Symbol> removeDuplicates;
     	
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
+    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	
+    	currentScope.addAll(parentScope);
+    	removeDuplicates = new HashSet<Symbol>(currentScope);
+    	currentScope = new ArrayList<>(removeDuplicates);
     	
     	ParseTree params = ctx.getChild(1).getChild(1); // the subtree of params
     	
@@ -599,6 +643,18 @@ public class MyVisitor extends CaronteBaseVisitor {
     		}
     	}
     	
+    	for (int x = 0; x < functionParams.size(); x++) {
+    		Param param = functionParams.get(x);
+    		param.t = Symbol.Types.VARIABLE;
+    		param.setSize(paramSizes.get(x));
+    		System.out.println(param);
+    		symbolTable.add(param);
+    		currentScope.add(param);
+    	}
+    	
+    	scope.put(ctx, currentScope);    	
+    	visitChildren(ctx);
+    	
     	ParseTree lastNode = ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).
         		getChild(ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).getChildCount()-1);
     	
@@ -611,7 +667,7 @@ public class MyVisitor extends CaronteBaseVisitor {
     	else returningType = types.get(lastValue.getChild(0));
     	
     	//System.out.println(lastCommand.getText());
-    	//System.out.println(returningType);
+    	System.out.println(returningType);
     	
     	if (!returningType.equals(retType)) {
     		System.out.println("Função " + functionName + " não pode retornar com tipo " + returningType + ". Linha do erro: "+
@@ -659,6 +715,8 @@ public class MyVisitor extends CaronteBaseVisitor {
     	
     	this.code += ".end method\n";
     	
+//    	visitChildren(ctx);
+    	
     	return null;
     }
     /*
@@ -698,14 +756,49 @@ public class MyVisitor extends CaronteBaseVisitor {
     	return matched;
     }
     @Override
+    public Object visitListaexp(CaronteParser.ListaexpContext ctx) {
+    	visitChildren(ctx);
+    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
+    	else isBreakable.put(ctx, false);
+    	visitChildren(ctx);
+    	
+    	HashSet<Symbol> removeDuplicates;
+    	
+    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
+    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	
+    	currentScope.addAll(parentScope);
+    	removeDuplicates = new HashSet<Symbol>(currentScope);
+    	currentScope = new ArrayList<>(removeDuplicates);
+    	
+    	parentScope.addAll(currentScope);
+    	removeDuplicates = new HashSet<Symbol>(parentScope);
+    	parentScope = new ArrayList<>(removeDuplicates);
+    	
+    	scope.put(ctx.getParent(), parentScope);
+//    	return visitChildren(ctx);
+    	return null;
+    }
+    @Override
     public Object visitListapar(CaronteParser.ListaparContext ctx) {
     	visitChildren(ctx);
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
+    	
+    	HashSet<Symbol> removeDuplicates;
+    	
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	
+    	currentScope.addAll(parentScope);
+    	removeDuplicates = new HashSet<Symbol>(currentScope);
+    	currentScope = new ArrayList<>(removeDuplicates);
+    	
     	parentScope.addAll(currentScope);
+    	removeDuplicates = new HashSet<Symbol>(parentScope);
+    	parentScope = new ArrayList<>(removeDuplicates);
+    	
     	scope.put(ctx.getParent(), parentScope);
 //    	return visitChildren(ctx);
     	return null;
@@ -716,9 +809,20 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
+    	
+    	HashSet<Symbol> removeDuplicates;
+    	
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	
+    	currentScope.addAll(parentScope);
+    	removeDuplicates = new HashSet<Symbol>(currentScope);
+    	currentScope = new ArrayList<>(removeDuplicates);
+    	
     	parentScope.addAll(currentScope);
+    	removeDuplicates = new HashSet<Symbol>(parentScope);
+    	parentScope = new ArrayList<>(removeDuplicates);
+    	
     	scope.put(ctx.getParent(), parentScope);
     	
     	String valueContent = ctx.getText();
@@ -736,9 +840,20 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
+    	
+    	HashSet<Symbol> removeDuplicates;
+    	
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	
+    	currentScope.addAll(parentScope);
+    	removeDuplicates = new HashSet<Symbol>(currentScope);
+    	currentScope = new ArrayList<>(removeDuplicates);
+    	
     	parentScope.addAll(currentScope);
+    	removeDuplicates = new HashSet<Symbol>(parentScope);
+    	parentScope = new ArrayList<>(removeDuplicates);
+    	
     	scope.put(ctx.getParent(), parentScope);
     	
     	types.put(ctx, types.get(ctx.getChild(1)));
@@ -753,10 +868,23 @@ public class MyVisitor extends CaronteBaseVisitor {
     	else isBreakable.put(ctx, false);
     	
     	visitChildren(ctx);
+    	
+    	HashSet<Symbol> removeDuplicates;
+    	
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	
+    	currentScope.addAll(parentScope);
+    	removeDuplicates = new HashSet<Symbol>(currentScope);
+    	currentScope = new ArrayList<>(removeDuplicates);
+    	
     	parentScope.addAll(currentScope);
+    	removeDuplicates = new HashSet<Symbol>(parentScope);
+    	parentScope = new ArrayList<>(removeDuplicates);
+    	
     	scope.put(ctx.getParent(), parentScope);
+    	
+    	System.out.println(currentScope);
     	
     	String varName = ctx.getText();
     	VariableSymbol varSymbol = (VariableSymbol)getSymbol(varName, Symbol.Types.VARIABLE, currentScope);
@@ -804,6 +932,7 @@ public class MyVisitor extends CaronteBaseVisitor {
 	    		if (varSymbol == null) {
 	    			types.put(ctx, type.getText());
 	    		} else {
+	        		System.out.println(varSymbol);
 	    			types.put(ctx, varSymbol.getVarType());
 	    		}
 	    	} else {
@@ -819,12 +948,24 @@ public class MyVisitor extends CaronteBaseVisitor {
     public Object visitExpPrefix(CaronteParser.ExpPrefixContext ctx) {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
-    	visitChildren(ctx);
+    	
+    	HashSet<Symbol> removeDuplicates;
+    	
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	
+    	currentScope.addAll(parentScope);
+    	removeDuplicates = new HashSet<Symbol>(currentScope);
+    	currentScope = new ArrayList<>(removeDuplicates);
+    	
     	parentScope.addAll(currentScope);
+    	removeDuplicates = new HashSet<Symbol>(parentScope);
+    	parentScope = new ArrayList<>(removeDuplicates);
+    	
     	scope.put(ctx.getParent(), parentScope);
     	types.put(ctx, types.get(ctx.getChild(0).getChild(0)));
+    	
+    	visitChildren(ctx);
     	
     	//System.out.println(ctx.getChild(0).getChild(0).getText());
     	//System.out.println("GHAHAHAHA="+ types.get(ctx.getChild(0).getChild(0)));
@@ -859,9 +1000,20 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
+    	
+    	HashSet<Symbol> removeDuplicates;
+    	
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	
+    	currentScope.addAll(parentScope);
+    	removeDuplicates = new HashSet<Symbol>(currentScope);
+    	currentScope = new ArrayList<>(removeDuplicates);
+    	
     	parentScope.addAll(currentScope);
+    	removeDuplicates = new HashSet<Symbol>(parentScope);
+    	parentScope = new ArrayList<>(removeDuplicates);
+    	
     	scope.put(ctx.getParent(), parentScope);
     	String type = types.get(ctx.getChild(1));
     	String operator = ctx.getChild(0).getText();
@@ -882,9 +1034,20 @@ public class MyVisitor extends CaronteBaseVisitor {
     	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
     	else isBreakable.put(ctx, false);
     	visitChildren(ctx);
+    	
+    	HashSet<Symbol> removeDuplicates;
+    	
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
+    	
+    	currentScope.addAll(parentScope);
+    	removeDuplicates = new HashSet<Symbol>(currentScope);
+    	currentScope = new ArrayList<>(removeDuplicates);
+    	
     	parentScope.addAll(currentScope);
+    	removeDuplicates = new HashSet<Symbol>(parentScope);
+    	parentScope = new ArrayList<>(removeDuplicates);
+    	
     	scope.put(ctx.getParent(), parentScope);
     	
     	Set<String> childrenTypes = new HashSet<String>();

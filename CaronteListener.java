@@ -1,4 +1,4 @@
-// Generated from Caronte.g4 by ANTLR 4.7.1
+// Generated from Caronte.g4 by ANTLR 4.5.3
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -532,6 +532,16 @@ public interface CaronteListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitOpbin4(CaronteParser.Opbin4Context ctx);
+	/**
+	 * Enter a parse tree produced by {@link CaronteParser#opbin5}.
+	 * @param ctx the parse tree
+	 */
+	void enterOpbin5(CaronteParser.Opbin5Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link CaronteParser#opbin5}.
+	 * @param ctx the parse tree
+	 */
+	void exitOpbin5(CaronteParser.Opbin5Context ctx);
 	/**
 	 * Enter a parse tree produced by {@link CaronteParser#opunaria}.
 	 * @param ctx the parse tree
