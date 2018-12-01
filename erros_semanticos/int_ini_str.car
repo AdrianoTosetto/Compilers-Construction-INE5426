@@ -10,7 +10,7 @@ int func(int a, int b):
 end
 
 void main():
-	if 6 == 3+2+1 then
+	if 6 == (3+2+1) then
 		int k = 4;
 		int c = 5+6;
 		print();

@@ -836,6 +836,14 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     	if(ctx.getChild(1).getText().equals("-")) {
     		this.code += "isub\n";
     	}
+    	if(ctx.getChild(1).getText().equals("==")) {
+    		this.code += "isub\n";
+    		this.code += "ifeq Label"+this.labelCount+"\n";
+    		int trueLabel = this.labelCount++;
+    		this.code += "iconst_0\ngoto Label"+this.labelCount+"\n";
+    		int exitLabel = this.labelCount++;
+    		this.code += "Label"+trueLabel+":\niconst_1\nLabel"+exitLabel+":\n";    		
+    	}
     	return null;
     }
     
