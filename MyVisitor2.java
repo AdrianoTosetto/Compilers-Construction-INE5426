@@ -7,11 +7,14 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.tree.*;
+
+import com.sun.javafx.collections.MappingChange.Map;
 
 import jdk.internal.org.objectweb.asm.Type;
 import sun.text.normalizer.SymbolTable;
@@ -23,6 +26,8 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     public ParseTreeProperty<ArrayList<Symbol>> scope = new ParseTreeProperty<>();
     public ArrayList<String> expressionStack = new ArrayList<>();
     public int labelCount = 0;
+    public int variableCount = 0;
+    HashMap<String, Integer> variablesHashMap = new HashMap<String, Integer>();
 
     ArrayList<Symbol> symbolTable = new ArrayList<Symbol>();
     
@@ -59,29 +64,13 @@ public class MyVisitor2 extends CaronteBaseVisitor {
 
     @Override
     public Object visitChamadadefuncao(CaronteParser.ChamadadefuncaoContext ctx) {
-    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
-    	else isBreakable.put(ctx, false);
-    	visitChildren(ctx);
-    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
-    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
-    	parentScope.addAll(currentScope);
-    	scope.put(ctx.getParent(), parentScope);
-    	//if(ctx.getStart().getLine());
     	String functionName = ctx.getChild(0).getText();
     	
-    	if (!functionName.equals("print")) {
-    		FunctionSymbol fs = (FunctionSymbol)getSymbol(functionName, Symbol.Types.FUNCTION, currentScope);
-        	
-        	if(fs == null) {
-        		System.out.println("Função ``" +functionName+"`` não foi declarada. Linha: " + ctx.getStart().getLine());
-        		//System.exit(0);
-        	} else {
-        		types.put(ctx, fs.getRetType()+"");
-        	}
-    	} else {
-    		types.put(ctx, "void");
+    	if (functionName.equals("print")) {
+    		this.code += "getstatic java/lang/System/out Ljava/io/PrintStream;\n";
+    		visitChildren(ctx);
+    		this.code += "invokevirtual java/io/PrintStream/println(I)V\n";
     	}
-    	
     	ParseTree funcParams = ctx.getChild(2);
     	ArrayList<Integer> sizes = new ArrayList<Integer>();
     	ArrayList<String> types = new ArrayList<String>();
@@ -225,6 +214,11 @@ public class MyVisitor2 extends CaronteBaseVisitor {
             	}
             break;
             case "int":
+            	String varName = ctx.getChild(1).getText();
+            	variablesHashMap.put(varName, variableCount);
+            	this.code += "istore " + variableCount + "\n";
+            	variableCount++;
+            	
             break;
 
             case "double":
@@ -522,6 +516,17 @@ public class MyVisitor2 extends CaronteBaseVisitor {
 //    	return visitChildren(ctx);
     	return null;
     }
+    
+    @Override
+    
+    public Object visitAtrib(CaronteParser.AtribContext ctx) {
+		
+    	visitChildren(ctx);
+    	
+    	this.code += "istore " + variablesHashMap.get(ctx.getChild(0).getText()) + "\n";
+    	
+    	return null;
+    }
 
     @Override
     public Object visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx) {
@@ -574,9 +579,11 @@ public class MyVisitor2 extends CaronteBaseVisitor {
 //    	if (lastValue.getText().equals("return") || !lastCommand.getText().equals("return")) returningType = "void";
 //    	else returningType = types.get(lastValue.getChild(0));
     	
-    	
+		String retCode = null;
+		String retCode1 = null;
     	if(functionName.equals("main")) {
     		this.code += ".method public static main([Ljava/lang/String;)V\n";
+    		retCode1 = "return";
     	} else {
     		this.code += ".method " + functionName + "(";
     		for(i = 0; i < functionParamsTypes.size(); i++) {
@@ -585,12 +592,13 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     				this.code+="I";
     			}
     		}
-    		String retCode = null;
     		if(retType.equals(("void"))) {
     			retCode = "V";
+    			retCode1 = "return";
     		}
     		if(retType.equals(("int"))) {
     			retCode = "I";
+    			retCode1 = "ireturn";
     		}
     		if(retType.equals(("boolean"))) {
     			retCode = "ZB";
@@ -601,6 +609,7 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     		this.code += ")"+retCode+"\n";
     	}
     	visitChildren(ctx);
+    	this.code += retCode1 + "\n";
     	this.code += ".end method\n";
     	
     	return null;
@@ -660,7 +669,7 @@ public class MyVisitor2 extends CaronteBaseVisitor {
 
     	String valueContent = ctx.getText();
     	
-    	this.code += "iconst_" + valueContent+"\n";
+    	this.code += "ldc " + valueContent+"\n";
     	expressionStack.add(valueContent);
     	visitChildren(ctx);
     	return null;
@@ -696,51 +705,15 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     	String varName = ctx.getText();
     	VariableSymbol varSymbol = (VariableSymbol)getSymbol(varName, Symbol.Types.VARIABLE, currentScope);
     	
-    	if(varName.contains(".")) {
-        	/*
-        	 * O nome é um estrutura
-        	 * */
-    		String structName = varName.split("\\.")[0];
-    		//System.out.println("===>"+structName);
-    		StructSymbol ss  = (StructSymbol) getSymbol(structName, Symbol.Types.STRUCT_VARIABLE, currentScope);
-    		if(ss == null) {
-    			System.out.println("A Struct ``" + structName + "`` não foi anteriormente declarada. Linha: " + ctx.getStart().getLine());
-    			//System.exit(0);
-    		} else {
-    			/*
-    			 * verificar se o campo existe, se sim, verificar o tipo dele
-    			 * */
-    			
-	   			/*int i = 2;
-	   			String[] tt = varName.split("\\.");
-	   			Symbol s = ss.findFieldByName(tt[1]);
-	   			while(s.t == Symbol.Types.STRUCT_VARIABLE) {
-	   				s = ((StructSymbol) s).findFieldByName(tt[i]);
-	   				i++;
-	   			}
-	   			System.out.println("TIPO DA VARIÁVEL: "+((VariableSymbol)s).getVarType());*/
-    		}
-    		
-    	} else {
-    		ParseTree type = ctx.getParent().getChild(0);
-    		ParseTree isReturn = ctx.getParent().getParent().getParent().getParent().getChild(0);
-
-//    		System.out.println("kkk " + type.getText());
-//    		System.out.println("opa " + isReturn.getText());
-//    		System.out.println("ata " + varName);
-    		/*
-    		 * O nome é uma variavel normal
-    		 * */
-//    		System.out.println(varSymbol);
-    		if(varSymbol == null && type == ctx || varSymbol == null && isReturn.getText().equals("return")) {
-	    		System.out.println("Variável ``"+varName+"`` não foi declarada. Linha do erro: " + ctx.getStart().getLine());
-	    		//System.exit(0);
-	    	} else if (!isReturn.getText().equals("return")) {
-	    		types.put(ctx, type.getText());
-	    	} else {
-	    		types.put(ctx, varSymbol.getVarType());
-	    	}
-    	}
+//    	if (ctx.getParent().getChildCount() > 1) {
+//    		if(ctx.getParent().getChild(1).getText().equals("=") && 
+//    		    	   ctx.getParent().getChild(0).getText().equals(ctx.getText())) {
+//    		    		this.code += "istore " + this.variablesHashMap.get(varName) + "\n";
+//    		} else {
+//    			this.code += "iload " + this.variablesHashMap.get(varName) + "\n";
+//    		}
+//    	}
+	    	
 
 //    	return visitChildren(ctx);
     	return null;
@@ -748,14 +721,14 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     
     @Override
     public Object visitExpPrefix(CaronteParser.ExpPrefixContext ctx) {
-    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
-    	else isBreakable.put(ctx, false);
+    	String name = ctx.getChild(0).getText();
+    	if(!ctx.getChild(0).getText().contains("(")) {
+    		this.code += "iload " + variablesHashMap.get(name)+"\n";
+    	}
+    	//if(getSymbol(name, Symbol.Types.FUNCTION, this.symbolTable) != null) {
+    		
+    	//}
     	visitChildren(ctx);
-    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
-    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
-    	parentScope.addAll(currentScope);
-    	scope.put(ctx.getParent(), parentScope);
-    	types.put(ctx, types.get(ctx.getChild(0).getChild(0)));
     	
     	//System.out.println(ctx.getChild(0).getChild(0).getText());
     	//System.out.println("GHAHAHAHA="+ types.get(ctx.getChild(0).getChild(0)));

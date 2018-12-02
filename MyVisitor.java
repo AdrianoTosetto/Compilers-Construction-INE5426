@@ -653,7 +653,8 @@ public class MyVisitor extends CaronteBaseVisitor {
     		currentScope.add(param);
     	}
     	
-    	scope.put(ctx, currentScope);    	
+    	scope.put(ctx, currentScope);
+    	System.out.println(currentScope);
     	visitChildren(ctx);
     	
     	ParseTree lastNode = ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-2).
