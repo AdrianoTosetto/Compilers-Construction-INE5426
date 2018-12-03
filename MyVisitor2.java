@@ -86,7 +86,6 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     			if (paramType.equals("Unknown")) {
     				ArrayList<String> tokens = 
     						(ArrayList<String>) (Utils.splitExpressionIntoTokens(paramName));
-    				checkTokensTypes(tokens);
     				i+=2;
     			} else {
 	    			int size = 1;
@@ -106,45 +105,31 @@ public class MyVisitor2 extends CaronteBaseVisitor {
 //    	return visitChildren(ctx);
     	return null;
     }
-    public boolean checkTokensTypes(ArrayList<String> tokens) {
-    	
-    	
-    	return false;
-    }
-    public String getTokenType(String type) {
-    	return "";
-    }
-    
-    @Override
-    public Object visitDo(CaronteParser.DoContext ctx) {
-    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
-    	else isBreakable.put(ctx, false);
-    	
-    	if (!isBreakable.get(ctx)) {
-    		String lastCommand = ctx.getChild(1).getChild(ctx.getChild(1).getChildCount()-1).
-    								getChild(0).getText();
-    		if (lastCommand.equals("break")) {
-    			System.out.println("Seção inquebrável. Linha do erro: " + ctx.getStart().getLine());
-    			//System.exit(0);
-    		}
-    	}
-    	
-//    	System.out.println("kkk");
-//    	System.out.println(scope.get(ctx.getParent()));
-//    	System.out.println(scope.get(ctx));
-    	
-//    	return visitChildren(ctx);
-    	return null;
-    }
     
     @Override
     public Object visitWhile(CaronteParser.WhileContext ctx) {
     	int whileLabel = this.labelCount;
     	this.code += "Label" + this.labelCount++ + ":\n";
-    	visitChildren((RuleNode) ctx.getChild(1));
+    	if (ctx.getChild(1).getClass() == CaronteParser.BinExpContext.class) {
+    		visitBinExp((CaronteParser.BinExpContext)ctx.getChild(1));
+    	} else if (ctx.getChild(1).getClass() == CaronteParser.UnariaExpContext.class) {
+    		visitUnariaExp((CaronteParser.UnariaExpContext)ctx.getChild(1));
+    	} else if (ctx.getChild(1).getClass() == CaronteParser.ExpValuesContext.class) {
+    		visitExpValues((CaronteParser.ExpValuesContext)ctx.getChild(1));
+    	} else if (ctx.getChild(1).getClass() == CaronteParser.ExpPrefixContext.class) {
+    		visitExpPrefix((CaronteParser.ExpPrefixContext)ctx.getChild(1));
+    	}
     	int nextLabel = this.labelCount;
     	this.code += "ifeq Label" + this.labelCount++ + "\n";
-    	visitChildren((RuleNode) ctx.getChild(3));
+    	if (ctx.getChild(3).getClass() == CaronteParser.BinExpContext.class) {
+    		visitBinExp((CaronteParser.BinExpContext)ctx.getChild(3));
+    	} else if (ctx.getChild(3).getClass() == CaronteParser.UnariaExpContext.class) {
+    		visitUnariaExp((CaronteParser.UnariaExpContext)ctx.getChild(3));
+    	} else if (ctx.getChild(3).getClass() == CaronteParser.ExpValuesContext.class) {
+    		visitExpValues((CaronteParser.ExpValuesContext)ctx.getChild(3));
+    	} else if (ctx.getChild(3).getClass() == CaronteParser.ExpPrefixContext.class) {
+    		visitExpPrefix((CaronteParser.ExpPrefixContext)ctx.getChild(3));
+    	}
     	this.code += "goto Label" + whileLabel + "\nLabel" + nextLabel + ":\n";
     	return null;
     }
@@ -155,6 +140,9 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     	visitBinExp((CaronteParser.BinExpContext)ctx.getChild(1));
     	//visitChildren(ctx);
 //    	System.out.println(ctx.getChild(1).getChild(2).getText());
+    	if(Utils.isVar(ctx.getChild(1).getText())) {
+    		System.out.println("uma variavel");
+    	}
     	int nextLabel = this.labelCount;
     	this.code += "ifeq Label" + this.labelCount++ + "\n";
     	visitChildren((RuleNode) ctx.getChild(3));
@@ -164,6 +152,26 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     
     @Override
     public Object visitFor(CaronteParser.ForContext ctx) {
+    	System.out.println(ctx.getChild(4).getClass());
+    	visitBinExp((CaronteParser.BinExpContext) ctx.getChild(4));
+    	String varName = ctx.getChild(2).getText();
+    	
+    	this.code += "istore "+this.variableCount+"\n";
+    	this.variablesHashMap.put(varName, this.variableCount);
+    	this.variableCount++;
+    	
+    	int whileLabel = this.labelCount;
+    	this.code += "Label" + this.labelCount++ + ":\n";
+    	visitBinExp((CaronteParser.BinExpContext) ctx.getChild(6));
+    	int nextLabel = this.labelCount;
+    	this.code += "ifeq Label" + this.labelCount++ + "\n";
+    	visitChildren((RuleNode) ctx.getChild(10));
+    	visitChildren((RuleNode) ctx.getChild(8));
+    	this.code += "goto Label" + whileLabel + "\nLabel" + nextLabel + ":\n";
+    	
+    	if(ctx.getChild(6).getClass() == CaronteParser.BinExpContext.class) {
+    		
+    	}
     	// 'for' ((tipovar | 'auto') Nome '=' exp)? ':' (exp)? ':' (comandounico)? 'do' trecho 'end'
 //    	int forLabel = this.labelCount;
 //    	this.code += "Label" + this.labelCount++ + ":\n";
@@ -322,7 +330,6 @@ public class MyVisitor2 extends CaronteBaseVisitor {
             	symbolTable.add(ss);
             	currentScope.add(ss);
             break;
-
         }
 
         parentScope.addAll(currentScope);
@@ -608,6 +615,8 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     		}
     		this.code += ")"+retCode+"\n";
     	}
+		this.code += ".limit stack 100\n";
+		this.code += ".limit locals 100\n";
     	visitChildren(ctx);
     	this.code += retCode1 + "\n";
     	this.code += ".end method\n";
@@ -760,27 +769,24 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     
     @Override
     public Object visitUnariaExp(CaronteParser.UnariaExpContext ctx) {
-    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
-    	else isBreakable.put(ctx, false);
-    	visitChildren(ctx);
-    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
-    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
-    	parentScope.addAll(currentScope);
-    	scope.put(ctx.getParent(), parentScope);
-    	String type = types.get(ctx.getChild(1));
+//    	visitChildren(ctx);
+    	String operand = ctx.getChild(1).getText();
     	String operator = ctx.getChild(0).getText();
-    	if(!isUnaryOperatorValidForType(operator, type)) {
-    		System.out.println("O operador " + operator + " não pode ser usado em conjunto com o tipo " + 
-    		type+". Linha: " + ctx.getStart().getLine()
-    				);
-    		//System.exit(0);
-    	} else {
-    		types.put(ctx, type);
+    	if(operator.equals("++")) {
+//	    	this.code += "iconst_1\n";
+//	    	//this.code += "iload " + variablesHashMap.get(operand) + "\n";
+//	    	this.code += "iadd\n";
+//	    	this.code += "istore " + variablesHashMap.get(operand) + "\n";
+    		this.code += "iinc " + variablesHashMap.get(operand) + " 1\n";
+    	} else if (operator.equals("--")) {
+//	    	this.code += "iconst_1\n";
+//	    	//this.code += "iload " + variablesHashMap.get(operand) + "\n";
+//	    	this.code += "isub\n";
+//	    	this.code += "istore " + variablesHashMap.get(operand) + "\n";		
+    		this.code += "iinc " + variablesHashMap.get(operand) + " -1\n";
     	}
-    	
     	return null;
     }
-    
     @Override
     public Object visitBinExp(CaronteParser.BinExpContext ctx) {
     	visitChildren(ctx);
@@ -816,6 +822,38 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     		this.code += "iconst_0\ngoto Label"+this.labelCount+"\n";
     		int exitLabel = this.labelCount++;
     		this.code += "Label"+trueLabel+":\niconst_1\nLabel"+exitLabel+":\n";    		
+    	}
+    	if(ctx.getChild(1).getText().equals(">")) {
+    		this.code += "isub\n";
+    		this.code += "ifgt Label"+this.labelCount+"\n";
+    		int trueLabel = this.labelCount++;
+    		this.code += "iconst_0\ngoto Label"+this.labelCount+"\n";
+    		int exitLabel = this.labelCount++;
+    		this.code += "Label"+trueLabel+":\niconst_1\nLabel"+exitLabel+":\n";    	
+    	}
+    	if(ctx.getChild(1).getText().equals("<")) {
+    		this.code += "isub\n";
+    		this.code += "iflt Label"+this.labelCount+"\n";
+    		int trueLabel = this.labelCount++;
+    		this.code += "iconst_0\ngoto Label"+this.labelCount+"\n";
+    		int exitLabel = this.labelCount++;
+    		this.code += "Label"+trueLabel+":\niconst_1\nLabel"+exitLabel+":\n";    	
+    	}
+    	if(ctx.getChild(1).getText().equals("<=")) {
+    		this.code += "isub\n";
+    		this.code += "ifle Label"+this.labelCount+"\n";
+    		int trueLabel = this.labelCount++;
+    		this.code += "iconst_0\ngoto Label"+this.labelCount+"\n";
+    		int exitLabel = this.labelCount++;
+    		this.code += "Label"+trueLabel+":\niconst_1\nLabel"+exitLabel+":\n";    	
+    	}
+    	if(ctx.getChild(1).getText().equals(">=")) {
+    		this.code += "isub\n";
+    		this.code += "ifge Label"+this.labelCount+"\n";
+    		int trueLabel = this.labelCount++;
+    		this.code += "iconst_0\ngoto Label"+this.labelCount+"\n";
+    		int exitLabel = this.labelCount++;
+    		this.code += "Label"+trueLabel+":\niconst_1\nLabel"+exitLabel+":\n";    	
     	}
     	return null;
     }
@@ -862,7 +900,7 @@ public class MyVisitor2 extends CaronteBaseVisitor {
         CaronteParser parser = new CaronteParser(tokens);
         ParseTree tree = parser.inicio();
         MyVisitor mv0 = new MyVisitor();
-        mv0.visit(tree);
+        //mv0.visit(tree);
         
         MyVisitor2 mv = new MyVisitor2();
         mv.scope = mv0.scope;
