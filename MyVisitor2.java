@@ -26,13 +26,25 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     public ParseTreeProperty<ArrayList<Symbol>> scope = new ParseTreeProperty<>();
     public ArrayList<String> expressionStack = new ArrayList<>();
     public int labelCount = 0;
-    public int variableCount = 0;
+    public int variableCount = 1;
     HashMap<String, Integer> variablesHashMap = new HashMap<String, Integer>();
 
     ArrayList<Symbol> symbolTable = new ArrayList<Symbol>();
     
     String code = 	".class public GlobalClass\n"+
-    				".super java/lang/Object\n";
+    				".super java/lang/Object\n" +
+    				".method <init>()V\n"+
+    				".limit stack 1\n"+
+    				".limit locals 1\n"+
+    				".var 0 is this LGlobalClass; from Label0 to Label1\n"+
+    				"Label0:\n"+
+    				".line 1\n"+
+    				"aload_0\n"+
+    				"invokespecial java/lang/Object/<init>()V\n"+
+    				"Label1:\n"+
+    				"return\n"+
+    				".end method\n";
+
     
     public enum Errors{
     		FUNCTION_NOT_DECLARED,
@@ -70,6 +82,10 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     		this.code += "getstatic java/lang/System/out Ljava/io/PrintStream;\n";
     		visitChildren(ctx);
     		this.code += "invokevirtual java/io/PrintStream/println(I)V\n";
+    	} else {
+    		this.code += "aload 0\n";
+    		visitChildren(ctx);
+    		this.code += "invokevirtual GlobalClass/"+functionName+"(I)I\n";
     	}
     	ParseTree funcParams = ctx.getChild(2);
     	ArrayList<Integer> sizes = new ArrayList<Integer>();
@@ -102,7 +118,7 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     		System.out.println("A função com essa assinatura não foi declarada");
     		//System.exit(0);
     	}
-//    	return visitChildren(ctx);
+    	//visitChildren(ctx);
     	return null;
     }
     
@@ -537,7 +553,8 @@ public class MyVisitor2 extends CaronteBaseVisitor {
 
     @Override
     public Object visitFunctionDeclaration(CaronteParser.FunctionDeclarationContext ctx) {
-    	
+    	this.variableCount = 1;
+    	this.variablesHashMap.clear();
     	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
     	
     	ParseTree params = ctx.getChild(1).getChild(1); // the subtree of params
@@ -590,6 +607,10 @@ public class MyVisitor2 extends CaronteBaseVisitor {
 		String retCode1 = null;
     	if(functionName.equals("main")) {
     		this.code += ".method public static main([Ljava/lang/String;)V\n";
+    	    this.code += "new GlobalClass\n"+
+    	    "dup\n"+
+    	    "invokespecial GlobalClass/<init>()V\n"+
+    	    "astore_0\n";
     		retCode1 = "return";
     	} else {
     		this.code += ".method " + functionName + "(";
@@ -661,15 +682,43 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     }
     @Override
     public Object visitListapar(CaronteParser.ListaparContext ctx) {
+//    	System.out.println("=================");
+    	for(int i = ctx.children.size()-1; i >= 0; i-=3) {
+//    		System.out.print("Nome="+ctx.getChild(i).getText() + " - ");
+//    		System.out.println("tipo="+ctx.getChild(i-1).getText());
+    		this.variablesHashMap.put(ctx.getChild(i).getText() , this.variableCount);
+//    		this.code += "istore " + variableCount + "\n";
+//    		this.variableCount++;
+    	} 
+    	
     	visitChildren(ctx);
-    	if (isBreakable.get(ctx.getParent())) isBreakable.put(ctx, true);
-    	else isBreakable.put(ctx, false);
-    	visitChildren(ctx);
-    	ArrayList<Symbol> parentScope = (scope.get(ctx.getParent()) == null) ? new ArrayList<>() : scope.get(ctx.getParent());
-    	ArrayList<Symbol> currentScope = (scope.get(ctx) == null) ? new ArrayList<>() : scope.get(ctx);
-    	parentScope.addAll(currentScope);
-    	scope.put(ctx.getParent(), parentScope);
-//    	return visitChildren(ctx);
+    	return null;
+    }
+    @Override
+    public Object visitRepeat(CaronteParser.RepeatContext ctx) {
+    	int whileLabel = this.labelCount;
+    	this.code += "Label" + this.labelCount++ + ":\n";
+    	if (ctx.getChild(1).getClass() == CaronteParser.BinExpContext.class) {
+    		visitBinExp((CaronteParser.BinExpContext)ctx.getChild(1));
+    	} else if (ctx.getChild(1).getClass() == CaronteParser.UnariaExpContext.class) {
+    		visitUnariaExp((CaronteParser.UnariaExpContext)ctx.getChild(1));
+    	} else if (ctx.getChild(1).getClass() == CaronteParser.ExpValuesContext.class) {
+    		visitExpValues((CaronteParser.ExpValuesContext)ctx.getChild(1));
+    	} else if (ctx.getChild(1).getClass() == CaronteParser.ExpPrefixContext.class) {
+    		visitExpPrefix((CaronteParser.ExpPrefixContext)ctx.getChild(1));
+    	}
+    	int nextLabel = this.labelCount;
+    	this.code += "ifeq Label" + this.labelCount++ + "\n";
+    	if (ctx.getChild(3).getClass() == CaronteParser.BinExpContext.class) {
+    		visitBinExp((CaronteParser.BinExpContext)ctx.getChild(3));
+    	} else if (ctx.getChild(3).getClass() == CaronteParser.UnariaExpContext.class) {
+    		visitUnariaExp((CaronteParser.UnariaExpContext)ctx.getChild(3));
+    	} else if (ctx.getChild(3).getClass() == CaronteParser.ExpValuesContext.class) {
+    		visitExpValues((CaronteParser.ExpValuesContext)ctx.getChild(3));
+    	} else if (ctx.getChild(3).getClass() == CaronteParser.ExpPrefixContext.class) {
+    		visitExpPrefix((CaronteParser.ExpPrefixContext)ctx.getChild(3));
+    	}
+    	this.code += "goto Label" + whileLabel + "\nLabel" + nextLabel + ":\n";
     	return null;
     }
     
