@@ -134,6 +134,8 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     		visitExpValues((CaronteParser.ExpValuesContext)ctx.getChild(1));
     	} else if (ctx.getChild(1).getClass() == CaronteParser.ExpPrefixContext.class) {
     		visitExpPrefix((CaronteParser.ExpPrefixContext)ctx.getChild(1));
+    	} else {
+    		visitChildren((RuleNode)ctx.getChild(1));
     	}
     	int nextLabel = this.labelCount;
     	this.code += "ifeq Label" + this.labelCount++ + "\n";
@@ -145,6 +147,8 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     		visitExpValues((CaronteParser.ExpValuesContext)ctx.getChild(3));
     	} else if (ctx.getChild(3).getClass() == CaronteParser.ExpPrefixContext.class) {
     		visitExpPrefix((CaronteParser.ExpPrefixContext)ctx.getChild(3));
+    	} else {
+    		visitChildren((RuleNode)ctx.getChild(3));
     	}
     	this.code += "goto Label" + whileLabel + "\nLabel" + nextLabel + ":\n";
     	return null;
@@ -153,7 +157,17 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     @Override
     public Object visitIf(CaronteParser.IfContext ctx) {
     	//visitChildren((CaronteParser.ExpContext) ctx.getChild(1));
-    	visitBinExp((CaronteParser.BinExpContext)ctx.getChild(1));
+    	if (ctx.getChild(1).getClass() == CaronteParser.BinExpContext.class) {
+    		visitBinExp((CaronteParser.BinExpContext)ctx.getChild(1));
+    	} else if (ctx.getChild(1).getClass() == CaronteParser.UnariaExpContext.class) {
+    		visitUnariaExp((CaronteParser.UnariaExpContext)ctx.getChild(1));
+    	} else if (ctx.getChild(1).getClass() == CaronteParser.ExpValuesContext.class) {
+    		visitExpValues((CaronteParser.ExpValuesContext)ctx.getChild(1));
+    	} else if (ctx.getChild(1).getClass() == CaronteParser.ExpPrefixContext.class) {
+    		visitExpPrefix((CaronteParser.ExpPrefixContext)ctx.getChild(1));
+    	} else {
+    		visitChildren((RuleNode)ctx.getChild(1));
+    	}
     	//visitChildren(ctx);
 //    	System.out.println(ctx.getChild(1).getChild(2).getText());
     	if(Utils.isVar(ctx.getChild(1).getText())) {
@@ -161,8 +175,65 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     	}
     	int nextLabel = this.labelCount;
     	this.code += "ifeq Label" + this.labelCount++ + "\n";
-    	visitChildren((RuleNode) ctx.getChild(3));
+    	if (ctx.getChild(3).getClass() == CaronteParser.BinExpContext.class) {
+    		visitBinExp((CaronteParser.BinExpContext)ctx.getChild(3));
+    	} else if (ctx.getChild(3).getClass() == CaronteParser.UnariaExpContext.class) {
+    		visitUnariaExp((CaronteParser.UnariaExpContext)ctx.getChild(3));
+    	} else if (ctx.getChild(3).getClass() == CaronteParser.ExpValuesContext.class) {
+    		visitExpValues((CaronteParser.ExpValuesContext)ctx.getChild(3));
+    	} else if (ctx.getChild(3).getClass() == CaronteParser.ExpPrefixContext.class) {
+    		visitExpPrefix((CaronteParser.ExpPrefixContext)ctx.getChild(3));
+    	} else {
+    		visitChildren((RuleNode)ctx.getChild(3));
+    	}
+    	int afterLabel = this.labelCount;
+    	this.code += "goto Label" + this.labelCount++ + "\n";
     	this.code += "Label" + nextLabel + ":\n";
+    	for (int i = 4; !ctx.getChild(i).getText().equals("end"); i+=2) {
+    		if (ctx.getChild(i).getText().equals("then")) continue;
+    		if (ctx.getChild(i).getText().equals("elseif")) {
+    			System.out.println(ctx.getChild(i).getText());
+    			if (ctx.getChild(i+1).getClass() == CaronteParser.BinExpContext.class) {
+    	    		visitBinExp((CaronteParser.BinExpContext)ctx.getChild(i+1));
+    	    	} else if (ctx.getChild(i+1).getClass() == CaronteParser.UnariaExpContext.class) {
+    	    		visitUnariaExp((CaronteParser.UnariaExpContext)ctx.getChild(i+1));
+    	    	} else if (ctx.getChild(i+1).getClass() == CaronteParser.ExpValuesContext.class) {
+    	    		visitExpValues((CaronteParser.ExpValuesContext)ctx.getChild(i+1));
+    	    	} else if (ctx.getChild(i+1).getClass() == CaronteParser.ExpPrefixContext.class) {
+    	    		visitExpPrefix((CaronteParser.ExpPrefixContext)ctx.getChild(i+1));
+    	    	} else {
+    	    		visitChildren((RuleNode)ctx.getChild(i+1));
+    	    	}
+    	    	nextLabel = this.labelCount;
+    	    	this.code += "ifeq Label" + this.labelCount++ + "\n";
+    	    	if (ctx.getChild(i+3).getClass() == CaronteParser.BinExpContext.class) {
+    	    		visitBinExp((CaronteParser.BinExpContext)ctx.getChild(i+3));
+    	    	} else if (ctx.getChild(i+3).getClass() == CaronteParser.UnariaExpContext.class) {
+    	    		visitUnariaExp((CaronteParser.UnariaExpContext)ctx.getChild(i+3));
+    	    	} else if (ctx.getChild(i+3).getClass() == CaronteParser.ExpValuesContext.class) {
+    	    		visitExpValues((CaronteParser.ExpValuesContext)ctx.getChild(i+3));
+    	    	} else if (ctx.getChild(i+3).getClass() == CaronteParser.ExpPrefixContext.class) {
+    	    		visitExpPrefix((CaronteParser.ExpPrefixContext)ctx.getChild(i+3));
+    	    	} else {
+    	    		visitChildren((RuleNode)ctx.getChild(i+3));
+    	    	}
+    	    	this.code += "goto Label" + afterLabel + "\n";
+    	    	this.code += "Label" + nextLabel + ":\n";
+    		} else {
+    			if (ctx.getChild(i+1).getClass() == CaronteParser.BinExpContext.class) {
+    	    		visitBinExp((CaronteParser.BinExpContext)ctx.getChild(i+1));
+    	    	} else if (ctx.getChild(i+1).getClass() == CaronteParser.UnariaExpContext.class) {
+    	    		visitUnariaExp((CaronteParser.UnariaExpContext)ctx.getChild(i+1));
+    	    	} else if (ctx.getChild(i+1).getClass() == CaronteParser.ExpValuesContext.class) {
+    	    		visitExpValues((CaronteParser.ExpValuesContext)ctx.getChild(i+1));
+    	    	} else if (ctx.getChild(i+1).getClass() == CaronteParser.ExpPrefixContext.class) {
+    	    		visitExpPrefix((CaronteParser.ExpPrefixContext)ctx.getChild(i+1));
+    	    	} else {
+    	    		visitChildren((RuleNode)ctx.getChild(i+1));
+    	    	}
+    		}
+    	}
+    	this.code += "Label"+afterLabel+":\n";
     	return null;
     }
     
@@ -706,9 +777,9 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     		visitExpValues((CaronteParser.ExpValuesContext)ctx.getChild(1));
     	} else if (ctx.getChild(1).getClass() == CaronteParser.ExpPrefixContext.class) {
     		visitExpPrefix((CaronteParser.ExpPrefixContext)ctx.getChild(1));
+    	} else {
+    		visitChildren((RuleNode)ctx.getChild(1));
     	}
-    	int nextLabel = this.labelCount;
-    	this.code += "ifeq Label" + this.labelCount++ + "\n";
     	if (ctx.getChild(3).getClass() == CaronteParser.BinExpContext.class) {
     		visitBinExp((CaronteParser.BinExpContext)ctx.getChild(3));
     	} else if (ctx.getChild(3).getClass() == CaronteParser.UnariaExpContext.class) {
@@ -717,8 +788,10 @@ public class MyVisitor2 extends CaronteBaseVisitor {
     		visitExpValues((CaronteParser.ExpValuesContext)ctx.getChild(3));
     	} else if (ctx.getChild(3).getClass() == CaronteParser.ExpPrefixContext.class) {
     		visitExpPrefix((CaronteParser.ExpPrefixContext)ctx.getChild(3));
+    	} else {
+    		visitChildren((RuleNode)ctx.getChild(3));
     	}
-    	this.code += "goto Label" + whileLabel + "\nLabel" + nextLabel + ":\n";
+    	this.code += "ifeq Label" + whileLabel + "\n";
     	return null;
     }
     

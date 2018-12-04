@@ -3,10 +3,11 @@ int inc(int a):
 end
 
 void main():
-	//print(1);
-	print(inc(3+8));
-	//int k = 3;
-	//if k+2 == (3+2+1) then
-	//	print(3+2);
-	//end
+	if 1 then
+		print(1);
+	elseif 0 then
+		print(2);
+	else
+		print(3);
+	end
 end
